@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "tool_version": "aw-local/1",
+  "project_id": "agent-workflow",
+  "rules": [
+    "AGENTS.md",
+    "docs/PLANS.md",
+    "docs/testing/strategy.md"
+  ],
+  "commands": [
+    "validate"
+  ],
+  "plans": {
+    "active": "docs/exec-plans/active",
+    "verifying": "docs/exec-plans/verifying",
+    "completed": "docs/exec-plans/completed",
+    "cancelled": "docs/exec-plans/cancelled"
+  },
+  "mutable_links": [
+    "docs/quality/harness-engineering.md",
+    "docs/design/architecture.md",
+    "docs/design/decisions/0072-extract-agent-workflow-repository.md",
+    "docs/testing/strategy.md"
+  ],
+  "procedures": [
+    {
+      "id": "bootstrap",
+      "version": "4",
+      "locator": "procedures/bootstrap.md",
+      "hash": "9d084fddc531b61f5f4a83a747f50db4c450905037a0a57f5d00ed0472ce432a",
+      "fragments": [
+        "bootstrap.context-01",
+        "bootstrap.01",
+        "bootstrap.02",
+        "bootstrap.03",
+        "bootstrap.04",
+        "bootstrap.05",
+        "bootstrap.context-02",
+        "bootstrap.context-03",
+        "bootstrap.compact"
+      ]
+    },
+    {
+      "id": "task",
+      "version": "7",
+      "locator": "procedures/task.md",
+      "hash": "a398e5bcaed7b94cfab7ebf0227b6b7d55a8d0c3e06dd6f7a6b4d2ffcebb4a3b",
+      "fragments": [
+        "task.01",
+        "task.02",
+        "task.03",
+        "task.04",
+        "task.05",
+        "task.06",
+        "task.context-01",
+        "task.context-02"
+      ]
+    },
+    {
+      "id": "implementation",
+      "version": "5",
+      "locator": "procedures/implementation.md",
+      "hash": "a4f81061161971d60ba097cdd76bb278fdd1cf4700d7dac372b6feb158c93a6a",
+      "fragments": [
+        "implementation.01",
+        "implementation.02",
+        "implementation.03",
+        "implementation.04",
+        "implementation.context-01",
+        "implementation.context-02"
+      ]
+    },
+    {
+      "id": "evidence",
+      "version": "4",
+      "locator": "procedures/evidence.md",
+      "hash": "76c2eb4e5fcf5daf90d5dc38be81e9a452218a986621db16b5b4a3584ff6f3ed",
+      "fragments": [
+        "evidence.01",
+        "evidence.02",
+        "evidence.03",
+        "evidence.04",
+        "evidence.05",
+        "evidence.context-01",
+        "evidence.context-02"
+      ]
+    },
+    {
+      "id": "boundary-review",
+      "version": "2",
+      "locator": "procedures/boundary-review.md",
+      "hash": "72270d1049c8257b3a528c74be8ec98d5c76672efcb2224febffb5f87d1466c1",
+      "fragments": [
+        "boundary-review.context-01",
+        "boundary-review.01",
+        "boundary-review.02",
+        "boundary-review.03",
+        "boundary-review.04",
+        "boundary-review.context-02"
+      ]
+    },
+    {
+      "id": "data-roles",
+      "version": "4",
+      "locator": "procedures/data-roles.md",
+      "hash": "4654d58b6b52bbe956981c496ab328f13d595d067e386066fdfff73c427b7b44",
+      "fragments": [
+        "data-roles.01",
+        "data-roles.02",
+        "data-roles.03",
+        "data-roles.04",
+        "data-roles.05",
+        "data-roles.context-01"
+      ]
+    },
+    {
+      "id": "council",
+      "version": "15",
+      "locator": "procedures/council.md",
+      "hash": "fcdff2f65f24fc562a8bc8b5286522de16c1bdce8d1e5825cdf4872e06a1ea38",
+      "fragments": [
+        "council.context-01",
+        "council.01",
+        "council.02",
+        "council.03",
+        "council.04",
+        "council.05",
+        "council.06",
+        "council.07",
+        "council.context-02"
+      ]
+    },
+    {
+      "id": "arbitration",
+      "version": "3",
+      "locator": "procedures/arbitration.md",
+      "hash": "1c14e2339bcf51b2c93be683da36c1f54ebc62693021aa71c0607678658f8f90",
+      "fragments": [
+        "arbitration.context-01",
+        "arbitration.01",
+        "arbitration.02",
+        "arbitration.03",
+        "arbitration.04"
+      ]
+    },
+    {
+      "id": "audit",
+      "version": "4",
+      "locator": "procedures/audit.md",
+      "hash": "674b53229e17ced9daeebbb83624fc5d67168bc125a398ede0624a42f9d74b30",
+      "fragments": [
+        "audit.context-01",
+        "audit.context-02",
+        "audit.context-03"
+      ]
+    },
+    {
+      "id": "coordination",
+      "version": "4",
+      "locator": "procedures/coordination.md",
+      "hash": "7574096f47672476b787753655beaae51670fec1c1d16d4ffc23e8484dfa303d",
+      "fragments": [
+        "coordination.context-01",
+        "coordination.context-02",
+        "coordination.context-03",
+        "coordination.context-04",
+        "coordination.context-05",
+        "coordination.context-06",
+        "coordination.context-07",
+        "coordination.context-08"
+      ]
+    },
+    {
+      "id": "relay",
+      "version": "6",
+      "locator": "procedures/relay.md",
+      "hash": "27807c75d071ed2f956d52968a258474f0129601752aac705ca0b4465da7d37e",
+      "fragments": [
+        "relay.context-01",
+        "relay.context-02",
+        "relay.context-03",
+        "relay.context-04",
+        "relay.context-05",
+        "relay.context-06",
+        "relay.context-07",
+        "relay.context-08",
+        "relay.context-09"
+      ]
+    },
+    {
+      "id": "finalization",
+      "version": "2",
+      "locator": "procedures/finalization.md",
+      "hash": "4e1d5c6ebf84860f90331bd7e98df7dbe89283615baf21a1c2dcdf8d6a2c50bf",
+      "fragments": [
+        "finalization.01",
+        "finalization.02",
+        "finalization.03",
+        "finalization.04",
+        "finalization.05",
+        "finalization.context-01"
+      ]
+    }
+  ],
+  "council": {
+    "catalog": "roles/README.md",
+    "profiles": {
+      "architect": "roles/architect.md",
+      "product": "roles/product.md",
+      "system-analyst": "roles/system-analyst.md",
+      "backend": "roles/backend.md",
+      "frontend": "roles/frontend.md",
+      "dba": "roles/dba.md",
+      "devops": "roles/devops.md",
+      "ui-ux-designer": "roles/ui-ux-designer.md"
+    }
+  },
+  "coder_profile": "roles/coder.md",
+  "validation_commands": [
+    {
+      "file": "yarn",
+      "args": [
+        "validate"
+      ]
+    }
+  ]
+}

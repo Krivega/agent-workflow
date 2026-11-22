@@ -1,0 +1,219 @@
+{
+  "kind": "inherited-adr-context/1",
+  "imports": [
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0034-use-supported-test-renderer.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0034-use-supported-test-renderer.md",
+      "sha256": "2be911373f3d4ba7b7ae720e4a9bbf6d8e3979a35daeb050bc160dcb6160cbd2",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-10-supported-test-renderer.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-10-supported-test-renderer.md",
+      "sha256": "62c8e1dcde24221b0c28759f84aae230f66991ad70ad04877374761a71caffb6",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0046-run-test-suites-with-vitest.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0046-run-test-suites-with-vitest.md",
+      "sha256": "944f5bd85d016ea6b3f03fb7d88b9999d04758fe7f2fab8af3a9781b352626f0",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-14-vitest-migration.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-14-vitest-migration.md",
+      "sha256": "0928039b2a59079f1c34f0741cc0c9a3552b3d46f6dbcdebf66c30300b256700",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0047-isolate-agent-workflow-in-tools.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0047-isolate-agent-workflow-in-tools.md",
+      "sha256": "b6e451447d5a5df0bc52d70daf9b314834090bac736252bb160c92ec72651c44",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-15-agent-workflow-full-implementation.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-15-agent-workflow-full-implementation.md",
+      "sha256": "4fe42a260d08e6ece4f43003d7ccbce4fe18ec6b76345831a9fd3a8153c32e4c",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0048-drive-agent-workflow-from-codex-chat.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0048-drive-agent-workflow-from-codex-chat.md",
+      "sha256": "38c60b86fec37ecd9a2400e535d9c72a3ab9bc63d879cb6769119214fc43ad9d",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-16-agent-workflow-codex-chat.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-16-agent-workflow-codex-chat.md",
+      "sha256": "a005a5b39132d3a9c35cbfb544c460d44665e41ffbb98fadaaa18db72b4d4523",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0049-run-council-in-independent-read-only-sessions.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0049-run-council-in-independent-read-only-sessions.md",
+      "sha256": "1facec48c465c7511f925c3e2ca6e7c30f7a137b5c23eace0711e782f6d3657f",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-16-independent-council.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-16-independent-council.md",
+      "sha256": "be52ed4bdedefe896e3fa8102b7efe38c74aca9510872689d350031f61fe4cb5",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0050-recover-workflow-owner-and-user-commands.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0050-recover-workflow-owner-and-user-commands.md",
+      "sha256": "af9fe0a5388040d23f72a762a91ab6543597d5dac8c0bec9bd47a3890e5f10c6",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-17-agent-workflow-simplification.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-17-agent-workflow-simplification.md",
+      "sha256": "66fd370674d4594f3bb4696fdd05f4859aae975769008e206e78e5d9787b7c77",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0056-separate-workflow-history-from-current-state.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0056-separate-workflow-history-from-current-state.md",
+      "sha256": "3802a762ef9be2382949fde09648bff979c907051b19b0e4104e869d1e84be2c",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-20-agent-workflow-archives.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-20-agent-workflow-archives.md",
+      "sha256": "ba6f6d12b0b101b371c369a2b7c30c77259920d5d17827251ac5c261eabc1872",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0057-normalize-workflow-facts-and-events.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0057-normalize-workflow-facts-and-events.md",
+      "sha256": "96e20530290c2b67c73016d2c80c5093fb1da89967244b67a47289e62563fc90",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-21-agent-workflow-minimal-retention.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-21-agent-workflow-minimal-retention.md",
+      "sha256": "0c49b61f07a45a90b9c5dcdca794feab60bab0b16014c2e35c135e514fbdb76a",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0058-share-workflow-facts-tools-and-archive.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0058-share-workflow-facts-tools-and-archive.md",
+      "sha256": "34a06b104840462a67cdb27eec7486ec72ef5030f91a3b48c9555aca303f58cd",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-21-agent-workflow-shared-facts-and-archive.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-21-agent-workflow-shared-facts-and-archive.md",
+      "sha256": "3b187c4312b4e82232a09e34a7a96b26ec32041d11ae7d820db61adc1af589b6",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0059-separate-check-inputs-and-evidence-packages.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0059-separate-check-inputs-and-evidence-packages.md",
+      "sha256": "1f6bcf0bde8fb6d1f71171fc59bce3b4b1febb6f6425557d685ef84fe6c9cd10",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-21-agent-workflow-check-operations.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-21-agent-workflow-check-operations.md",
+      "sha256": "8fe29c56d327da3e30f3a5f70d0e74935046a7547bc3e0a69c94811d0fa8739a",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0060-preserve-reviews-after-dependency-restoration.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0060-preserve-reviews-after-dependency-restoration.md",
+      "sha256": "12b42726a8a5405008ad9c70ffcd19c6da4482f105b70e1d8448d41da67d446a",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-22-workflow-dependency-restoration.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-22-workflow-dependency-restoration.md",
+      "sha256": "1a776a5089145cc9e29ad0eee15d6faad221cb1cd1e56c40714cca2e68471aaf",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0061-load-workflow-procedures-by-action.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0061-load-workflow-procedures-by-action.md",
+      "sha256": "68759713c690ad0c6099861568124b649de581334ebcedc807533c1d9d8aff25",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-23-workflow-procedure-loading.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-23-workflow-procedure-loading.md",
+      "sha256": "4b40887ad72ee87bada386663dc04ca03db4946c5cfadc9b2b770ccbc803c6a7",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0062-audit-task-progress-without-stage-timing.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0062-audit-task-progress-without-stage-timing.md",
+      "sha256": "ecb204e13dbee8432a358d25a452c3b59de29d893da97bbd7bf25d288c7eb154",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/evidence/2026-10-24-agent-workflow-rule-simplification.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/evidence/2026-10-24-agent-workflow-rule-simplification.md",
+      "sha256": "780f808c76779f7de29ed86f7c2931d920cd409faccd9c39226aa4cb588bdf2d",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0063-admit-local-implementation-with-executor-plan.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0063-admit-local-implementation-with-executor-plan.md",
+      "sha256": "31115378f033878ca1a959a7a3307a181e981c7fc69656f6d2c67e42fb7e3b23",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0064-delegate-coder-in-isolated-copy.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0064-delegate-coder-in-isolated-copy.md",
+      "sha256": "895ec316b47fff84f67529c091f50f4860620c1de80cede922490a4d51277c5b",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0065-assemble-compact-workflow-context.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0065-assemble-compact-workflow-context.md",
+      "sha256": "73f846aed0f0823174edeb5607f94b73a4f36678da3013013cbad8015eb9ec92",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/verifying/2026-10-26-agent-workflow-reliability-and-cost.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/verifying/2026-10-26-agent-workflow-reliability-and-cost.md",
+      "sha256": "a723efaea8c366b1d1f52139dce8d82ba41f976222d2a0220f2bd5d3975be9de",
+      "scope": "historical decision basis only"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0066-await-workflow-events-in-current-turn.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0066-await-workflow-events-in-current-turn.md",
+      "sha256": "6e7e39e26421e52a71d79cb58b9bc215c2b0dd5bcb5e70563fe9d7c36b362efa",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0067-run-reusable-agent-workflow-on-temporal.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0067-run-reusable-agent-workflow-on-temporal.md",
+      "sha256": "95a3bda9463ae76686c18da1d44f18134816f27cff2399fbb17d3e1a45e57adb",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0068-confirm-native-role-reads-from-bounded-parts.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0068-confirm-native-role-reads-from-bounded-parts.md",
+      "sha256": "21c2aa20aea0d5ef01b829b044f0f1a9a7536fe10769390539e09ab5a493def7",
+      "scope": "unchanged historical ADR body, inherited metadata and relationship backlinks"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/design/decisions/0052-pilot-harness2-with-agent-workflow.md",
+      "target": "docs/extraction/adr-context/docs/design/decisions/0052-pilot-harness2-with-agent-workflow.md",
+      "sha256": "134ae80dcf944d9bf877ad2e6086c6c642543f326b6708e6d276e4a22d9bbc76",
+      "scope": "unchanged historical ADR or its exact original decision basis; imported during document completion"
+    },
+    {
+      "source": "/Users/krivega/workspace/mathematical-detective/docs/exec-plans/completed/2026-10-19-harness2-pilot.md",
+      "target": "docs/extraction/adr-context/docs/exec-plans/completed/2026-10-19-harness2-pilot.md",
+      "sha256": "d2583921fa75888df313811b667941622063527ded640c4f10ea3908dbd51bab",
+      "scope": "unchanged historical ADR or its exact original decision basis; imported during document completion"
+    }
+  ],
+  "currentDecision": "0072-extract-agent-workflow-repository.md",
+  "sourceProtectedBodiesChanged": false,
+  "scope": "verbatim historical provenance outside the current ADR journal; original local paths are interpreted in original source namespace",
+  "currentJournal": "docs/design/decisions/0072-extract-agent-workflow-repository.md"
+}

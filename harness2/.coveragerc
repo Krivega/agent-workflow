@@ -1,0 +1,7 @@
+[run]
+branch = True
+include = */harness2/pilot.py
+data_file = tmp/harness2-coverage
+[report]
+fail_under = 100
+show_missing = True

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+coverage/
+tmp/
+*.tsbuildinfo
+junit.xml
+__pycache__/

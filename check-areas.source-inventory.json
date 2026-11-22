@@ -1,0 +1,1094 @@
+{
+  "schemaVersion": 1,
+  "source": "workflow-owned rows of original root check-area map plus preserved sequencer regression and H05 adapter tests",
+  "tests": [
+    {
+      "path": "adapters/codex/harness2Bridge.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "cli/harness2.test.ts",
+      "owner": "workflow.harness2"
+    },
+    {
+      "path": "harness2/test.sh",
+      "owner": "workflow.harness2"
+    },
+    {
+      "path": "harness2/test_pilot.py",
+      "owner": "workflow.harness2"
+    },
+    {
+      "path": "tests/appServer.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/appServerCoder.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/appServerTransport.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/appServerTransportProcesses.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/archiveJson.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/auditLaunchObservation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/boundaries.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatChecks.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatCommand.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatCommandSettlement.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatCompactContext.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatCompactHost.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatControl.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatCouncil.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatDiscovery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatHost.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatMessages.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatOutput.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatPeer.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatRecovery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatRoles.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatRuntime.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatTaskConnection.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/chatWriter.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/checkReadiness.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/cli.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coder.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderCapabilities.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderCreation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderDurability.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderFileFailures.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderFiles.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderOutput.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderRuntime.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coderWorkflow.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/compactContext.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparison.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonCompaction.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Contract.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Guard.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Keeper.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Legacy.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Operator.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Preparation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH01Temporal.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH04.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH05.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06AutonomousAcceptance.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedAuthority.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedDelivery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedLegacy.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedRun.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedUsage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedWriter.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeAttempt.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeCapabilities.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeChatRelay.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeFailure.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeFullAccounting.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeHarness.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeJournal.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacy.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyActor.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyBudget.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyControl.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyControlOperator.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyCouncilUsage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyDispatch.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyDriver.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyEvidence.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyOperator.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyParentUsage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyPreparation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyRun.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyTransportPhase.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyTransportPhase.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyUsage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyUsageSummary.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyWriterPhase.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeReaderFailure.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeResume.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeStand.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporal.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalDispatch.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalDriver.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalDuration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalEvidence.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalHistory.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalOperator.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalProcesses.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalRun.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalServer.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalServerSetup.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTransport.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeTurnLedger.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06NativeUsage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06OperatorContinuation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06Package.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06Preflight.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06RecoveryPackage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06RetainedWarmContinuation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomous.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomousAuthority.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomousControls.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomousRun.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonInputs.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonMaterials.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonParticipants.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonReadiness.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonReport.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonSeries.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonSession.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonTiming.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/comparisonUsage.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coordination.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/coordinationPersistence.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/council.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/councilProfiles.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/councilProgress.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/dataRoutes.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/designReview.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/evidenceStore.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/execution.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/finalization.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/finalizationArchive.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/finalizationPersistence.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/localPlanning.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/localRun.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/localWorkflow.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/main.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/managedOriginal.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/nativeChatPermissions.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/nativeCouncil.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/nativeRead.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/ownerLease.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/preparedChecks.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/projectCards.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/projectConnection.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/projectInspection.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/refreshCouncilInputs.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/rejectedSend.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/relay.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/relayCheckpoint.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/relayOwnership.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/relayPersistence.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/relayWriters.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/restoredDependencies.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/retention.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/retentionMaintenance.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/sharedJson.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/sharedProofs.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/storageInspection.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/storageInspection.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/storageMaintenance.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/storageProcess.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/storageRecovery.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/storageRetrieval.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/supervision.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/supervisionPersistence.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/taskChatCommand.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/taskChatCouncil.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/taskChatSelection.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/taskConnection.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/taskFileMaintenance.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/td054DeadlineNative.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/td054DeadlineProbe.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/td054DeadlineProbeRun.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/td054DeadlineReference.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/arbitration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/arbitrationPolicy.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/artifacts.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/audit.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/auditPolicy.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/auditWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/backup.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/backupRecovery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/boundaries.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/contracts.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/controlledReader.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/correction.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/correctionHost.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/finalization.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/finalizationWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/full-game-source.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/full-process-guard.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/initialArbitration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/installed-full-consumers.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/legacyArchive.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/localAdmission.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/localTask.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/localTaskSafety.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/localTaskShutdown.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/localTaskWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/mechanicalTask.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/nativeQuestion.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/nativeWorkspace.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/observedLoad.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/packageClosure.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/pinned-consumers.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/preparation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/progressAudit.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/reader.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerAuthority.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerContext.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerControl.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerExecution.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerHeartbeat.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerHost.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerLoadCommandOutputs.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerMessages.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerRecovery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerStatus.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/readerStop.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/recoveredSend.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/retention.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/review.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/reviewWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/stageAudit.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/substantialTask.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/t4-pg-temporal-retention.test.mjs",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskAttemptPaths.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskAudit.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskAuditWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskBackend.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskBackendClient.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskBudget.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskBudgetProcess.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskChecks.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskCompletionProcess.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskCompletionRecovery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskContinuation.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskContinuationWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskExecution.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskExecutionClient.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskExecutionWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskFiles.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskGate.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHuman.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanActivities.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanAuthority.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanCompletion.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanCompletionGate.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanExecution.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanExecutionLocal.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanLocalTask.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskHumanWorkflow.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskPermissionLock.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskRecovery.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskStartAdmission.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskWriter.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/taskWriter.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/temporal/writerProcesses.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/transportJournal.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/userCommands.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/workflowDiskSpace.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/workflowGuards.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/workflowHistory.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/workflowPersistence.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/workflowUpgrade.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/writerProcesses.integration.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "tests/writerProcesses.test.ts",
+      "owner": "workflow"
+    },
+    {
+      "path": "scripts/vitestTestSequencer.test.ts",
+      "owner": "workflow.infra"
+    },
+    {
+      "path": "scripts/adrChangeValidation.test.ts",
+      "owner": "workflow.infra"
+    },
+    {
+      "path": "scripts/adrValidation.test.ts",
+      "owner": "workflow.infra"
+    },
+    {
+      "path": "scripts/validateAdrChanges.test.ts",
+      "owner": "workflow.infra"
+    }
+  ]
+}

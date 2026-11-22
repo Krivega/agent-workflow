@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "projectId": "neutral-example",
+  "workspaceId": "neutral-main",
+  "rules": ["RULES.md"],
+  "cardRoot": "tasks",
+  "roles": [{ "id": "reviewer", "profile": "profiles/reviewer.md" }],
+  "checks": ["syntax"]
+}

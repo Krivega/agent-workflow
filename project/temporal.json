@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "projectId": "agent-workflow",
+  "workspaceId": "tool-main",
+  "rules": [
+    "AGENTS.md"
+  ],
+  "cardRoot": "docs/exec-plans/active",
+  "roles": [
+    {
+      "id": "architecture",
+      "profile": "roles/architect.md"
+    }
+  ],
+  "checks": [
+    "validate"
+  ]
+}

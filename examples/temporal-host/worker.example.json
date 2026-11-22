@@ -1,0 +1,22 @@
+{
+  "codexBinary": "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+  "codexHome": "/absolute/private/codex",
+  "profile": {
+    "model": "gpt-6.2-sol",
+    "effort": "high",
+    "clientVersion": "0.171.0-alpha.13"
+  },
+  "disabledServers": [
+    "computer-use",
+    "mcp-tts",
+    "node_repl",
+    "openaiDeveloperDocs"
+  ],
+  "maxTurnStarts": 0,
+  "projects": [
+    {
+      "file": "/absolute/private/project-registration.json",
+      "threadId": "issuer-chat-id"
+    }
+  ]
+}

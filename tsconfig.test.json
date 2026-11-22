@@ -1,0 +1,38 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "importHelpers": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@krivega/agent-workflow/local-task": ["./src/client/localTask.ts"]
+    },
+    "types": [
+      "node",
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "*.ts",
+    "core/**/*.ts",
+    "ports/**/*.ts",
+    "application/**/*.ts",
+    "adapters/**/*.ts",
+    "cli/**/*.ts",
+    "comparison/**/*.ts",
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "scripts/**/*.ts",
+    "scripts/**/*.mts",
+    "**/*.mts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "tmp"
+  ]
+}

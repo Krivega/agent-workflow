@@ -1,0 +1,251 @@
+import { randomUUID } from 'node:crypto';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { requireWorkflow } from '../../core/connection.js';
+import { readManaged, saveManaged } from '../storage/managedChatFiles.js';
+import { createPrivateDirectory, safeDirectory } from '../storage/storeFiles.js';
+import { canonical, canonicalHash, digest } from '../storage/storeCodec.js';
+import { readPrivateFile, writePrivateFile } from '../storage/storeFiles.js';
+import type { InputRef } from '../../core/localRun.js';
+
+export const diagnosticRecords = 128,
+  diagnosticBytes = 256 * 1024;
+type RecordValue = Record<string, unknown>;
+const record = (value: unknown): value is RecordValue =>
+  value !== null && typeof value === 'object' && !Array.isArray(value);
+export interface DeliveryReceipt {
+  schema_version: 1;
+  session: string;
+  delivery: string;
+  connection: string;
+  rpc_id: number;
+  request_hash: string;
+  attempts: number;
+  responses: number;
+  outcome: 'pending' | 'accepted' | 'rejected' | 'unknown';
+  response_hash?: string;
+  error_code?: number;
+  input_error_code?: string;
+}
+interface CreationReceipt {
+  schema_version: 1;
+  operation: string;
+  connection: string;
+  rpc_id: number;
+  request_hash: string;
+  response: InputRef | null;
+}
+function creationPath(journal: string, operation: string) {
+  return resolve(journal + '.creations', canonicalHash(operation) + '.json');
+}
+export function nativeCreationProof(journal: string, operation: string) {
+  const receipt = readManaged<CreationReceipt>(creationPath(journal, operation));
+  if (receipt === null) return null;
+  requireWorkflow(
+    receipt.schema_version === 1 &&
+      receipt.operation === operation &&
+      typeof receipt.connection === 'string' &&
+      Number.isSafeInteger(receipt.rpc_id) &&
+      /^[a-f0-9]{64}$/u.test(receipt.request_hash),
+    'creation-receipt-corrupt',
+  );
+  if (receipt.response === null) return { receipt, response: null, source: null };
+  const source = receipt.response;
+  requireWorkflow(
+    source.locator === resolve(journal + '.creations', `response-${source.hash}.json`) &&
+      /^[a-f0-9]{64}$/u.test(source.hash),
+    'creation-receipt-corrupt',
+  );
+  const bytes = readPrivateFile(source.locator);
+  requireWorkflow(digest(bytes) === source.hash, 'creation-receipt-corrupt');
+  const response = JSON.parse(bytes.toString('utf8')) as RecordValue;
+  requireWorkflow(response.id === receipt.rpc_id, 'creation-receipt-corrupt');
+  return { receipt, response, source };
+}
+export function deliveryReceiptPath(journal: string, session: string, delivery: string) {
+  return resolve(journal + '.deliveries', canonicalHash({ session, delivery }) + '.json');
+}
+export function readDeliveryReceipt(journal: string, session: string, delivery: string) {
+  const value = readManaged<DeliveryReceipt>(deliveryReceiptPath(journal, session, delivery));
+  if (value !== null)
+    requireWorkflow(
+      value.schema_version === 1 &&
+        value.session === session &&
+        value.delivery === delivery &&
+        typeof value.connection === 'string' &&
+        Number.isSafeInteger(value.rpc_id) &&
+        typeof value.request_hash === 'string' &&
+        /^[a-f0-9]{64}$/u.test(value.request_hash) &&
+        Number.isSafeInteger(value.attempts) &&
+        value.attempts > 0 &&
+        Number.isSafeInteger(value.responses) &&
+        value.responses >= 0 &&
+        ['pending', 'accepted', 'rejected', 'unknown'].includes(value.outcome) &&
+        (value.responses === 0 ||
+          (typeof value.response_hash === 'string' &&
+            /^[a-f0-9]{64}$/u.test(value.response_hash))) &&
+        (value.error_code === undefined || Number.isSafeInteger(value.error_code)) &&
+        (value.input_error_code === undefined || value.input_error_code === 'input_too_large'),
+      'delivery-receipt-corrupt',
+    );
+  return value;
+}
+function intent(message: RecordValue) {
+  if (message.method !== 'turn/start' || !record(message.params)) return null;
+  const params = message.params;
+  if (
+    typeof params.threadId !== 'string' ||
+    !Array.isArray(params.input) ||
+    params.input.length !== 1
+  )
+    return null;
+  const part: unknown = params.input[0];
+  if (!record(part) || part.type !== 'text' || typeof part.text !== 'string') return null;
+  const match = /^Workflow delivery id: ("(?:[^"\\]|\\.)*")\n/u.exec(part.text);
+  if (match === null) return null;
+  try {
+    return { session: params.threadId, delivery: JSON.parse(match[1]!) as string };
+  } catch {
+    return null;
+  }
+}
+
+export class TransportJournal {
+  private readonly connection = randomUUID();
+  private readonly deliveries = new Map<number, { session: string; delivery: string }>();
+  private records: RecordValue[] = [];
+  private creationRpc: number | null = null;
+  constructor(
+    private readonly journal: string,
+    private readonly creationOperation?: string,
+  ) {
+    const saved = readManaged<{ schema_version: number; records: RecordValue[] }>(
+      journal + '.diagnostics.json',
+    );
+    if (saved !== null) {
+      requireWorkflow(
+        saved.schema_version === 2 &&
+          Array.isArray(saved.records) &&
+          saved.records.length <= diagnosticRecords &&
+          Buffer.byteLength(canonical(saved)) <= diagnosticBytes,
+        'transport-diagnostics-corrupt',
+      );
+      this.records = saved.records;
+    }
+  }
+  write(direction: 'send' | 'recv' | 'stderr', data: unknown, raw: string) {
+    const message = record(data) ? data : null;
+    if (
+      this.creationOperation !== undefined &&
+      message !== null &&
+      typeof message.id === 'number'
+    ) {
+      const path = creationPath(this.journal, this.creationOperation);
+      if (direction === 'send' && message.method === 'thread/start') {
+        requireWorkflow(readManaged(path) === null, 'native-creation-already-attempted');
+        if (!existsSync(this.journal + '.creations'))
+          createPrivateDirectory(this.journal + '.creations');
+        this.creationRpc = message.id;
+        saveManaged(
+          path,
+          {
+            schema_version: 1,
+            operation: this.creationOperation,
+            connection: this.connection,
+            rpc_id: message.id,
+            request_hash: digest(raw),
+            response: null,
+          },
+          false,
+        );
+      } else if (direction === 'recv' && message.id === this.creationRpc) {
+        const previous = nativeCreationProof(this.journal, this.creationOperation);
+        requireWorkflow(
+          previous !== null &&
+            previous.receipt.response === null &&
+            previous.receipt.connection === this.connection,
+          'creation-receipt-conflict',
+        );
+        const hash = digest(raw),
+          locator = resolve(this.journal + '.creations', `response-${hash}.json`);
+        if (existsSync(locator))
+          requireWorkflow(
+            readPrivateFile(locator).toString('utf8') === raw,
+            'creation-receipt-conflict',
+          );
+        else writePrivateFile(locator, raw);
+        saveManaged(path, { ...previous.receipt, response: { locator, hash } }, false);
+      }
+    }
+    if (message !== null && typeof message.id === 'number') {
+      if (direction === 'send') {
+        this.deliveries.delete(message.id);
+        const sent = intent(message);
+        if (sent !== null) {
+          const directory = this.journal + '.deliveries';
+          if (!existsSync(directory)) createPrivateDirectory(directory);
+          safeDirectory(directory);
+          const previous = readDeliveryReceipt(this.journal, sent.session, sent.delivery);
+          const value: DeliveryReceipt = {
+            schema_version: 1,
+            ...sent,
+            connection: this.connection,
+            rpc_id: message.id,
+            request_hash: digest(raw),
+            attempts: (previous?.attempts ?? 0) + 1,
+            responses: 0,
+            outcome: 'pending',
+          };
+          saveManaged(deliveryReceiptPath(this.journal, sent.session, sent.delivery), value, false);
+          this.deliveries.set(message.id, sent);
+        }
+      } else if (direction === 'recv') {
+        const sent = this.deliveries.get(message.id);
+        if (sent !== undefined) {
+          const previous = readDeliveryReceipt(this.journal, sent.session, sent.delivery);
+          requireWorkflow(previous !== null, 'delivery-receipt-missing');
+          const error = record(message.error) ? message.error : null;
+          const outcome =
+            'result' in message
+              ? 'error' in message
+                ? 'unknown'
+                : 'accepted'
+              : error === null
+                ? 'unknown'
+                : 'rejected';
+          const value: DeliveryReceipt = {
+            ...previous,
+            responses: previous.responses + 1,
+            response_hash: digest(raw),
+            outcome:
+              previous.attempts === 1 &&
+              previous.responses === 0 &&
+              previous.connection === this.connection
+                ? outcome
+                : 'unknown',
+            ...(typeof error?.code === 'number' && Number.isSafeInteger(error.code)
+              ? { error_code: error.code }
+              : {}),
+            ...(record(error?.data) && error.data.input_error_code === 'input_too_large'
+              ? { input_error_code: 'input_too_large' }
+              : {}),
+          };
+          saveManaged(deliveryReceiptPath(this.journal, sent.session, sent.delivery), value, false);
+        }
+      }
+    }
+    const metadata: RecordValue = {
+      direction,
+      bytes: Buffer.byteLength(raw),
+      hash: digest(raw),
+      ...(typeof message?.id === 'number' ? { id: message.id } : {}),
+      ...(typeof message?.method === 'string' ? { method: message.method.slice(0, 128) } : {}),
+      ...(direction === 'stderr' ? { preview: raw.slice(0, 512) } : {}),
+    };
+    this.records.push(metadata);
+    if (this.records.length > diagnosticRecords) this.records.shift();
+    const snapshot = () => ({ schema_version: 2, records: this.records });
+    while (Buffer.byteLength(canonical(snapshot())) > diagnosticBytes) this.records.shift();
+    saveManaged(this.journal + '.diagnostics.json', snapshot(), false);
+  }
+}

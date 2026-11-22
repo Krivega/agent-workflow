@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "authorization": {
+    "scope": "isolated-synthetic-postgres-restore",
+    "evidence": "REPLACE_WITH_DIRECT_USER_AUTHORIZATION"
+  },
+  "binaries": "/opt/homebrew/opt/postgresql@12/bin",
+  "parent": "/private/tmp",
+  "port": 55437,
+  "limits": {
+    "wallTimeMs": 120000,
+    "sharedBuffersMb": 32,
+    "maxConnections": 8,
+    "maxDiskBytes": 268435456
+  },
+  "rpoTargetMs": 86400000,
+  "rtoTargetMs": 7200000
+}

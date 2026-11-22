@@ -1,0 +1,345 @@
+import { archiveFixture, completedArchiveFixture as fixture } from './finalizationFixture.js';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
+import { join } from 'node:path';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { finalizationActivities } from '../../src/activities/finalization.js';
+import { makeArchiveCommand } from '../../src/client/finalization.js';
+import {
+  finalizationTarget,
+  parseFinalization,
+  parseArchivePayload,
+} from '../../src/policy/finalization.js';
+import {
+  parseArchiveCommand,
+  parseReaderCommand,
+  parsePayloadReaderCommand,
+} from '../../src/policy/readerControl.js';
+import { artifactStore } from '../../src/adapters/artifacts/files.js';
+import { localTaskFixture } from './localTaskFixture.js';
+import { substantialTaskFixture } from './substantialTaskFixture.js';
+import { localTaskActivities } from '../../src/activities/localTask.js';
+import type { ContinuingTaskInput } from '../../src/contracts/localTask.js';
+import { throughIntegration, acceptance, runReview } from './localTaskRun.js';
+import * as backups from '../../src/adapters/artifacts/backup.js';
+import { CancelledFailure } from '@temporalio/common';
+afterEach(() => vi.restoreAllMocks());
+
+async function completedTaskFixture() {
+  const f = localTaskFixture(),
+    run = await throughIntegration(f),
+    review = await acceptance(f, run);
+  const done = await run.a.finishLocalTask(f.input, run.snapshot, run.packet, review.manifest);
+  return archiveFixture(f, done);
+}
+describe('separate archive finalization', { timeout: 20000 }, () => {
+  it('prepares independent archive inputs without starting task execution', () => {
+    const first = fixture(),
+      second = fixture();
+    expect(first.root).not.toBe(second.root);
+    expect(first.state.starts).toBe(0);
+    expect(second.state.starts).toBe(0);
+    writeFileSync(join(first.taskDirectory, 'done.json'), 'changed');
+    expect(JSON.parse(readFileSync(join(second.taskDirectory, 'done.json'), 'utf8'))).toEqual(
+      second.done,
+    );
+  });
+  it.each(['before', 'authority', 'before-copy'])(
+    'observes cancellation %s without beginning a copy',
+    async (at) => {
+      const f = fixture(),
+        create = vi.spyOn(backups, 'createBackup');
+      if (at === 'before') f.environment.cancel();
+      if (at === 'before-copy') {
+        const inspect = backups.inspectFileBackup;
+        vi.spyOn(backups, 'inspectFileBackup').mockImplementation((input) => {
+          const snapshot = inspect(input);
+          f.environment.cancel();
+          return snapshot;
+        });
+      }
+      let release: (() => void) | undefined;
+      if (at === 'authority') {
+        const hold = new Promise<void>((resolve) => {
+          release = resolve;
+        });
+        f.verify.mockImplementationOnce(async (command) => {
+          await hold;
+          return {
+            origin: 'human',
+            author: command.author,
+            hash: command.hash,
+            proof: f.saveReceipt({ kind: 'cancelled-authority-proof' }),
+          };
+        });
+      }
+      const pending = f.activity.archiveFinalizedTask(f.input);
+      if (at === 'authority') {
+        await vi.waitFor(() => expect(f.verify).toHaveBeenCalledTimes(1));
+        f.environment.cancel();
+        release!();
+      }
+      await expect(pending).rejects.toBeInstanceOf(CancelledFailure);
+      expect(create).not.toHaveBeenCalled();
+      expect(existsSync(f.backup.destination)).toBe(false);
+      expect(await f.activity.reconcileFinalizedTask(f.input)).toEqual({
+        status: 'unknown',
+        reason: at === 'before-copy' ? 'archive-effect-pending' : 'archive-effect-missing',
+      });
+      expect(f.verify).toHaveBeenCalledTimes(at === 'before' ? 0 : 1);
+    },
+  );
+  it('finishes and records a started synchronous copy even when cancellation is observed at its completion', async () => {
+    const f = fixture(),
+      create = backups.createBackup;
+    vi.spyOn(backups, 'createBackup').mockImplementation((...args) => {
+      const result = create(...args);
+      f.environment.cancel();
+      return result;
+    });
+    const archived = await f.activity.archiveFinalizedTask(f.input);
+    expect(archived.status).toBe('archived');
+    expect(await f.activity.reconcileFinalizedTask(f.input)).toEqual(archived);
+    expect(f.verify).toHaveBeenCalledTimes(1);
+  });
+  it('archives an actually completed continuing task using its primary receipt directory', async () => {
+    const base = substantialTaskFixture(),
+      input: ContinuingTaskInput = {
+        ...base.substantialInput,
+        schemaVersion: 10,
+        continuation: { attempt: 0, previous: null },
+      };
+    const f = {
+      ...base,
+      input,
+      service: localTaskActivities(
+        base.registration,
+        { ...base.host, authority: base.authority },
+        base.rpc,
+        base.profile,
+        () => {},
+      ),
+    };
+    const planning = await f.service.activities.prepareSubstantialPlanning(input),
+      approved = await runReview(f, planning),
+      run = await throughIntegration(f, input, approved.manifest),
+      review = await acceptance(f, run);
+    const archived = archiveFixture(
+      f,
+      await run.a.finishLocalTask(input, run.snapshot, run.packet, review.manifest),
+    );
+    expect((await archived.activity.archiveFinalizedTask(archived.input)).status).toBe('archived');
+  });
+  it('archives only after DONE and separate human authority, preserves RESULT/card, and reconciles a lost receipt without recopying', async () => {
+    const f = await completedTaskFixture(),
+      original = readFileSync(join(f.workspace, 'tasks/one.md')),
+      create = vi.spyOn(backups, 'createBackup');
+    const first = await f.activity.archiveFinalizedTask(f.input);
+    expect(first.status).toBe('archived');
+    expect(first.manifest).toEqual(f.payload.inventory);
+    expect(JSON.parse(f.receipts.read(first.receipt).toString())).toMatchObject({
+      cleanup: false,
+      scope: 'files-only',
+      input: f.input,
+    });
+    expect(await f.activity.archiveFinalizedTask(f.input)).toEqual(first);
+    expect(await f.activity.reconcileFinalizedTask(f.input)).toEqual(first);
+    const effects = join(f.directory, 'effects');
+    unlinkSync(
+      join(
+        effects,
+        readdirSync(effects).find((name) => name.endsWith('.receipt'))!,
+      ),
+    );
+    expect(await f.activity.reconcileFinalizedTask(f.input)).toEqual({
+      status: 'unknown',
+      reason: 'archive-effect-pending',
+    });
+    expect(await f.activity.archiveFinalizedTask(f.input)).toEqual(first);
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(readFileSync(join(f.workspace, 'tasks/one.md'))).toEqual(original);
+    expect(f.read(f.done.result).complete).toBe(true);
+    expect(
+      backups.verifyBackup({
+        schemaVersion: 1,
+        backup: f.backup.destination,
+        manifest: first.manifest,
+      }).scope,
+    ).toBe('files-only');
+  });
+  it('never repairs or replaces a receipt with mismatched scope during read-only reconciliation', async () => {
+    const f = fixture(),
+      archived = await f.activity.archiveFinalizedTask(f.input);
+    const record = JSON.parse(f.receipts.read(archived.receipt).toString()) as Record<
+      string,
+      unknown
+    >;
+    const forged = f.saveReceipt({ ...record, payload: f.proof });
+    const effects = join(f.directory, 'effects'),
+      path = join(
+        effects,
+        readdirSync(effects).find((name) => name.endsWith('.receipt'))!,
+      );
+    writeFileSync(path, JSON.stringify(forged));
+    const before = readFileSync(path);
+    await expect(f.activity.reconcileFinalizedTask(f.input)).rejects.toThrow(
+      'archive-receipt-binding',
+    );
+    expect(readFileSync(path)).toEqual(before);
+    expect(f.verify).toHaveBeenCalledTimes(1);
+  });
+  it.each(['missing', 'partial'])(
+    'keeps a %s outcome unknown and never starts another copy',
+    async (mode) => {
+      const f = fixture(),
+        create = vi.spyOn(backups, 'createBackup').mockImplementation(() => {
+          if (mode === 'partial') {
+            mkdirSync(f.backup.destination);
+            writeFileSync(join(f.backup.destination, '.backup-incomplete'), 'interrupted');
+          }
+          throw new Error('lost-after-intent');
+        });
+      await expect(f.activity.archiveFinalizedTask(f.input)).rejects.toThrow('lost-after-intent');
+      await expect(f.activity.archiveFinalizedTask(f.input)).rejects.toThrow(
+        mode === 'partial' ? 'backup-incomplete' : 'effect-outcome-unknown',
+      );
+      expect(create).toHaveBeenCalledTimes(1);
+      expect(f.read(f.done.result).complete).toBe(true);
+    },
+  );
+  it.each([
+    'hash',
+    'initial-grant',
+    'wrong-author',
+    'unknown-proof',
+    'payload',
+    'inventory',
+    'unconfirmed-done',
+    'active-permission',
+    'unconfirmed-stop',
+    'result',
+    'overlap',
+  ])('rejects %s before copying', async (defect) => {
+    const f = fixture(),
+      create = vi.spyOn(backups, 'createBackup');
+    if (defect === 'hash') f.input.command.hash = '0'.repeat(64);
+    if (defect === 'initial-grant')
+      f.verify.mockResolvedValue({
+        origin: 'initial-grant',
+        author: f.input.command.author,
+        hash: f.input.command.hash,
+        proof: f.payload.inventory,
+      } as never);
+    if (defect === 'wrong-author')
+      f.verify.mockResolvedValue({
+        origin: 'human',
+        author: 'other',
+        hash: f.input.command.hash,
+        proof: f.payload.inventory,
+      });
+    if (defect === 'unknown-proof')
+      f.verify.mockResolvedValue({
+        origin: 'human',
+        author: f.input.command.author,
+        hash: f.input.command.hash,
+        proof: { sha256: 'e'.repeat(64), bytes: 1 },
+      });
+    if (defect === 'payload')
+      f.input.command = makeArchiveCommand({
+        ...f.input.command,
+        payload: f.saveReceipt({ ...f.payload, result: f.proof }),
+      });
+    if (defect === 'inventory')
+      f.store.publish(Buffer.from('a source file appeared after inventory acceptance'));
+    if (defect === 'unconfirmed-done')
+      writeFileSync(
+        join(f.taskDirectory, 'done.json'),
+        JSON.stringify({ status: 'done', result: f.proof }),
+      );
+    if (defect === 'active-permission') {
+      const path = join(f.taskDirectory, 'permission.json');
+      writeFileSync(
+        path,
+        JSON.stringify({ ...JSON.parse(readFileSync(path, 'utf8')), active: true }),
+      );
+    }
+    if (defect === 'unconfirmed-stop') {
+      const result = f.read(f.done.result),
+        stop = f.save({
+          ...f.read((result.writer as { stop: typeof f.proof }).stop),
+          confirmed: false,
+        });
+      const forged = f.save({ ...result, writer: { ...(result.writer as object), stop } });
+      f.input.result = forged;
+      f.input.command = makeArchiveCommand({
+        ...f.input.command,
+        target: finalizationTarget(f.input),
+      });
+    }
+    if (defect === 'result') {
+      f.input.result = f.save({ ...f.read(f.done.result), complete: false });
+      f.input.command = makeArchiveCommand({
+        ...f.input.command,
+        target: finalizationTarget(f.input),
+      });
+    }
+    const activity =
+      defect === 'overlap'
+        ? finalizationActivities(
+            f.registration,
+            f.authority,
+            join(f.registration.artifactRoot, 'finalizer'),
+          )
+        : f.activity;
+    if (defect === 'overlap') {
+      const store = artifactStore(join(f.registration.artifactRoot, 'finalizer/artifacts'));
+      for (const ref of [f.input.command.payload, f.payload.inventory])
+        store.publish(f.receipts.read(ref));
+    }
+    await expect(
+      defect === 'overlap'
+        ? f.environment.run(activity.archiveFinalizedTask, f.input)
+        : activity.archiveFinalizedTask(f.input),
+    ).rejects.toThrow();
+    expect(create).not.toHaveBeenCalled();
+    expect(existsSync(f.backup.destination)).toBe(false);
+  });
+  it('rejects old runtime grants, cleanup and mutated archive fields without accepting resume as archive', async () => {
+    const f = fixture();
+    expect(parseFinalization(f.input)).toEqual(f.input);
+    expect(parseArchiveCommand(f.input.command)).toEqual(f.input.command);
+    expect(parseArchivePayload(f.payload)).toEqual(f.payload);
+    expect(() => parseReaderCommand(f.input.command)).toThrow();
+    expect(() => parsePayloadReaderCommand(f.input.command)).toThrow();
+    expect(() => parseArchiveCommand({ ...f.input.command, action: 'resume' })).toThrow(
+      'archive-command-version',
+    );
+    expect(() => parseFinalization({ ...f.input, operation: 'cleanup' })).toThrow(
+      'finalization-operation',
+    );
+    expect(() =>
+      parseFinalization({ ...f.input, command: { ...f.input.command, attempt: 1 } }),
+    ).toThrow('archive-command-target');
+    expect(() =>
+      parseFinalization({ ...f.input, command: { ...f.input.command, author: 'other' } }),
+    ).toThrow('archive-command-target');
+    expect(() => parseArchivePayload({ ...f.payload, kind: 'other' })).toThrow(
+      'archive-payload-kind',
+    );
+    expect(() =>
+      parseArchivePayload({ ...f.payload, backup: { ...f.backup, schemaVersion: 1 } }),
+    ).toThrow('archive-backup-version');
+    expect(() => parseArchivePayload({ ...f.payload, backup: { ...f.backup, roots: {} } })).toThrow(
+      'archive-roots-required',
+    );
+    expect(() =>
+      parseArchivePayload({ ...f.payload, backup: { ...f.backup, roots: { secrets: f.root } } }),
+    ).toThrow('archive-root-invalid');
+  });
+});

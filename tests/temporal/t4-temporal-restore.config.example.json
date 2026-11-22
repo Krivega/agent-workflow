@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "authorization": {
+    "scope": "restore-closed-temporal-sqlite",
+    "evidence": "REPLACE_WITH_SEPARATE_DISPATCH_WITHIN_APPROVED_SDK_BUDGET"
+  },
+  "sourceCase": "/absolute/path/to/closed-temporal-case",
+  "cli": "/absolute/path/to/temporal-v1.9.1",
+  "wallTimeMs": 120000
+}

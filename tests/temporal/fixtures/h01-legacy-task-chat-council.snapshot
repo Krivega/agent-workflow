@@ -1,0 +1,569 @@
+import { mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { object, requireWorkflow, textField } from '../core/connection.js';
+import { confirmSession } from '../core/dataRoute.js';
+import type { AgentSession, DataQuery } from '../core/dataRoute.js';
+import { startLocalRun, applyLocalEvent, requiredProcedures } from '../core/localRun.js';
+import type { LocalRun, RunSpec, InputRef } from '../core/localRun.js';
+import {
+  councilAdviserName,
+  councilRoles,
+  councilProfileRefs,
+  councilReviewRequest,
+  councilReviewTurnUsed,
+} from '../core/council.js';
+import type { Council, CouncilRole } from '../core/council.js';
+import { observeChatCouncil } from '../application/chatCouncil.js';
+import { StdioAppServer } from '../adapters/codex/appServerTransport.js';
+import { AppServerSessions } from '../adapters/codex/appServerSessions.js';
+import { nativeCouncilReviewBrief } from '../adapters/codex/councilReviewBrief.js';
+import { inspectChatPeer } from '../adapters/codex/chatPeer.js';
+import { FileWorkflowInputs } from '../adapters/project/workflowInputs.js';
+import { readManaged, saveManaged } from '../adapters/storage/managedChatFiles.js';
+import { canonical, digest } from '../adapters/storage/storeCodec.js';
+import { saveCouncilRequestFile } from '../adapters/codex/councilRequestFile.js';
+import { rejectedSend } from '../adapters/codex/rejectedSend.js';
+import { shareArtifactPool } from '../adapters/storage/sharedArtifacts.js';
+import { saveCouncilProgress, type CouncilProgress } from './councilProgress.js';
+import { councilReviewBasis } from '../core/council.js';
+import { requireWorkflowDiskSpace } from '../adapters/project/workflowDiskSpace.js';
+import type { CouncilWaitGuard, CouncilWaitBinding } from '../ports/councilWait.js';
+import { sameValue } from '../core/equality.js';
+
+interface RoleProgress {
+  session: AgentSession;
+  run: LocalRun | null;
+  load_pending: boolean;
+  delivery: string | null;
+  turn: string | null;
+  attempt: number;
+  review_key: string | null;
+  load_key?: string;
+  answer_retry_key?: string;
+}
+
+async function recoverRejectedSend(
+  directory: string,
+  role: CouncilRole,
+  assignment: string,
+  progress: RoleProgress,
+  path: string,
+) {
+  const proof = await rejectedSend(
+    resolve(directory, 'transport.jsonl'),
+    progress.session.id,
+    progress.delivery!,
+  );
+  if (proof === null) return false;
+  saveManaged(resolve(directory, `rejected-${role}-${assignment}-${progress.attempt}.json`), proof);
+  progress.delivery = null;
+  progress.attempt += 1;
+  saveManaged(path, progress);
+  return true;
+}
+
+export async function runTaskChatCouncil(
+  council: Council,
+  spec: RunSpec,
+  directory: string,
+  binary: string,
+  save: (council: Council) => Council | void,
+  write: (message: string) => void,
+  evidenceRoot: string,
+  guard?: CouncilWaitGuard,
+) {
+  for (const role of councilRoles)
+    requireWorkflow(council.selection[role].trigger !== null, `${role}:applicability-unknown`);
+  const pending = councilRoles.filter(
+    (role) => council.selection[role].trigger && council.advisers[role]?.status !== 'answered',
+  );
+  await mkdir(directory, { recursive: true, mode: 0o700 });
+  shareArtifactPool(directory, evidenceRoot);
+  const progress: CouncilProgress = {
+    schema_version: 1,
+    run_id: spec.run_id,
+    phase: council.phase,
+    scope: council.target.scope,
+    target_hash: digest(canonical(council.target)),
+    status: 'running',
+    roles: Object.fromEntries(
+      councilRoles
+        .filter((role) => council.selection[role].trigger)
+        .map((role) => [
+          role,
+          {
+            ...(council.advisers[role]?.status === 'answered'
+              ? { status: 'accepted', verdict: council.advisers[role]!.answer!.verdict }
+              : { status: 'pending' }),
+            reason: council.selection[role].reason,
+            review_basis: councilReviewBasis(council, role),
+          },
+        ]),
+    ),
+  };
+  const publish = () => write(JSON.stringify(saveCouncilProgress(directory, progress)));
+  if (pending.length === 0) {
+    progress.status = 'completed';
+    publish();
+    return council;
+  }
+  const files = new FileWorkflowInputs(spec.workspace, evidenceRoot);
+  const rpc = new StdioAppServer(
+    binary,
+    ['app-server'],
+    spec.workspace,
+    resolve(directory, 'transport.jsonl'),
+  );
+  const roleProgress = (
+    role: CouncilRole,
+    value: NonNullable<CouncilProgress['roles'][CouncilRole]>,
+  ) => {
+    progress.roles[role] = {
+      ...value,
+      reason: council.selection[role].reason,
+      review_basis: councilReviewBasis(council, role),
+    };
+    publish();
+  };
+  try {
+    const binding = await guard?.capture();
+    await requireWorkflowDiskSpace(spec.workspace, evidenceRoot);
+    publish();
+    await rpc.initialize();
+    const sessions = new AppServerSessions(
+      rpc,
+      spec.workspace,
+      spec.project_id,
+      directory,
+      null,
+      null,
+    );
+    let observations = Promise.resolve();
+    const runRole = async (role: CouncilRole, retried = false): Promise<void> => {
+      try {
+        if (binding !== undefined) await guard!.verify(binding);
+        const path = resolve(directory, `${role}.json`);
+        let progress = readManaged<RoleProgress>(path);
+        const profile = {
+          model: spec.requested.model,
+          effort: spec.requested.effort,
+          reason: role,
+        };
+        if (progress === null) {
+          const intent = resolve(directory, `create-${role}.json`);
+          requireWorkflow(readManaged(intent) === null, 'chat-council-creation-unknown');
+          saveManaged(intent, { role, profile, parent_run: spec.run_id });
+          const session = await sessions.create(profile);
+          confirmSession(session, profile, true);
+          requireWorkflow(session.id !== spec.session_id, 'chat-council-principal-forbidden');
+          progress = {
+            session,
+            run: null,
+            load_pending: false,
+            delivery: null,
+            turn: null,
+            attempt: 0,
+            review_key: null,
+          };
+          saveManaged(path, progress);
+        } else {
+          requireWorkflow(
+            progress.session.id !== spec.session_id,
+            'chat-council-principal-forbidden',
+          );
+          const actual = await sessions.inspect(progress.session.id);
+          requireWorkflow(
+            actual !== null && actual.workspace === spec.workspace,
+            'chat-council-session-missing',
+          );
+          confirmSession(actual, profile, false);
+        }
+        await rpc.request('thread/name/set', {
+          threadId: progress.session.id,
+          name: councilAdviserName(role),
+        });
+        write(JSON.stringify({ role, url: `codex://threads/${progress.session.id}` }));
+        roleProgress(role, { status: 'loading', session: progress.session.id });
+        const rules = councilProfileRefs(role, council.selection[role].requirements);
+        const procedures = spec.procedures.filter((p) =>
+          requiredProcedures('role', 'council-adviser').includes(p.id),
+        );
+        const query: DataQuery = {
+          kind: 'unknown-source',
+          entrypoints: [spec.assignment.locator],
+          question: `Полностью прочитать правила перед ${council.phase === 'planning' ? 'планированием' : 'приёмкой'}`,
+          scope: spec.scope,
+          sources: council.selection[role].requirements,
+          criterion: 'LOAD',
+          format: 'native full read',
+          procedures,
+          rules,
+        };
+        const assignment = digest(
+          canonical({
+            assignment: spec.assignment,
+            phase: council.phase,
+            inputs: council.selection[role].inputs,
+            target: council.target,
+            requirements: council.selection[role].requirements,
+            procedures,
+          }),
+        );
+        const loadKey = digest(
+          canonical({
+            session: progress.session.id,
+            profile,
+            phase: council.phase,
+            procedures,
+            rules,
+            project_rules: spec.rules,
+          }),
+        );
+        const repeated =
+          progress.turn !== null &&
+          councilReviewTurnUsed(council, role, progress.session.id, progress.turn);
+        if (
+          progress.run === null ||
+          progress.review_key !== assignment ||
+          (progress.load_key !== undefined && progress.load_key !== loadKey) ||
+          repeated
+        ) {
+          let native;
+          if (progress.load_pending) {
+            const thread = object(
+              object(
+                await rpc.request('thread/read', {
+                  threadId: progress.session.id,
+                  includeTurns: true,
+                }),
+              ).thread,
+            );
+            requireWorkflow(
+              Array.isArray(thread.turns) && thread.turns.length > 0,
+              'chat-council-load-unknown',
+            );
+            const turn = object(thread.turns.at(-1));
+            requireWorkflow(turn.status === 'completed', 'chat-council-load-pending');
+            native = await sessions.observeLoad(progress.session, query, textField(turn.id));
+          } else {
+            await files.verify([...procedures, ...rules, ...spec.rules]);
+            native =
+              progress.run !== null && progress.load_key === loadKey
+                ? await sessions.reuseLoad(progress.session, query, progress.run.loaded!.native!)
+                : null;
+            if (native === null) {
+              progress.load_pending = true;
+              saveManaged(path, progress);
+              native = await sessions.load(progress.session, query);
+            }
+          }
+          const roleSpec: RunSpec = {
+            ...spec,
+            product: false,
+            run_id: `${spec.run_id}-${role}`,
+            session_id: progress.session.id,
+            parent_run_id: spec.run_id,
+            role: 'council-adviser',
+            fork_turns: 'none',
+            writer: progress.session.id,
+            requested: { ...profile, permissions: ['read'] },
+            effective: { ...profile, permissions: ['read'] },
+            sources: council.selection[role].requirements,
+            procedures,
+            rules,
+            outcome: `${council.phase === 'planning' ? 'Проверить план' : 'Проверить результат'}: ${spec.outcome}`,
+            route: { kind: 'nonproduct' },
+          };
+          delete roleSpec.context_loading;
+          let run = startLocalRun(roleSpec, 1);
+          run = applyLocalEvent(run, {
+            type: 'LOAD',
+            event_id: 'load',
+            expected_revision: run.revision,
+            generation: 1,
+            receipt: {
+              run_id: roleSpec.run_id,
+              session_id: roleSpec.session_id,
+              procedures,
+              rules,
+              observed_read: 'Native council LOAD',
+              native,
+              origin: progress.run?.loaded?.origin ?? native,
+            },
+          });
+          progress.run = applyLocalEvent(run, {
+            type: 'READY',
+            event_id: 'ready',
+            expected_revision: run.revision,
+            generation: 1,
+          });
+          progress.load_pending = false;
+          progress.delivery = null;
+          progress.turn = null;
+          if (progress.review_key !== null && progress.review_key !== assignment)
+            progress.attempt = 0;
+          else if (repeated) progress.attempt += 1;
+          progress.review_key = assignment;
+          progress.load_key = loadKey;
+          saveManaged(path, progress);
+        }
+        roleProgress(role, { status: 'reviewing', session: progress.session.id });
+        const run = progress.run;
+        requireWorkflow(run !== null, 'chat-council-run-missing');
+        const request = councilReviewRequest(council, role, run);
+        const requestFile = await saveCouncilRequestFile(directory, request);
+        if (progress.turn !== null) {
+          const snapshot = object(
+            object(
+              await rpc.request('thread/read', {
+                threadId: progress.session.id,
+                includeTurns: true,
+              }),
+            ).thread,
+          );
+          requireWorkflow(Array.isArray(snapshot.turns), 'chat-council-history-missing');
+          const previous = snapshot.turns.map(object).find((t) => t.id === progress.turn);
+          requireWorkflow(previous !== undefined, 'chat-council-review-unknown');
+          if (previous.status === 'interrupted' || previous.status === 'failed') {
+            saveManaged(
+              resolve(directory, `interrupted-${role}-${assignment}-${progress.attempt}.json`),
+              {
+                session: progress.session.id,
+                turn: previous,
+              },
+            );
+            progress.turn = null;
+            progress.delivery = null;
+            progress.attempt += 1;
+            saveManaged(path, progress);
+          }
+        }
+        if (progress.turn === null) {
+          if (progress.delivery !== null) {
+            progress.turn = await sessions.recoverSend(progress.session, progress.delivery);
+            requireWorkflow(
+              progress.turn !== null ||
+                (await recoverRejectedSend(directory, role, assignment, progress, path)),
+              'chat-council-delivery-unknown',
+            );
+          }
+          if (progress.turn === null) {
+            progress.delivery = `${spec.run_id}:${role}:${assignment}:${progress.attempt}`;
+            saveManaged(path, progress);
+            try {
+              if (binding !== undefined) await guard!.verify(binding);
+              progress.turn = await sessions.send(
+                progress.session,
+                nativeCouncilReviewBrief(request, requestFile, council.selection[role].reason) +
+                  (progress.attempt > 0
+                    ? '\nСкопируй scope и sources буквально из запроса, без перепечатки. Внешний outcome и вложенный verdict должны совпадать; полный отчёт не означает PASS.'
+                    : ''),
+                progress.delivery,
+              );
+            } catch (error) {
+              await recoverRejectedSend(directory, role, assignment, progress, path);
+              throw error;
+            }
+          }
+          saveManaged(path, progress);
+        }
+        // Keep the transport alive until the issued turn completes; closing it interrupts the adviser.
+        const snapshot = object(
+          object(
+            await rpc.request('thread/read', { threadId: progress.session.id, includeTurns: true }),
+          ).thread,
+        );
+        requireWorkflow(Array.isArray(snapshot.turns), 'chat-council-history-missing');
+        const nativeTurn = snapshot.turns.map(object).find((t) => t.id === progress.turn);
+        requireWorkflow(
+          nativeTurn !== undefined &&
+            ['completed', 'inProgress'].includes(String(nativeTurn.status)),
+          'chat-council-review-interrupted',
+        );
+        const waitPath = resolve(directory, `wait-${role}-${assignment}-${progress.attempt}.json`);
+        const waiting = {
+          schema_version: 1,
+          operation: progress.delivery,
+          session: progress.session.id,
+          turn: progress.turn,
+          target: digest(canonical(request)),
+          binding,
+          applied: null as InputRef | null,
+        };
+        const savedWait =
+          binding === undefined
+            ? null
+            : readManaged<typeof waiting & { binding: CouncilWaitBinding }>(waitPath);
+        if (binding !== undefined) {
+          requireWorkflow(
+            savedWait === null ||
+              (sameValue({ ...savedWait, binding }, waiting) &&
+                sameValue(
+                  {
+                    ...savedWait.binding,
+                    control_revision: binding.control_revision,
+                    turn_id: binding.turn_id,
+                    source: binding.source,
+                  },
+                  binding,
+                ) &&
+                binding.control_revision >= savedWait.binding.control_revision),
+            'council-wait-binding-conflict',
+          );
+          if (savedWait === null) saveManaged(waitPath, waiting, false);
+          await guard!.verify(binding);
+        }
+        if (nativeTurn.status === 'inProgress') {
+          if (binding === undefined) await rpc.completed(progress.session.id, progress.turn);
+          else
+            await rpc.completed(progress.session.id, progress.turn, undefined, () =>
+              guard!.verify(binding),
+            );
+        }
+        const session = progress.session;
+        const turn = progress.turn;
+        const observed = observations.then(async () => {
+          const thread = object(
+            object(await rpc.request('thread/read', { threadId: session.id, includeTurns: true }))
+              .thread,
+          );
+          const roles = {
+            project_id: null,
+            peer_observations: {
+              [session.id]: {
+                root: spec.workspace,
+                transcript: textField(thread.path),
+                anchor: {
+                  thread_id: session.id,
+                  turn_id: turn,
+                  workspace: spec.workspace,
+                  host_id: spec.host_id,
+                },
+              },
+            },
+          };
+          const next = await observeChatCouncil(
+            council,
+            role,
+            run,
+            turn,
+            spec.session_id,
+            {
+              inspect: (id) =>
+                inspectChatPeer(rpc, roles, id, directory, undefined, spec.project_id),
+              poll: (s, t) => sessions.poll(s, t),
+              verifyReview: (s, q, t, a) => sessions.verifyReview(s, q, t, a),
+            },
+            files,
+          );
+          if (binding !== undefined) await guard!.verify(binding);
+          council = save(next) ?? next;
+          if (binding !== undefined)
+            saveManaged(
+              waitPath,
+              {
+                ...(savedWait ?? waiting),
+                completion_binding: binding,
+                applied: council.advisers[role]!.answer!.evidence,
+              },
+              false,
+            );
+          roleProgress(role, {
+            status: 'accepted',
+            session: session.id,
+            turn,
+            verdict: council.advisers[role]!.answer!.verdict,
+          });
+        });
+        observations = observed.then(
+          () => {},
+          () => {},
+        );
+        await observed;
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.message === 'chat-role-answer-unconfirmed' &&
+          !retried
+        ) {
+          const path = resolve(directory, `${role}.json`);
+          const saved = readManaged<RoleProgress>(path)!;
+          requireWorkflow(
+            saved.answer_retry_key !== saved.review_key,
+            'chat-role-answer-retry-exhausted',
+          );
+          const rejected = await sessions.poll(saved.session, saved.turn!);
+          requireWorkflow(rejected.status === 'completed', 'chat-role-still-running');
+          const proof = await sessions.verifyReview(
+            saved.session,
+            councilReviewRequest(council, role, saved.run!),
+            saved.turn!,
+            rejected.answer.evidence,
+          );
+          await files.verify([rejected.answer.evidence]);
+          if (binding !== undefined) await guard!.verify(binding);
+          saveManaged(resolve(directory, `rejected-answer-${role}-${saved.turn}.json`), {
+            progress: saved,
+            answer: rejected.answer,
+            proof,
+          });
+          saved.turn = null;
+          saved.delivery = null;
+          saved.attempt += 1;
+          saved.answer_retry_key = saved.review_key!;
+          saveManaged(path, saved);
+          roleProgress(role, {
+            status: 'retrying',
+            session: saved.session.id,
+            error: error.message,
+          });
+          return runRole(role, true);
+        }
+        if (error instanceof Error && error.message === 'native-load-compacted') {
+          const path = resolve(directory, `${role}.json`);
+          const saved = readManaged<RoleProgress>(path)!;
+          saveManaged(resolve(directory, `compacted-${role}-${saved.turn}.json`), saved);
+          saved.attempt += 1;
+          delete saved.load_key;
+          Object.assign(saved, {
+            review_key: null,
+            load_pending: false,
+            delivery: null,
+            turn: null,
+          });
+          saveManaged(path, saved);
+          if (!retried) {
+            roleProgress(role, {
+              status: 'retrying',
+              session: saved.session.id,
+              error: error.message,
+            });
+            return runRole(role, true);
+          }
+        }
+        roleProgress(role, {
+          status: 'failed',
+          error: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
+    };
+    const completed = await Promise.allSettled(pending.map((role) => runRole(role)));
+    const failures = completed.filter((result) => result.status === 'rejected');
+    if (failures.length > 0)
+      throw new AggregateError(
+        failures.map((failure) => failure.reason as unknown),
+        'chat-council-incomplete: ' + failures.map((failure) => String(failure.reason)).join('; '),
+      );
+    progress.status = 'completed';
+    publish();
+    return council;
+  } catch (error) {
+    progress.status = 'failed';
+    progress.error = error instanceof Error ? error.message : String(error);
+    publish();
+    throw error;
+  } finally {
+    rpc.close();
+  }
+}

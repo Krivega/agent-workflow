@@ -1,0 +1,235 @@
+import { spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { cp, mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { dirname, resolve } from 'node:path';
+
+const repository = resolve(import.meta.dirname, '../../..');
+const directories: string[] = [];
+const require = createRequire(import.meta.url);
+
+async function fixture() {
+  const root = await realpath(await mkdtemp(resolve(tmpdir(), 'workflow-boundary-')));
+  directories.push(root);
+  await writeFile(resolve(root, 'package.json'), '{"type":"module"}');
+  await symlink(resolve(repository, 'node_modules'), resolve(root, 'node_modules'), 'dir');
+  return root;
+}
+
+async function file(root: string, name: string, content: string) {
+  await mkdir(dirname(resolve(root, name)), { recursive: true });
+  await writeFile(resolve(root, name), content);
+}
+
+function run(root: string, entry: string, args: string[]) {
+  const result = spawnSync(process.execPath, [resolve(repository, entry), ...args], {
+    cwd: root,
+    encoding: 'utf8',
+    timeout: 20_000,
+  });
+  expect(result.error).toBeUndefined();
+  expect(result.signal).toBeNull();
+  return { status: result.status, output: result.stdout + result.stderr };
+}
+
+afterEach(async () => {
+  await Promise.all(
+    directories.splice(0).map((root) => rm(root, { recursive: true, force: true })),
+  );
+});
+
+it('rejects both product directions and every reversed internal boundary with the actual rules', async () => {
+  const root = await fixture();
+  const config = require(resolve(repository, '.dependency-cruiser.cjs')) as {
+    options: { baseDir: string; tsConfig: { fileName: string } };
+  };
+  await file(
+    root,
+    '.dependency-cruiser.json',
+    JSON.stringify({
+      ...config,
+      options: { ...config.options, baseDir: root, tsConfig: { fileName: 'tsconfig.json' } },
+    }),
+  );
+  await file(
+    root,
+    'tsconfig.json',
+    JSON.stringify({ compilerOptions: { module: 'NodeNext', moduleResolution: 'NodeNext' } }),
+  );
+  await file(root, 'tools/agent-workflow/core/value.ts', 'export const value = 1;');
+  await file(root, 'tools/agent-workflow/src/contracts/localValues.ts', 'export const value = 1;');
+  await file(
+    root,
+    'tools/agent-workflow/src/policy/localPlanning.ts',
+    "export { value } from '../contracts/localValues.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/core/shared.ts',
+    "export { value } from '../src/policy/localPlanning.js'; export { value as other } from '../src/contracts/localValues.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/ports/value.ts',
+    "export { value } from '../core/value.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/application/value.ts',
+    "export { value } from '../ports/value.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/adapters/value.ts',
+    "export { value } from '../ports/value.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/cli/value.ts',
+    "export { value } from '../application/value.js';",
+  );
+  const command = ['--config', '.dependency-cruiser.json', '--output-type', 'err-long', 'tools'];
+  const positive = run(root, 'node_modules/dependency-cruiser/bin/dependency-cruiser.mjs', command);
+  expect(positive.status, positive.output).toBe(0);
+
+  for (const owner of ['apps', 'games', 'packages']) {
+    await file(
+      root,
+      `${owner}/probe.ts`,
+      "export { value } from '../tools/agent-workflow/core/value.js';",
+    );
+    await file(
+      root,
+      `tools/agent-workflow/adapters/${owner}.ts`,
+      `export { value } from '../../../${owner}/probe.js';`,
+    );
+  }
+  await file(root, 'tools/agent-workflow/core/impure.ts', "export { readFile } from 'node:fs';");
+  await file(
+    root,
+    'tools/agent-workflow/src/contracts/localValues.ts',
+    "export { readFile } from 'node:fs'; export const value = 1;",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/ports/impure.ts',
+    "export { value } from '../application/value.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/application/impure.ts',
+    "export { value } from '../adapters/value.js';",
+  );
+  await file(
+    root,
+    'tools/agent-workflow/adapters/impure.ts',
+    "export { value } from '../cli/value.js';",
+  );
+  await file(root, 'tools/agent-workflow/tests/value.test.ts', 'export const value = 2;');
+  await file(
+    root,
+    'tools/agent-workflow/cli/testLeak.ts',
+    "export { value } from '../tests/value.test.js';",
+  );
+  const result = run(root, 'node_modules/dependency-cruiser/bin/dependency-cruiser.mjs', [
+    ...command,
+    'apps',
+    'games',
+    'packages',
+  ]);
+  expect(result.status).not.toBe(0);
+  for (const rule of [
+    'temporal-contracts-and-policy-stay-pure',
+    'product-does-not-import-agent-workflow',
+    'agent-workflow-does-not-import-product',
+    'agent-workflow-core-is-pure',
+    'agent-workflow-ports-depend-only-on-core-and-ports',
+    'agent-workflow-application-depends-only-on-core-and-ports',
+    'agent-workflow-adapters-do-not-import-application-or-cli',
+    'agent-workflow-production-does-not-import-tests',
+  ])
+    expect(result.output).toContain(rule);
+  expect(result.output).not.toContain('not-to-unresolvable');
+});
+
+it('includes tools in both type checks and typed ESLint, including ambient effects', async () => {
+  const root = await fixture();
+  for (const name of [
+    'tsconfig.base.json',
+    'tsconfig.json',
+    'tsconfig.test.json',
+    'eslint.config.ts',
+  ]) {
+    await cp(resolve(repository, name), resolve(root, name));
+  }
+  await file(root, 'package.json', '{"type":"module"}');
+  await file(
+    root,
+    'tools/agent-workflow/core/probe.ts',
+    [
+      'export const invalid: string = 42;',
+      "Promise.resolve('unobserved');",
+      'export const now = Date.now();',
+      'export const random = Math.random();',
+    ].join('\n'),
+  );
+  for (const config of ['tsconfig.json', 'tsconfig.test.json']) {
+    const result = run(root, 'node_modules/typescript/bin/tsc', [
+      '--project',
+      config,
+      '--pretty',
+      'false',
+      '--incremental',
+      'false',
+    ]);
+    expect(result.status).not.toBe(0);
+    expect(result.output).toContain('tools/agent-workflow/core/probe.ts(1,14): error TS2322');
+  }
+  const lint = run(root, 'node_modules/eslint/bin/eslint.js', ['tools', '--max-warnings', '0']);
+  expect(lint.status).toBe(1);
+  expect(lint.output).toContain('@typescript-eslint/no-floating-promises');
+  expect(lint.output).toContain('no-restricted-globals');
+  expect(lint.output).toContain('no-restricted-properties');
+  expect(lint.output).not.toContain('Parsing error');
+});
+
+it('discovers tools tests and rejects an unimported source with unchanged 100% thresholds', async () => {
+  const root = await fixture();
+  for (const name of [
+    'vitest.config.ts',
+    'tsconfig.test.json',
+    'tsconfig.base.json',
+    'scripts/vitestPhosphorImports.mjs',
+    'scripts/vitestTestSequencer.mjs',
+    'scripts/vitestToolAwarePool.mjs',
+    'tests/testRendererSetup.cjs',
+  ]) {
+    await mkdir(dirname(resolve(root, name)), { recursive: true });
+    await cp(resolve(repository, name), resolve(root, name));
+  }
+  await file(root, 'package.json', '{"type":"module"}');
+  await file(
+    root,
+    'tools/agent-workflow/core/unimported.ts',
+    'export function unimported(value: boolean) { return value ? 42 : 0; }',
+  );
+  await file(
+    root,
+    'tools/agent-workflow/tests/discovery.test.ts',
+    "it('discovers tools', () => expect(1).toBe(1));",
+  );
+  const result = run(root, 'node_modules/vitest/vitest.mjs', [
+    'run',
+    '--coverage',
+    '--maxWorkers=1',
+  ]);
+  expect(result.status).toBe(1);
+  expect(result.output).toContain('1 passed');
+  for (const metric of ['lines', 'functions', 'statements', 'branches']) {
+    expect(result.output).toContain(`Coverage for ${metric}`);
+    expect(result.output).toContain('(100%)');
+  }
+  const lcov = await readFile(resolve(root, 'coverage/lcov.info'), 'utf8');
+  expect(lcov).toContain('SF:tools/agent-workflow/core/unimported.ts');
+  expect(lcov).toMatch(/DA:\d+,0/);
+});

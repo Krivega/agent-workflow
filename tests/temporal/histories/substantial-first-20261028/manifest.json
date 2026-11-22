@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "baseCommit": "1ac428d91dd1c1c4ee2dd6f8c5fabba866895090",
+    "sourceInventory": [
+      {
+        "path": "activities/localAdmission.ts",
+        "category": "external-effects",
+        "sha256": "6017dac42bb953c778c1a6697f0ca2c83fbf069deb52489266218e63ecc2eff6",
+        "lines": 95,
+        "bytes": 3938
+      },
+      {
+        "path": "activities/localTask.ts",
+        "category": "external-effects",
+        "sha256": "2eb55b33ddadbfc9ff3302a08d92509c6fa4dedd9ecc570d79617c35a4428d13",
+        "lines": 994,
+        "bytes": 37302
+      },
+      {
+        "path": "activities/mechanicalTask.ts",
+        "category": "external-effects",
+        "sha256": "ec2e54b5efe1f9a6993170f72d6badae4a976167bf11a2c0e83a54ef68fb9d27",
+        "lines": 154,
+        "bytes": 5662
+      },
+      {
+        "path": "activities/preparation.ts",
+        "category": "external-effects",
+        "sha256": "3c0c52434b87e90d15d4721d732163a50f98a34cf966c0ac4b38b52507aa8803",
+        "lines": 55,
+        "bytes": 2048
+      },
+      {
+        "path": "activities/reader.ts",
+        "category": "external-effects",
+        "sha256": "d51f9b00fd80ec5812a5e0c42411334ca33a6d22e959b8ea128d0aa101d75190",
+        "lines": 400,
+        "bytes": 15219
+      },
+      {
+        "path": "activities/readerControl.ts",
+        "category": "external-effects",
+        "sha256": "37a7786d41ae5475913f13b026c93016a1b823bf547952f478da6243ea237f9a",
+        "lines": 183,
+        "bytes": 7363
+      },
+      {
+        "path": "activities/review.ts",
+        "category": "external-effects",
+        "sha256": "2454227dcbcadae5191ebd28f8a93a4a8c759934b563de47c1d7b9de1dda195f",
+        "lines": 408,
+        "bytes": 16157
+      },
+      {
+        "path": "activities/substantialTask.ts",
+        "category": "external-effects",
+        "sha256": "b61e666fbb5eab44e736be4b12db726258bdfd89c0c73d4d345cf97ecd4e7e42",
+        "lines": 230,
+        "bytes": 8352
+      },
+      {
+        "path": "activities/taskPlanning.ts",
+        "category": "external-effects",
+        "sha256": "d7ff62b9a86c4714a730d6482c7cb0641696f51aa3fc11893f28169584b9775f",
+        "lines": 81,
+        "bytes": 3046
+      },
+      {
+        "path": "adapters/artifacts/effects.ts",
+        "category": "external-effects",
+        "sha256": "ccc180f740da36c30e10d8226e785f9119138c2366dd82a30cda160d27ed99aa",
+        "lines": 105,
+        "bytes": 3082
+      },
+      {
+        "path": "adapters/artifacts/files.ts",
+        "category": "external-effects",
+        "sha256": "e4716b5ab27da8ed416e7236f79f6265ced17b69c2bd143cc241ad69442b7eb7",
+        "lines": 112,
+        "bytes": 3130
+      },
+      {
+        "path": "adapters/codex/observedLoad.ts",
+        "category": "codex",
+        "sha256": "fe62a0123e71e537096a963da925c6256f7e69f778e5b46b95a90fa3170ca282",
+        "lines": 71,
+        "bytes": 2747
+      },
+      {
+        "path": "adapters/codex/readerAuthority.ts",
+        "category": "codex",
+        "sha256": "341f425215ef9c6e9f5e28858cfa408dc4cfd577f771346a114c6f8ee5650f79",
+        "lines": 211,
+        "bytes": 7723
+      },
+      {
+        "path": "adapters/codex/readerBoundary.ts",
+        "category": "codex",
+        "sha256": "ba29e1d4ac9bd99cd57b1a0370cd1c6f6b409d6a6c80b9711d26cd70a1bb270a",
+        "lines": 483,
+        "bytes": 17221
+      },
+      {
+        "path": "adapters/codex/readerBudget.ts",
+        "category": "codex",
+        "sha256": "546921112792f5a7f3aeeacdac6fb63aff64e832dbfb8a6b23a69cae322a3baa",
+        "lines": 50,
+        "bytes": 1791
+      },
+      {
+        "path": "adapters/codex/readerContext.ts",
+        "category": "codex",
+        "sha256": "34005c9fc0f8f5532518427e9b37612a55868a6b16327b80571e18617aab6c32",
+        "lines": 17,
+        "bytes": 735
+      },
+      {
+        "path": "adapters/codex/readerMessages.ts",
+        "category": "codex",
+        "sha256": "11b1a056fb96dbc5803d48b8e5d2071bbaf16a0700ff924de27d5ca388e4e4c5",
+        "lines": 87,
+        "bytes": 4715
+      },
+      {
+        "path": "adapters/codex/readerSession.ts",
+        "category": "codex",
+        "sha256": "6ca10ff1cf13bfa197626fa47966a12277b82eb5e8ab9c59ad1836fc6fd8f02f",
+        "lines": 27,
+        "bytes": 908
+      },
+      {
+        "path": "adapters/codex/recoveredSend.ts",
+        "category": "codex",
+        "sha256": "cfc4a1e21bc818a6fcfc9e2dc446f81edab54492f3be151ee9dbe107804c7676",
+        "lines": 37,
+        "bytes": 1472
+      },
+      {
+        "path": "adapters/codex/reviewInputs.ts",
+        "category": "codex",
+        "sha256": "7fb2b2492f1de5a968dc394f32eb5a19ace14d3032522515b6fb367e93f0aab1",
+        "lines": 98,
+        "bytes": 3515
+      },
+      {
+        "path": "adapters/codex/taskWriter.ts",
+        "category": "codex",
+        "sha256": "7357328d3bdfa13b9c488c47e67a815484411e514a119fe9cfb8173d4ce6ab3f",
+        "lines": 488,
+        "bytes": 19452
+      },
+      {
+        "path": "adapters/codex/writerProcesses.ts",
+        "category": "codex",
+        "sha256": "fd92176dd3acf4aeca4eb160673470639146f7c675ba22ee15a659c42d1b19d6",
+        "lines": 109,
+        "bytes": 3975
+      },
+      {
+        "path": "adapters/project/mechanicalTask.ts",
+        "category": "external-effects",
+        "sha256": "9635de31f3a9090b63a55be918af55b4e04bc77e76efda2e83fe372c4ab0c45e",
+        "lines": 53,
+        "bytes": 1981
+      },
+      {
+        "path": "adapters/project/taskChecks.ts",
+        "category": "external-effects",
+        "sha256": "2655d09c45f0989a82aa167e1963411b3e9e081e3efede1ce56d09b6f39e5108",
+        "lines": 153,
+        "bytes": 5838
+      },
+      {
+        "path": "adapters/project/taskFiles.ts",
+        "category": "external-effects",
+        "sha256": "33e012c7b5df4f3e9915e9402106b907e66219c70aee8d59422362e229a21aa1",
+        "lines": 370,
+        "bytes": 13037
+      },
+      {
+        "path": "adapters/project/taskGate.ts",
+        "category": "external-effects",
+        "sha256": "62a63a07acacbfb084e49a99a851b2019d394dedeaa343f29847c78f34fde8e3",
+        "lines": 121,
+        "bytes": 4119
+      },
+      {
+        "path": "client/index.ts",
+        "category": "host-client",
+        "sha256": "41340cf148b945e6afb06813a60f87e9cf206e487c15a49f3ebc61e23ad33f6d",
+        "lines": 23,
+        "bytes": 873
+      },
+      {
+        "path": "client/localAdmission.ts",
+        "category": "host-client",
+        "sha256": "cacc5ca64cb88a9f5ebfd5c693412054fcb59ef982f619ca31b08024c7702df8",
+        "lines": 26,
+        "bytes": 1162
+      },
+      {
+        "path": "client/localTask.ts",
+        "category": "host-client",
+        "sha256": "3d2664fba0b0a1464283f6349bd2ef419aec59563bd381c6437201680211cba9",
+        "lines": 23,
+        "bytes": 1055
+      },
+      {
+        "path": "client/preparation.ts",
+        "category": "host-client",
+        "sha256": "c35ec57f33b326994c971941424e41d4776253944730a0ca408631d50a9d8f99",
+        "lines": 20,
+        "bytes": 1083
+      },
+      {
+        "path": "client/reader.ts",
+        "category": "host-client",
+        "sha256": "780f090e5dcce21a5cb5044d194f8252e7b561b7412466ce80df93dfd67e2188",
+        "lines": 57,
+        "bytes": 2220
+      },
+      {
+        "path": "client/readerStatus.ts",
+        "category": "host-client",
+        "sha256": "d6c204b78c9460191be0d97774315adea23fd8cee27f395305aa6a4f2b1b8736",
+        "lines": 151,
+        "bytes": 5749
+      },
+      {
+        "path": "client/review.ts",
+        "category": "host-client",
+        "sha256": "2f6f32c40dc02a0cecc21e1fa1d32089c667af26a01b0d222814e5eab5098b7c",
+        "lines": 19,
+        "bytes": 1009
+      },
+      {
+        "path": "contracts/localAdmission.ts",
+        "category": "contracts-policy",
+        "sha256": "be10daa79afc99a320bc6aeec9a8934944983996fcd5b868c8c6c72f421a5c49",
+        "lines": 19,
+        "bytes": 526
+      },
+      {
+        "path": "contracts/localTask.ts",
+        "category": "contracts-policy",
+        "sha256": "d18f2f7d83680045e2296c135cec8c52a00b85778530c342610cf7686c1cb946",
+        "lines": 139,
+        "bytes": 4320
+      },
+      {
+        "path": "contracts/localValues.ts",
+        "category": "contracts-policy",
+        "sha256": "e0236a6b2045bc7eae29305048d1870d890fc902985f9e2a7677047a03853b2b",
+        "lines": 24,
+        "bytes": 824
+      },
+      {
+        "path": "contracts/mechanicalTask.ts",
+        "category": "contracts-policy",
+        "sha256": "f44fe9cbcb8da2376bebd577cc7e10d270195dad9412ea525ff0415d7eb9fd25",
+        "lines": 33,
+        "bytes": 923
+      },
+      {
+        "path": "contracts/preparation.ts",
+        "category": "contracts-policy",
+        "sha256": "665314ec86e068f366f1ab9b641235a2e4c700f0e45185f418bb69b04c0420ca",
+        "lines": 26,
+        "bytes": 526
+      },
+      {
+        "path": "contracts/project.ts",
+        "category": "contracts-policy",
+        "sha256": "c3533fbdd7beb4255c4eaee89e94178cc2191ff8b47a635a00f906ef005ebef6",
+        "lines": 98,
+        "bytes": 2983
+      },
+      {
+        "path": "contracts/reader.ts",
+        "category": "contracts-policy",
+        "sha256": "40c51788431792554d36c2270b177d1129e4e4e3f660c5713e7a295b95a6ccc3",
+        "lines": 44,
+        "bytes": 1087
+      },
+      {
+        "path": "contracts/readerControl.ts",
+        "category": "contracts-policy",
+        "sha256": "786d850ca37993e1042b915acb51780453a85c869c8fa744ca831dcf52f1079a",
+        "lines": 107,
+        "bytes": 3010
+      },
+      {
+        "path": "contracts/review.ts",
+        "category": "contracts-policy",
+        "sha256": "7b2bc4399ef9ba78e421f09d4b071e7c8d7f04cd45cb4455f466d4c4958123f1",
+        "lines": 76,
+        "bytes": 2191
+      },
+      {
+        "path": "contracts/substantialTask.ts",
+        "category": "contracts-policy",
+        "sha256": "c92190c2a1ee0598f5173a345b6310d83e3c021c88f53019e24c5a03fdd94879",
+        "lines": 18,
+        "bytes": 629
+      },
+      {
+        "path": "contracts/taskFiles.ts",
+        "category": "contracts-policy",
+        "sha256": "aa4b8357e5c93bf0ba3e76e83e8a2ed04aba46f1cc75e8a5bae60ecfb6e280b3",
+        "lines": 19,
+        "bytes": 446
+      },
+      {
+        "path": "contracts/writerProcesses.ts",
+        "category": "contracts-policy",
+        "sha256": "bfbddff3aa518b87bdb55db4f0e8c391484c534608885e82820ae1701f5d4745",
+        "lines": 13,
+        "bytes": 551
+      },
+      {
+        "path": "policy/localAdmission.ts",
+        "category": "contracts-policy",
+        "sha256": "abef6cae7b7e0b941d1d4064a44347ee6d6859b9b27f68f1757dd88d5b58e295",
+        "lines": 26,
+        "bytes": 1088
+      },
+      {
+        "path": "policy/localPlanning.ts",
+        "category": "contracts-policy",
+        "sha256": "66547377fbfe5a59e25075b394657944bcf98fcd7e68706e996d577dc750a585",
+        "lines": 64,
+        "bytes": 1964
+      },
+      {
+        "path": "policy/localTask.ts",
+        "category": "contracts-policy",
+        "sha256": "08051b94c1d0575e6c75bfa909d279f967056ce29e7c60e8f6eeeba9619b790f",
+        "lines": 76,
+        "bytes": 2813
+      },
+      {
+        "path": "policy/mechanicalTask.ts",
+        "category": "contracts-policy",
+        "sha256": "b947f90732a225c665b93f8374f538f83f853236ff37eeb07e87b59dea228cdf",
+        "lines": 114,
+        "bytes": 3534
+      },
+      {
+        "path": "policy/preparation.ts",
+        "category": "contracts-policy",
+        "sha256": "85bb5b5d4937c3fed0f35d53ecd40b98ca3772ae37b09d2259cc3eab22ff88f7",
+        "lines": 61,
+        "bytes": 1718
+      },
+      {
+        "path": "policy/readFragments.ts",
+        "category": "contracts-policy",
+        "sha256": "a5a86b55712624cc097f35a43177eb1d4afe1b55b6068e3c24377ac701edfd38",
+        "lines": 16,
+        "bytes": 385
+      },
+      {
+        "path": "policy/readerControl.ts",
+        "category": "contracts-policy",
+        "sha256": "5c3a25aa8a459c35fccd393b6f5ec86d54dac9eb7c00f0185a7b4899c01ce425",
+        "lines": 212,
+        "bytes": 6546
+      },
+      {
+        "path": "policy/readerExecution.ts",
+        "category": "contracts-policy",
+        "sha256": "bf153a057a2fb340b36d2ebff9d36c98a7dfc6213ef56790e6a84aa5aefafe18",
+        "lines": 23,
+        "bytes": 900
+      },
+      {
+        "path": "policy/readerStatus.ts",
+        "category": "contracts-policy",
+        "sha256": "c2bdc93a3fccba3fefbc50066bd4883f3f2bc1f6351ee82c786615053a6febcf",
+        "lines": 93,
+        "bytes": 3427
+      },
+      {
+        "path": "policy/review.ts",
+        "category": "contracts-policy",
+        "sha256": "7a877be9129d4e260b61b68006902539fbf929fcdc003184d51772949db0020e",
+        "lines": 277,
+        "bytes": 9114
+      },
+      {
+        "path": "policy/substantialTask.ts",
+        "category": "contracts-policy",
+        "sha256": "e23553703746b82f2697c371e840cd9df4ffc041ac4b799cd4ca3de4e19f0bd2",
+        "lines": 78,
+        "bytes": 2363
+      },
+      {
+        "path": "worker/host.ts",
+        "category": "host-client",
+        "sha256": "1b4b9b0e016010254e2385792d8437fc9dc645db476937184dda86421b288067",
+        "lines": 23,
+        "bytes": 759
+      },
+      {
+        "path": "worker/readerHeartbeat.ts",
+        "category": "host-client",
+        "sha256": "0629f25e566565a1841b4414e44fa67ff6c6e505f1c1d0a8ec6df66040bdcad9",
+        "lines": 17,
+        "bytes": 585
+      },
+      {
+        "path": "worker/readerHost.ts",
+        "category": "host-client",
+        "sha256": "0f63bf464d3ae6982975cf06c4416f740f3a031f525942c5f92ff15c72d93cb7",
+        "lines": 340,
+        "bytes": 12930
+      },
+      {
+        "path": "worker/readerRecovery.ts",
+        "category": "host-client",
+        "sha256": "6e4f55243d1b844cdcbca86c24a6edbca6cbec4cc27e66ca539de51f9fa23dcf",
+        "lines": 240,
+        "bytes": 9579
+      },
+      {
+        "path": "workflows/controlledReader.ts",
+        "category": "workflows",
+        "sha256": "1c63bab25a197db24a3023092ef277c2e34198f1dfeecca1a84f31b149d20685",
+        "lines": 267,
+        "bytes": 9784
+      },
+      {
+        "path": "workflows/localAdmission.ts",
+        "category": "workflows",
+        "sha256": "d307cd9d04aa54e718dae3faaa4ca3b900664ce98e623454c889c61ff4be20e8",
+        "lines": 20,
+        "bytes": 924
+      },
+      {
+        "path": "workflows/localTask.ts",
+        "category": "workflows",
+        "sha256": "f2a7a8e9b9cc74a470a4ef6139eae73731f611823090feab968b44f22bdc1ab2",
+        "lines": 174,
+        "bytes": 5977
+      },
+      {
+        "path": "workflows/preparation.ts",
+        "category": "workflows",
+        "sha256": "a033ffd45f8f599da4d6ed7c631b6732142268110ca7f8ee34a62707fd83b620",
+        "lines": 20,
+        "bytes": 708
+      },
+      {
+        "path": "workflows/reader.ts",
+        "category": "workflows",
+        "sha256": "064f814602d60d6f666dd1b06da8c942f5a908466c0b60845d7691c447eaa2a4",
+        "lines": 15,
+        "bytes": 662
+      },
+      {
+        "path": "workflows/review.ts",
+        "category": "workflows",
+        "sha256": "5f62ea4fee9d85825d73c995b7bbaaafae4bfb13492ce5f26d699f042d54982f",
+        "lines": 73,
+        "bytes": 2655
+      }
+    ],
+    "modelStarts": 0,
+    "sdk": "1.24.0",
+    "server": "1.32.0"
+  },
+  "privacy": "Synthetic SDK only; no native transcripts or private file paths",
+  "cases": [
+    {
+      "file": "task-completed.json",
+      "workflowId": "aw/task/neutral-substantial/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/82b5c7f1b66704ba9a1959818c299da164beaa7b3afb721383b7512afb8bfd49-history.json",
+      "sourceSha256": "ad8f5f824fbdaa9ff1e7b3d9939d26013d71c84881429160ddfc2dbf8c0f96e4",
+      "sourceBytes": 63765,
+      "sha256": "eed6e740fda67f83acf6858c323bb99988995f5b645a3783130b79e081a86b38",
+      "bytes": 80561
+    },
+    {
+      "file": "acceptance-review.json",
+      "workflowId": "aw/review/neutral-substantial/one/b1-1310fadc1bc47349ac428f9ed036cef4",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/e22744959d57dd01ec0decbb06ac7a22ead3e0cc0b00e1d0e5addd78e9869d26-history.json",
+      "sourceSha256": "0207ead25c167cf5f725d297d0e1cc6a640d11445f910714e6f1635847df3944",
+      "sourceBytes": 23492,
+      "sha256": "c99e75258d318075476f548ccf9b093051c543c5d6181c8af82f5b2b966cb65c",
+      "bytes": 29259
+    },
+    {
+      "file": "acceptance-reviewer.json",
+      "workflowId": "aw/review-reader/neutral-substantial/one/reviewer/a3c6d07612f2ab60baa9e4dd08dcb777e42aa698c6f87ad9fbbd5b5dc5b7a75d",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/5d75393621fa55baa57dc2bf16629e73c37b97aa4f4d307a9b88303e10b1f476-history.json",
+      "sourceSha256": "4becccd56c70ad268a79f8be0512570618f306c00e9cbd4384915f9f4e727f26",
+      "sourceBytes": 24262,
+      "sha256": "197d06951b2c34784c122db2291196175c4009eb136f5937e5b777ab997caad2",
+      "bytes": 31425
+    },
+    {
+      "file": "acceptance-tester.json",
+      "workflowId": "aw/review-reader/neutral-substantial/one/tester/96e881a041d5467950dd65908225615b91b38d1a4f416fb15dd2d106185df93d",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/ddac014fa9257290a7bc07f0d2b1ce94e3c490c9f99dc47bab160b71743e71df-history.json",
+      "sourceSha256": "20b1054a40150e43fdcb56610400becb278e0a52f392890f75a08f836b51195c",
+      "sourceBytes": 24232,
+      "sha256": "94be1d8492188faa4d002d30c0689b6624f6a53123905042b47b22852e48fea5",
+      "bytes": 31395
+    },
+    {
+      "file": "acceptance-review.json",
+      "workflowId": "aw/review/neutral-substantial/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/e70e3f09cb6caa22e60da6557f1559138e1880937ea0b2156f9db6ce3f0c874f-history.json",
+      "sourceSha256": "63f140f5b918446dfe20b42d1f4bfe0b6b5e2f4f00ddc1125aa6d620d6110be9",
+      "sourceBytes": 23529,
+      "sha256": "c99e75258d318075476f548ccf9b093051c543c5d6181c8af82f5b2b966cb65c",
+      "bytes": 29259
+    },
+    {
+      "file": "planning-reviewer.json",
+      "workflowId": "aw/review-reader/neutral-substantial/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/3dae9176d642e40560df361b6c090e3210dc0e941d6435860f25f1412bb9456b-history.json",
+      "sourceSha256": "49f0212d9817e894f55a037910f8be0386806ed5d4760135c1d0246f2b617954",
+      "sourceBytes": 24268,
+      "sha256": "e87f555477f1b6fbc7a14f9ef1b208e4fbdea6e1b54677a8c48cce2beeaed581",
+      "bytes": 31431
+    },
+    {
+      "file": "planning-tester.json",
+      "workflowId": "aw/review-reader/neutral-substantial/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "source": "tmp/temporal-substantial-rxEcvJ/5248ba7c3ad127b0c06579b277f5965b5e99276a744cfcc5c57cfc954c2619ba-history.json",
+      "sourceSha256": "47113031465a436c43e0ba29bf135aa10ad38625ea205247ec875921ba85570f",
+      "sourceBytes": 24238,
+      "sha256": "e152ba149f30bcf34516950f108125bd406668cfa8c023cf7f226781454e04fd",
+      "bytes": 31401
+    }
+  ]
+}

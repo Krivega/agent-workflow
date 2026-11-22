@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "H-01",
+      "instructions": "Исправь включительную верхнюю границу общей функции contains. Проверь обоих потребителей и значения ниже, на и выше обеих границ. Не меняй проверку. Пройди независимую приёмку средствами выбранной версии agent-workflow; сохрани первичные ссылки на LOAD, READY, проверку и ответ советника. Если среда не поддерживает путь, сохрани NOT RUN с причиной.",
+      "files": {
+        "range.mjs": "export const contains = (value, min, max) => value >= min && value < max;\n",
+        "consumer-a.mjs": "import { contains } from './range.mjs';\nexport const visible = value => contains(value, 0, 10);\n",
+        "consumer-b.mjs": "import { contains } from './range.mjs';\nexport const allowed = value => contains(value, -5, 5);\n",
+        "checks.mjs": "import assert from 'node:assert/strict';\nimport { visible } from './consumer-a.mjs';\nimport { allowed } from './consumer-b.mjs';\nfor (const [fn, min, max] of [[visible, 0, 10], [allowed, -5, 5]]) {\n  for (const value of [min - 1, min, max, max + 1]) assert.equal(fn(value), value >= min && value <= max);\n}\n",
+        "package.json": "{\"private\": true, \"type\": \"module\", \"scripts\": {\"validate\": \"node checks.mjs\"}}\n"
+      },
+      "mutable": ["range.mjs"]
+    },
+    {
+      "id": "H-02",
+      "instructions": "Исправь только зависимость pricing: ставка должна стать 7. Выполни адресный повтор совета для pricing; прежние полные PASS по logging и storage сохрани, пока входы неизменны. Раздельно предъяви новую зависимость, общий scope, открытый FAIL и неполную карту. Используй реальные selection/reuse данной версии, первичные ответы и manifest; рисунок состояния или самопроверка не заменяют совет.",
+      "files": {
+        "pricing.json": "{\"rate\": 5}\n",
+        "logging.json": "{\"level\": \"info\"}\n",
+        "storage.json": "{\"version\": 1}\n",
+        "checks.mjs": "import assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nassert.equal(JSON.parse(readFileSync(new URL('./pricing.json', import.meta.url))).rate, 7);\nassert.deepEqual(JSON.parse(readFileSync(new URL('./logging.json', import.meta.url))), { level: 'info' });\nassert.deepEqual(JSON.parse(readFileSync(new URL('./storage.json', import.meta.url))), { version: 1 });\n",
+        "package.json": "{\"private\": true, \"type\": \"module\", \"scripts\": {\"validate\": \"node checks.mjs\"}}\n"
+      },
+      "mutable": ["pricing.json"]
+    },
+    {
+      "id": "H-03",
+      "instructions": "Создай разрешённую изолированную задачу с открытым FAIL F-01 и известной незавершённой операцией. В том же native сеансе выполни настоящее сжатие и продолжи задачу с новым наблюдаемым LOAD. Раздельно предъяви отсутствующий запрет, устаревший источник, неверную роль и новое действие. Покажи отказ допуска и полное восстановление; FAIL и pending не удаляй. Программная сводка, новый сеанс и эмуляция сжатия не считаются выполнением. Недоступная операция остаётся NOT RUN; не заменяй живой сценарий локальным double и не ослабляй права.",
+      "files": {
+        "assignment.json": "{\"scenario\": \"H-03\", \"initial_failure\": \"F-01\", \"scope\": [\"evidence/\"], \"no_extra_authority\": true}\n",
+        "checks.mjs": "import assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nconst evidence = JSON.parse(readFileSync(new URL('./evidence/manifest.json', import.meta.url)));\nassert.ok(Array.isArray(evidence.sources) && evidence.sources.length > 0);\nfor (const source of evidence.sources) {\n  assert.equal(typeof source.locator, 'string');\n  assert.match(source.hash, /^[a-f0-9]{64}$/);\n}\nassert.equal(evidence.initial_failure, 'F-01');\n",
+        "package.json": "{\"private\": true, \"type\": \"module\", \"scripts\": {\"validate\": \"node checks.mjs\"}}\n"
+      },
+      "mutable": []
+    },
+    {
+      "id": "H-04",
+      "instructions": "Запусти одну разрешённую операцию длительностью не менее 35000 мс с шестью промежуточными записями журнала. Дождись первичного результата одним ожидающим инструментом текущего хода, без модельных опросов неизменного состояния. Сохрани operation ID, первичный результат и применение ровно один раз. Не завершай ход ради фонового пробуждения. Недоступная операция остаётся NOT RUN; не заменяй живой сценарий локальным double и не ослабляй права.",
+      "files": {
+        "assignment.json": "{\"scenario\": \"H-04\", \"initial_failure\": \"F-01\", \"scope\": [\"evidence/\"], \"no_extra_authority\": true}\n",
+        "checks.mjs": "import assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nconst evidence = JSON.parse(readFileSync(new URL('./evidence/manifest.json', import.meta.url)));\nassert.ok(Array.isArray(evidence.sources) && evidence.sources.length > 0);\nfor (const source of evidence.sources) {\n  assert.equal(typeof source.locator, 'string');\n  assert.match(source.hash, /^[a-f0-9]{64}$/);\n}\nassert.equal(evidence.initial_failure, 'F-01');\n",
+        "package.json": "{\"private\": true, \"type\": \"module\", \"scripts\": {\"validate\": \"node checks.mjs\"}}\n"
+      },
+      "mutable": []
+    },
+    {
+      "id": "H-05",
+      "instructions": "На одном известном native ходе раздельно воспроизведи завершение до подписки, потерю terminal-уведомления, дубликат и перестановку уведомлений. Подтверди сверку первичного результата без нового create/send. Затем отмени ожидание, предъяви поздний ответ и отказ применения. Перезапусти собственную среду; восстанови сохранённое ожидание прежнего владельца и отклони старое поколение. Подмена первичной истории запрещена; транспортные вмешательства сохраняй отдельно. Недоступная операция остаётся NOT RUN; не заменяй живой сценарий локальным double и не ослабляй права.",
+      "files": {
+        "assignment.json": "{\"scenario\": \"H-05\", \"initial_failure\": \"F-01\", \"scope\": [\"evidence/\"], \"no_extra_authority\": true}\n",
+        "checks.mjs": "import assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nconst evidence = JSON.parse(readFileSync(new URL('./evidence/manifest.json', import.meta.url)));\nassert.ok(Array.isArray(evidence.sources) && evidence.sources.length > 0);\nfor (const source of evidence.sources) {\n  assert.equal(typeof source.locator, 'string');\n  assert.match(source.hash, /^[a-f0-9]{64}$/);\n}\nassert.equal(evidence.initial_failure, 'F-01');\n",
+        "package.json": "{\"private\": true, \"type\": \"module\", \"scripts\": {\"validate\": \"node checks.mjs\"}}\n"
+      },
+      "mutable": []
+    },
+    {
+      "id": "H-06",
+      "instructions": "Редакция /2: семантика принята; разрешение на исполнение не выдано. Длительность и бюджет будущего запуска не установлены: --plan должен отдельно закрепить предлагаемый stimulus, без открытия окна или запуска. Начни только отдельно разрешённую изолированную работу. Критерий ownership-continuity-across-long-stage проверяет сохранение прежних owner/generation/identity/workspace/scope при долгом этапе, но требует разных первичных доказательств механизма. Для legacy: предъяви исходный OLD deadline, затем успешный фактический renew ДО OLD deadline для того же owner/generation/identity/workspace/scope с новым lease_until, покрывающим долгий этап. Только после принятого renew долгий этап пересекает OLD deadline под ещё действующим продлённым lease. Renew после истечения текущего lease запрещён Store; восстановление после expiry — отдельный recover-owner с собственными guards и доказательствами, его нельзя назвать renew. Порядок событий и фактические Store квитанции обязательны; изменения времени сами по себе не доказывают renew. Для Temporal: предъяви сохраняемое состояние той же логической LocalTaskWorkflow (schemaVersion 11 выполняет ManagedTaskWorkflow), неизменные owner/generation/identity/workspace/scope, pending operation и её effect identity до/после долгого этапа и остановки/замены Worker с replay; не изобретай lease или его продление. Длительность общего долгого этапа и исходная legacy lease boundary должны быть закреплены до допуска конкретного запуска; таймер, heartbeat и модельная сводка не заменяют первичную историю и квитанции. Разные Temporal runId сами по себе не означают нового владельца и не подтверждают право RESUME. Этот новый критерий не закрывает исторический /1 lease-renewed: он остаётся unmet для Temporal, а не PASS или эквивалентом.\nНепосредственно перед STOP покажи живой writer с текущей identity и свежей проверкой принадлежности; затем предъяви первичную физическую остановку, отсутствие принадлежащих writers/слушателей и поздней записи. Истечение времени, Worker restart и replay не доказывают STOP и не передают scope. Неизвестный исход cleanup остаётся UNKNOWN. Раздельно предъяви resume в прежней среде и холодное восстановление. До продолжения проверь прежние owner/generation/identity/workspace/scope, входы и terminal boundaries, незавершённые операции, frozen/released и фактический первичный native пользовательский источник с точным target/редакцией. Неизвестный эффект или незавершённый прежний ход запрещает новый dispatch. Повтор точной команды возвращает прежнюю квитанцию; подмена payload/получателя/задачи отказывает. Сохрани запрет двойного запуска, совместимость с фактической обвязкой и исходный F-01/историю FAIL без изменения байтов. Сводка модели и таймер не подтверждают STOP. Недоступная операция остаётся NOT RUN; не заменяй живой сценарий локальным double и не ослабляй права. Отсутствие первичного native доказательства оставляет native квалификацию UNKNOWN даже при model-free PASS. Старые H01/H06 grants и обычное продолжение пользователя не являются разрешением исполнения этой редакции.",
+      "files": {
+        "assignment.json": "{\"scenario\": \"H-06\", \"initial_failure\": \"F-01\", \"scope\": [\"evidence/\"], \"no_extra_authority\": true}\n",
+        "checks.mjs": "import assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nconst evidence = JSON.parse(readFileSync(new URL('./evidence/manifest.json', import.meta.url)));\nassert.ok(Array.isArray(evidence.sources) && evidence.sources.length > 0);\nfor (const source of evidence.sources) {\n  assert.equal(typeof source.locator, 'string');\n  assert.match(source.hash, /^[a-f0-9]{64}$/);\n}\nassert.equal(evidence.initial_failure, 'F-01');\n",
+        "package.json": "{\"private\": true, \"type\": \"module\", \"scripts\": {\"validate\": \"node checks.mjs\"}}\n"
+      },
+      "mutable": []
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "modelStarts": 0,
+    "baseCommit": "079ad732372bbab99504ad1b48bca94334b5b224",
+    "uncommitted": true
+  },
+  "origin": {
+    "nativeModelStarts": 12,
+    "clientVersion": "0.165.0-alpha.1.2",
+    "profile": {
+      "parent": "gpt-6.1-sol/medium",
+      "auditor": "gpt-6.1-sol/xhigh"
+    },
+    "historicalFailuresPreserved": true,
+    "sdkPackage": "temporal-audit-nomwyD"
+  },
+  "sourceInventories": [
+    {
+      "file": "spawn-binding-held-source.json",
+      "bytes": 40903,
+      "sha256": "0b23fd1f7983a1f2f4a94e2af1846696abbe1c7a95e281b95d10264d4dee726f",
+      "origin": "temporal-native-audit-BDHVLe",
+      "nativeModelStarts": 2
+    },
+    {
+      "file": "report-phase-held-source.json",
+      "bytes": 40904,
+      "sha256": "1844af18e705388757c85640d2a73c9da0f0fef9bfcbd5bf89aa47fcc9e466fa",
+      "origin": "temporal-native-audit-9YMTtu",
+      "nativeModelStarts": 4
+    },
+    {
+      "file": "audit-complete-source.json",
+      "bytes": 40904,
+      "sha256": "77552c1b93ecb0e0f23eaec7d4f86d907b4f7b6a0b16fe703ed71d5727f7acb3",
+      "origin": "temporal-native-audit-l1z4hV",
+      "nativeModelStarts": 4
+    },
+    {
+      "file": "active-load-cancelled-source.json",
+      "bytes": 40904,
+      "sha256": "7eb108c702fbc619b8b1a350c8bccab7c15ac61f3d70bb3251627361702bb2f8",
+      "origin": "temporal-native-audit-hWQZTy",
+      "nativeModelStarts": 2
+    }
+  ],
+  "cases": [
+    {
+      "file": "spawn-binding-held-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/native",
+      "workflowType": "AuditWorkflow",
+      "bytes": 15540,
+      "sha256": "ed445aec633db2223510ca3cefa18ec04ae5ed3ab5538a37c086718fae34122d",
+      "expected": "compatible",
+      "scenario": "native-spawn-binding-held",
+      "origin": "temporal-native-audit-BDHVLe"
+    },
+    {
+      "file": "report-phase-held-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/native",
+      "workflowType": "AuditWorkflow",
+      "bytes": 716050,
+      "sha256": "ce2956949f20af141e775e6a85d29f6047afbb59179ec5e048efd2f5b9edef7f",
+      "expected": "compatible",
+      "scenario": "native-report-phase-held",
+      "origin": "temporal-native-audit-9YMTtu"
+    },
+    {
+      "file": "audit-complete-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/native",
+      "workflowType": "AuditWorkflow",
+      "bytes": 832368,
+      "sha256": "453502fd61d6818dfc6fc61dc80729e503072b003949e1985ad624877d00f8f9",
+      "expected": "compatible",
+      "scenario": "native-audit-complete",
+      "origin": "temporal-native-audit-l1z4hV"
+    },
+    {
+      "file": "active-load-cancelled-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/native",
+      "workflowType": "AuditWorkflow",
+      "bytes": 20931,
+      "sha256": "13bb7cd5250557a675b0ba0da9ebc2e468597a315f0885d83da67ed8110c5de4",
+      "expected": "compatible",
+      "scenario": "native-active-load-cancelled",
+      "origin": "temporal-native-audit-hWQZTy"
+    },
+    {
+      "file": "sdk-complete-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/complete",
+      "workflowType": "AuditWorkflow",
+      "bytes": 42459,
+      "sha256": "655620ba3c1a2defab00625dc42f2f008c74d080991ae55b5aad02998a1c3e38",
+      "expected": "compatible",
+      "scenario": "sdk-complete",
+      "origin": "temporal-audit-nomwyD"
+    },
+    {
+      "file": "sdk-partial-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/partial",
+      "workflowType": "AuditWorkflow",
+      "bytes": 42378,
+      "sha256": "a863f3e6ae9aa74742b878a87a5f461b50c82320b3cbc74e256bb2b2a8212a80",
+      "expected": "compatible",
+      "scenario": "sdk-partial",
+      "origin": "temporal-audit-nomwyD"
+    },
+    {
+      "file": "sdk-bad-load-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/bad-load",
+      "workflowType": "AuditWorkflow",
+      "bytes": 18828,
+      "sha256": "f495a817bdb72147d1d77affa17e1966b0d0b2970e86045ecf543d04432d4613",
+      "expected": "compatible",
+      "scenario": "sdk-bad-load",
+      "origin": "temporal-audit-nomwyD"
+    },
+    {
+      "file": "sdk-cancel-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/cancel",
+      "workflowType": "AuditWorkflow",
+      "bytes": 39348,
+      "sha256": "a8e59d4171389f98d80e1a66072937671f97799ff37c9cf55bc255700d14d78c",
+      "expected": "compatible",
+      "scenario": "sdk-cancel",
+      "origin": "temporal-audit-nomwyD"
+    },
+    {
+      "file": "sdk-unknown-stop-history.json",
+      "workflowId": "aw/audit/neutral-audit/one/unknown-stop",
+      "workflowType": "AuditWorkflow",
+      "bytes": 51302,
+      "sha256": "07fe99093c7981e727392f3caa6928d007e9a1aaed8fcddca5bc361651ddb47f",
+      "expected": "compatible",
+      "scenario": "sdk-unknown-stop",
+      "origin": "temporal-audit-nomwyD"
+    }
+  ]
+}

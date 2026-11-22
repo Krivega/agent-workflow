@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "projectId": "pinned-neutral",
+  "workspaceId": "neutral-copy",
+  "rules": ["RULES.md"],
+  "cardRoot": "work-items",
+  "roles": [{ "id": "reviewer", "profile": "roles/reviewer.md" }],
+  "checks": ["syntax"]
+}

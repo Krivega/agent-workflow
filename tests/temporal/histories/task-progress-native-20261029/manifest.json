@@ -1,0 +1,588 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "modelStarts": 0,
+    "baseCommit": "481989b6304fb4230ada599044b184767b6432f8",
+    "uncommitted": true
+  },
+  "origin": {
+    "nativeModelStarts": 30,
+    "clientVersions": ["0.154.0", "0.165.0-alpha.1.2"],
+    "profiles": {
+      "main": "gpt-6-astra/medium",
+      "parent": "gpt-6.1-sol/medium",
+      "auditor": "gpt-6.1-sol/xhigh"
+    },
+    "qualification": "Explicit caller-reported no-progress/doubt checkpoints after baseline and before the first writer; no automatic progress diagnosis or artificial wait. Timing is null; task elapsed comes from the original Workflow clock."
+  },
+  "sourceInventories": [
+    {
+      "file": "native-no-progress-full-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-kPGO74",
+      "nativeModelStarts": 15
+    },
+    {
+      "file": "native-doubt-full-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-0Tux4E",
+      "nativeModelStarts": 15
+    },
+    {
+      "file": "sdk-no-progress-full-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-EWHZ94",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-doubt-full-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-s4wot5",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-progress-cancel-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-G7mIqB",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-progress-held-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-rT8riu",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-progress-partial-source.json",
+      "bytes": 49900,
+      "sha256": "a7863e114a2136d8a62c0cf29fcba6d4d1eb95b0eec12242eaaa078712f00cca",
+      "origin": "temporal-progress-0yfPaF",
+      "nativeModelStarts": 0
+    }
+  ],
+  "cases": [
+    {
+      "file": "native-no-progress-full-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24674,
+      "sha256": "bbde0cc2453f77d1b15878192688866d8475d86a1b20427a7e14e7755cd45161",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 1078595,
+      "sha256": "e754fe582fdf668796bc36e33078ce671cb0135f5bb785a0922b9d378eb9fb67",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-48c94fa7df62c9a936e3995fb9c8dd5dc65d6a2f4c69db5754fb23f137688fb3-history.json",
+      "bytes": 24633,
+      "sha256": "bffca2a96d584c31fe8c35cc6822c6c68de75aeae6b2029e79b75a20b4d7dd8d",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/40b0269cf6d1a8b8e743b97efbc1a15f59beb1d53af889fe8b042db49855df02",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 148826,
+      "sha256": "0028170b6f0a7755d9ebb0ebd4277948c6e0c99162ec2074490c957e60e2e714",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-a940bb5ae6ae44d06cd3cedc961b5f9ea56873edd8c268b272e3dd186aeec80a-history.json",
+      "bytes": 24108,
+      "sha256": "2aa94b54023c7d260f1e3ec6c7e1b27a20fa1b5f3d022c403abac7e6aa11c3f8",
+      "workflowId": "aw/review/neutral-progress/one/b1-832adc3d2dc2b3241af830043341a7cb",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24642,
+      "sha256": "2059a1b4f5430fa8eef685d13e36faa00be2ea03ed31d252c71527fd5796aa21",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-d636546e32bf51ee9909710766b4a78a2202ffc46b7d3fcf5215216395463b54-history.json",
+      "bytes": 24669,
+      "sha256": "240b64d9b2c2ea6ba5057ebcb8d5b0817c13e82cbc53e629156aa87c64ee3a53",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/7f32ec96ea1306d9746e079d2de38029fa75e2d0e28cfe7b7440cfa7a22e963d",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-no-progress-full-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 24133,
+      "sha256": "98cfb1c4f4f2e96d5ce6f801b86c7ed2f6ef043e0e6ebe535d66b7a309599c70",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "native-no-progress-full",
+      "origin": "temporal-progress-kPGO74",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24666,
+      "sha256": "d4600f796159f2f079e3f68c84177763b07741338849d5ddbde4c5a8e0908e33",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 1294998,
+      "sha256": "e08eafd8f343fd6fd66a90cc2e4b69d408ddf46489cb9e6b7ea10ba9e49f94b9",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-21f48ace66b7ce92190bafe0cb69759ef6987fb27a0eee75a591c7894653ca6f-history.json",
+      "bytes": 24663,
+      "sha256": "4724569388f72ff506327ecb87ca6fb28e91d2b1717866dfc4c8d9311707513a",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/734ca5e27aaebb58905c5d01168ee1685f78e4c69911e43489f3180154a0e08a",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 148637,
+      "sha256": "8abad37695124f7d7e201a31740f384a3fbd21d21830f4868664bca5322dc798",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24633,
+      "sha256": "378dc8c18bacaf1341cb8dbb5b3951fb6e54692dae30827d488dd4ce69af91d0",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-c9f6e0b8093d7ac19ee6c8cc6b9f1fba0ffb987acc9af0d8c758d19b23a30c20-history.json",
+      "bytes": 24633,
+      "sha256": "e6877e7886a4498ce2f0673c74694a47fff5e4ed1e79ebcb9a023cea9f795f14",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/e4e37266757d78ca7a0981c37c1bb63c3a6f62bdd9c865f434fd6e688cd9feef",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-d9cae500b82d3aef87163a34570805f8d7ec3fd543dbe6b63bb225aa4813dc3c-history.json",
+      "bytes": 24109,
+      "sha256": "d6bb7a7a1c2d0b20ee77d04b6dd09daa8ac9470ce3adb3adcb988c6456feccab",
+      "workflowId": "aw/review/neutral-progress/one/b1-4b67a8a20cc3bd0adaa3cab0135c8fb1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "native-doubt-full-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 24127,
+      "sha256": "4f5c12f75be0be6aee9c316e02793b16c1b9ca46ca62a5000538a059ff927c8e",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "native-doubt-full",
+      "origin": "temporal-progress-0Tux4E",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24567,
+      "sha256": "5ef316fb7389d69172f7abbb6a01e138884508c744f14de4fbd6850ba7e64743",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 38880,
+      "sha256": "899ff7641a4fa82636b08ad014d565d34a8f467db22526e5a0134dc856f00f44",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-3e359cf226c8efb1401ddb0dd0fc3fe8ae311b24230f4a79fe081632d93a345a-history.json",
+      "bytes": 24531,
+      "sha256": "29e241c94bc7a296673a5b3ad7130fd27745722aa7a448293930f14cac1c069a",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/6fb23a8209ab683d04c750cac9d25b9b9eba21dc22aa0af9cc5c3a6bdb4833ac",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-4cf60bad94655b5770a9bfc8ed19b3042e907e3e8851d910606c66c890d94fc9-history.json",
+      "bytes": 24561,
+      "sha256": "3e5e2b16fb993e6f93c3c327bdb709c18ab8c0f2dd98549a93e2ef32c8a327ae",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/6cfc8307eee54aafaf716d21030a1ea1eec8b8f13e781955fc41b79dec39526e",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 148615,
+      "sha256": "a95c025a2d8da8fa296db3a8d5d23e1968dda38207eacfb52e846644faed053a",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-630556bc3bf19bf871bac27877983ea1263c77b3a06efbe6f67ca10b8f840419-history.json",
+      "bytes": 24117,
+      "sha256": "c21b9018f2ec9bf351e77c4d167760cc76f94bf070a776f3f01963c74214da50",
+      "workflowId": "aw/review/neutral-progress/one/b1-355c02596fbc217245798f3118b72fbc",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24537,
+      "sha256": "70138aa36064a5607ee5c33576ce30c6ee04f52c56087079fa750fa438a78f05",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-no-progress-full-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 22899,
+      "sha256": "56c0bc34af0f2915b2851f654ab2dde0f6f9b13458a03030b5001677e3efcd59",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-no-progress-full",
+      "origin": "temporal-progress-EWHZ94",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24557,
+      "sha256": "121e1734e96121d74b1c6eeba987407709b4850ca1d6ced33ce1d1a6cfa5edf0",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 38892,
+      "sha256": "f639fedd1797a179a5f800f2f94a02d9f7d6c84cb980c96756abbee9b518d5db",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 148441,
+      "sha256": "3bf8e298a7a26fe4e607b31bf5f1288dc5050a464f9273b67d5a00ef215a9c49",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-63b27f5bec58762abffd744a8a982728d58a60ed1042e75708cbb68e31ff3f2b-history.json",
+      "bytes": 24109,
+      "sha256": "d524f2dd500b59f7934fb9e8d311feb01925b9fff4b44f8585a8a4aef8272aeb",
+      "workflowId": "aw/review/neutral-progress/one/b1-b82112c565fbb70073e57607cd3ca693",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-80655e812531ffe0812ee12c37328240e066265e4bb7b611a72f5bf258375517-history.json",
+      "bytes": 24561,
+      "sha256": "1349e611ac63866007cf15a12e97feefab46af926a671f4fde12648f51cf0661",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/cdd807ccbdc13e27a8f24ed353c807e1ba3d3660c09b1dcbdd68905d54be656f",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24525,
+      "sha256": "f83bd466931e87b910ac4bf2bfcafde533f30fce81431d0458ca7df1413040f5",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-f209ad019a62c107eeb53f1875a194b03d3368bc0a67ec4e75e5d3ad559e06fb-history.json",
+      "bytes": 24531,
+      "sha256": "6caedead53edb2774f30a73ce083120310a0f9fda289ecca08489d8fd8e021c3",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/4005adfb13c646dffc266ce2061dfcd910dd072d8c525979a072fdb9d4077138",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-doubt-full-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 22905,
+      "sha256": "ce93a74e7da308b0e64d837dad611b807746129b28c2fe9ebf5e1922c0f1e8c0",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-doubt-full",
+      "origin": "temporal-progress-s4wot5",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-cancel-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24567,
+      "sha256": "2563fa71a55109ddb7c99f86c3d08227a2d1e94c21f9a38a1ff921d89372b3b5",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-cancel",
+      "origin": "temporal-progress-G7mIqB",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-cancel-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 21666,
+      "sha256": "3e7121d9a3ee6210692d43df544fa1369af443e78a4dab8be442fdd3a31cdf98",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-cancel",
+      "origin": "temporal-progress-G7mIqB",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-cancel-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 64974,
+      "sha256": "5262d427070326a292c3e4588b82243e105332d8517bc6dde5e1b52df3898974",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-cancel",
+      "origin": "temporal-progress-G7mIqB",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-cancel-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24537,
+      "sha256": "cddbdda43109b5c715461a366f260558894375b397b742bc5796283ba3febab1",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-cancel",
+      "origin": "temporal-progress-G7mIqB",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-cancel-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 24141,
+      "sha256": "cb2b9308574d670f6414727627be51fc69f533d5df4a24d04b63dfa5c1639f32",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-cancel",
+      "origin": "temporal-progress-G7mIqB",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-held-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24554,
+      "sha256": "307e93222668a0e092d78ff90ab7ed5df27394c3e779d9ccfe3395d07984d2c9",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-held",
+      "origin": "temporal-progress-rT8riu",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-held-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 38902,
+      "sha256": "637b97a56a7c363f86557b42e1a752b2e163bc41286f8ce02992b8ef376691b3",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-held",
+      "origin": "temporal-progress-rT8riu",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-held-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 65877,
+      "sha256": "9b60a8d284447500a18ebd7a35d16b1be3ab151264479452493c6b8d47ee958e",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-held",
+      "origin": "temporal-progress-rT8riu",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-held-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24521,
+      "sha256": "6c1586d2e98a6cef32111b4128b1bbd2f37e382fcca3a64a208fbf303e15e86a",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-held",
+      "origin": "temporal-progress-rT8riu",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-held-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 24132,
+      "sha256": "104fea6c6f96b5302b9e8237c112476add8268655b3c37b55d4a8fae264fb7c5",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-held",
+      "origin": "temporal-progress-rT8riu",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-partial-0b79ce6a2b39e93855b11215c0188726e7dbbae314a9a693bb2d7dc68f827685-history.json",
+      "bytes": 24567,
+      "sha256": "6ebe52926e9d7e98fce196dbfaa65d80f435b98bd654e26b6d578e24d125ab03",
+      "workflowId": "aw/review-reader/neutral-progress/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-partial",
+      "origin": "temporal-progress-0yfPaF",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-partial-1f8e11be341e4c38dd381bbda27bc9e5f851ffdeadd1fc103965ba7c32c69758-history.json",
+      "bytes": 38876,
+      "sha256": "0f178096ae973461bdf86ade6cfe24fa8ff64f6f9939924a34dcb3817a367b1e",
+      "workflowId": "aw/audit/neutral-progress/one/progress-before-writing",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-partial",
+      "origin": "temporal-progress-0yfPaF",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-partial-51322b4e584544dbb4184454fe5663aed126cf7bb5285539b4c74626d0e3dddc-history.json",
+      "bytes": 65838,
+      "sha256": "095ebd1912bebdedc0ca1275076e02a5a2ef076f58219071af5adb02a650dadf",
+      "workflowId": "aw/task/neutral-progress/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-partial",
+      "origin": "temporal-progress-0yfPaF",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-partial-a94e874cf2f322b63a95ae19f3e091f6db3d6905102ebd0a8a3299cf3e1e90ae-history.json",
+      "bytes": 24537,
+      "sha256": "2aa2407693648910afd1a97e754bf7d04e34bb279e00e020e181b7b9d57567fd",
+      "workflowId": "aw/review-reader/neutral-progress/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-partial",
+      "origin": "temporal-progress-0yfPaF",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-progress-partial-f498b58a06cec5d79a9cc6e1920c95fa49ab268e5a723bb86c2b6a415327d1b1-history.json",
+      "bytes": 22898,
+      "sha256": "4b657b00eb09e0be054c032a8c78db81f1ea5a773ca5347337593f7a872c6308",
+      "workflowId": "aw/review/neutral-progress/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-progress-partial",
+      "origin": "temporal-progress-0yfPaF",
+      "unfinished": false
+    }
+  ]
+}

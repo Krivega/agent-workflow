@@ -1,0 +1,45 @@
+name: agent-workflow-host
+services:
+  postgres:
+    image: postgres:16.13@sha256:5d143123fdf80462d1778cd4f24b9f7ca13c87174bca19141fb194c5a1ebca59
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: temporal
+      POSTGRES_DB: temporal
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD on the host}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'temporal', '-d', 'postgres']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  temporal:
+    image: temporalio/auto-setup:1.29.1@sha256:5b3502a3b685f9eff1b925af90c57c9e3dbeccbef367cc28a2a9712c63379312
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB: postgres12
+      DB_PORT: '5432'
+      POSTGRES_SEEDS: postgres
+      POSTGRES_USER: temporal
+      POSTGRES_PWD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD on the host}
+      DBNAME: temporal
+      VISIBILITY_DBNAME: temporal_visibility
+      DEFAULT_NAMESPACE: ${TEMPORAL_NAMESPACE:-agent-workflow}
+      SKIP_ADD_CUSTOM_SEARCH_ATTRIBUTES: 'true'
+      TEMPORAL_ADDRESS: temporal:7233
+    ports:
+      - '127.0.0.1:7233:7233'
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'temporal operator namespace describe --namespace "$${DEFAULT_NAMESPACE}"']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  postgres-data:

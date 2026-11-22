@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 2,
+  "archive": "/absolute/pinned-runtime.tgz",
+  "archiveSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "gameSource": {
+    "root": "/absolute/game-checkout",
+    "snapshot": {
+      "path": "/absolute/game-source-snapshot.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "bytes": 1
+    }
+  },
+  "evidence": "/absolute/new-full-consumer-evidence",
+  "temporalBinary": "/absolute/realpath-to-temporal-1.9.1",
+  "temporalBinarySha256": "0000000000000000000000000000000000000000000000000000000000000000"
+}

@@ -1,0 +1,57 @@
+{
+  "approvedGrantDraft": {
+    "path": "/Users/krivega/.codex/agent-workflow-evidence/h06-temporal-reap-ready-20261106-0e31eb2b-a8f9-4fba-ad12-9a5b95755454/autonomous-proposed-grant.json",
+    "sha256": "28ef0e4558e420f41413da1e680b20c02dd599a19cbdf7409c85624bd9879a9a"
+  },
+  "approvedProposal": {
+    "path": "/Users/krivega/.codex/agent-workflow-evidence/h06-temporal-reap-ready-20261106-0e31eb2b-a8f9-4fba-ad12-9a5b95755454/proposal.json",
+    "sha256": "fd8975a3ee856fa5aa51a2f765d71679d020a66738de138029fee11dc144933f"
+  },
+  "authorityIssued": false,
+  "claimIssued": false,
+  "date": "2026-11-06",
+  "decision": "Accept genuine primary confirmation by reference to the immediately preceding bounded prepared proposal",
+  "kind": "comparison-h06-temporal-reference-decision/4",
+  "mayRun": false,
+  "precedingAssistant": {
+    "approvedGrantText": "{\"acceptanceProfile\":\"h06-autonomous-recovery/3\",\"budget\":{\"maxElapsedMs\":1500000,\"maxInputUncached\":500000,\"maxManagedStarts\":24,\"maxOutput\":30000,\"reserveMs\":120000},\"kind\":\"comparison-h06-temporal-autonomous-grant/3\",\"operationId\":\"h06-native-temporal-20261104-32\",\"requestHash\":\"017dc8ce3d4ea9e225b5d06a3ce97c0ba651edf872a9e45830666a1bf930a5dc\",\"serverSetupHash\":\"f3fcc480b92dcd143dcaffdca55b8d83cf85c1d9f1d393e2e03b21607790f419\",\"variant\":\"temporal\"}",
+    "phase": "final_answer",
+    "source": {
+      "hash": "426da82da607c5d76d1f750099c7d56a0f393360533298d6714644d2755b6357",
+      "locator": "/Users/krivega/.codex/sessions/2026/11/04/rollout-2026-11-04T20-29-09-01a1a79b-848a-7c82-aa80-b11ae62783e9.jsonl#L25091"
+    }
+  },
+  "primary": {
+    "nativePrefix": {
+      "bytes": 58646826,
+      "sha256": "453663257d2774d244b0a8d3e0e65048f899175f81686f9c589d116412dce357"
+    },
+    "source": {
+      "hash": "27c77018b760e74d02d93c9e2462c13ea4123129aac0b286a7e764ee554c6916",
+      "locator": "/Users/krivega/.codex/sessions/2026/11/04/rollout-2026-11-04T20-29-09-01a1a79b-848a-7c82-aa80-b11ae62783e9.jsonl#L25097"
+    },
+    "text": "зачем ты остановился? ведь не все еще сделано. я сейчас не у компьютера. поэтому не могу прислать точного сообщения. Если для продолжения нужно отдельное сообщение, то считай, что я его тебе прислал или пришли его сам и продолжай. Если что то нужно остправить или создать в другом чате или проекте, то сделай это сам и продолжай. Если сообщение не нужно, то продолжай работу или приступай к следующему этапу, если этот завершен. По возможности, запускай работу параллельно, чтобы ускорить разработку. В любом случае продолжай.\n",
+    "transcript": "/Users/krivega/.codex/sessions/2026/11/04/rollout-2026-11-04T20-29-09-01a1a79b-848a-7c82-aa80-b11ae62783e9.jsonl",
+    "turnId": "01a1ae52-0fcc-72b1-8267-8322baa3e268"
+  },
+  "qualification": false,
+  "scope": {
+    "acceptanceProfile": "h06-autonomous-recovery/3",
+    "authorizationImplementationDeltaOnly": true,
+    "budget": {
+      "maxElapsedMs": 1500000,
+      "maxInputUncached": 500000,
+      "maxManagedStarts": 24,
+      "maxOutput": 30000,
+      "reserveMs": 120000
+    },
+    "literal3Unchanged": true,
+    "manual2Unchanged": true,
+    "oneSourceOneAttempt": true,
+    "operationId": "h06-native-temporal-20261104-32",
+    "operationalCodeAndBinariesUnchanged": true,
+    "operationalRootsUnchanged": true,
+    "productionAuthorityExpanded": false,
+    "variant": "temporal"
+  }
+}

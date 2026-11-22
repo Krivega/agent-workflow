@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "modelStarts": 0,
+    "baseCommit": "68af068e405abb050f7907223c8ebcb636051373",
+    "uncommitted": true
+  },
+  "origin": {
+    "nativeModelStarts": 15,
+    "clientVersions": ["0.154.0", "0.165.0-alpha.1.2"],
+    "profiles": {
+      "main": "gpt-6-astra/medium",
+      "parent": "gpt-6.1-sol/medium",
+      "auditor": "gpt-6.1-sol/xhigh"
+    },
+    "historicalRouteLabel": "The original native report calls this supervised-planning; immutable task input 8 and writing:overrun identify the exercised stage. The primary report is preserved unchanged."
+  },
+  "sourceInventories": [
+    {
+      "file": "native-writing-full-source.json",
+      "bytes": 47224,
+      "sha256": "a81da82faccb713359823a2e08c34b6f4624bb831bd9355d7b96b3813025fd27",
+      "origin": "temporal-supervised-557RYL",
+      "nativeModelStarts": 15
+    },
+    {
+      "file": "sdk-writing-full-source.json",
+      "bytes": 47224,
+      "sha256": "a81da82faccb713359823a2e08c34b6f4624bb831bd9355d7b96b3813025fd27",
+      "origin": "temporal-supervised-YARKLo",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-writing-cancel-source.json",
+      "bytes": 47224,
+      "sha256": "62c644ad745acffb7eeac3ee9f88569fb909d59ab6fb0c6aea6e479a95c5b8ae",
+      "origin": "temporal-supervised-C7XX5a",
+      "nativeModelStarts": 0
+    }
+  ],
+  "cases": [
+    {
+      "file": "native-writing-full-1f6c80df36f1ef2e781a04e051024649efc48ea22dac15363194214a2a0f171a-history.json",
+      "bytes": 24677,
+      "sha256": "d07980f1105b25530f22ad4656330c420c9000ffd8e1971e4257c6c96184ebfe",
+      "workflowId": "aw/review-reader/neutral-supervised/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-58f2602e28b0fbc67ab77a621644b7ceefbc6e3a0c85d1ad94c8a0af3a4cfb03-history.json",
+      "bytes": 24666,
+      "sha256": "601561d5e3d199e0bfb8ec1a4084214cc17f97425a9042c004358e732c7eb5ee",
+      "workflowId": "aw/review-reader/neutral-supervised/one/tester/8a054f5e1b70dc4f755f64b92b986c93bff71f56d311c8f894c543e1de9f93a6",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-5ece113d4fa47133001efdb6d904ec30e694aad64fcb614abc1ab9e61fd6a58b-history.json",
+      "bytes": 24128,
+      "sha256": "ee2c9b869214f9968b25a7370e28e9fd9b6da735aa6fa515f0ab830e4d474e42",
+      "workflowId": "aw/review/neutral-supervised/one/b1-1a1a94b410321a2cdb1d05938cda798c",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-86c069e9fb05a63c973abb50964d89b431b2c92be4d4076fe6decf628aef6558-history.json",
+      "bytes": 24169,
+      "sha256": "2fe85ea80399b53c0b9d699839088173424324a32b9f7fc01cc41986cb37a654",
+      "workflowId": "aw/review/neutral-supervised/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-a74251967d34449186d422c47bcb08bf59d9fece2ca8e2a33c41ca9c871d672e-history.json",
+      "bytes": 966962,
+      "sha256": "66fb19f764ab4e255ebbaf9d3b31a75e4ac92594ce811e24c57cb3b1b9d0a6df",
+      "workflowId": "aw/audit/neutral-supervised/one/writing-overrun",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-b683749353abc23379e096ec4806427d3062eb9afa2fed1b7563c43ae4f55d6a-history.json",
+      "bytes": 137430,
+      "sha256": "218dc9d27ec324a883abf64f64b2ac1e2ff8bc313a8f34461cad5adc71c52534",
+      "workflowId": "aw/task/neutral-supervised/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-cdeca9d6b366707d89d048ccb4d94f83841d9fcdde3342d216d1f67ddff8539a-history.json",
+      "bytes": 24685,
+      "sha256": "65fcf901327758e6b897de076d17c0810c64c0f3f2fd1084f8a3332d9cf58bdc",
+      "workflowId": "aw/review-reader/neutral-supervised/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "native-writing-full-f44bbed7b7144b5a11bfb7bb7212eaf4cae005f3bbc1f79be7dfe80350ac13bc-history.json",
+      "bytes": 24677,
+      "sha256": "8a1878c829a9648a034b93b114b5f8e094a1c37a7f5be95f2109db4e33e325eb",
+      "workflowId": "aw/review-reader/neutral-supervised/one/reviewer/8ece97a939bb2f24d43d42e48eaa2629b5cac3509ba303ff5b6a48234b1bf4c5",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "native-writing-full",
+      "origin": "temporal-supervised-557RYL",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-1f6c80df36f1ef2e781a04e051024649efc48ea22dac15363194214a2a0f171a-history.json",
+      "bytes": 24568,
+      "sha256": "f47eb20d4c99d404e3645111895381354aae44f9d6c27eaf8bdcc84890f5c20e",
+      "workflowId": "aw/review-reader/neutral-supervised/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-86c069e9fb05a63c973abb50964d89b431b2c92be4d4076fe6decf628aef6558-history.json",
+      "bytes": 24176,
+      "sha256": "fc1c2ab86d6e2ade725469e44bb928bc57b116216be9d604007fc9fb642deeb4",
+      "workflowId": "aw/review/neutral-supervised/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-a0f5cc7b6986b79299c1c0480b4561d8c238725dc31aae408fd0f5e38a5d67c2-history.json",
+      "bytes": 24565,
+      "sha256": "7db60fab38d05e53db2e458cf1f6595139bee7aa18016aa851749f0be3b52752",
+      "workflowId": "aw/review-reader/neutral-supervised/one/reviewer/d4aadc8f8f3113728ece321bc7b62ea4176d23b0a8adee0889bcf1bf7d02f893",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-a74251967d34449186d422c47bcb08bf59d9fece2ca8e2a33c41ca9c871d672e-history.json",
+      "bytes": 38815,
+      "sha256": "53df168049f5c454cfcd2ad4913101439a430e211bd69e77d63efb64db3aa6c5",
+      "workflowId": "aw/audit/neutral-supervised/one/writing-overrun",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-b683749353abc23379e096ec4806427d3062eb9afa2fed1b7563c43ae4f55d6a-history.json",
+      "bytes": 137478,
+      "sha256": "abe646630e9e986b76c8aff091dcd982a45a7ab3109212ff796d2cb5ca4b8cf7",
+      "workflowId": "aw/task/neutral-supervised/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-c904c7a7a0fc19bc4e235075fbdf49de19557b5b6ea9ccac9bbf1250054bf78d-history.json",
+      "bytes": 24142,
+      "sha256": "0b9946e9d4f74da4f53e50cc39b5c00f23aeedb0d7feec6becf5b3cc48645f65",
+      "workflowId": "aw/review/neutral-supervised/one/b1-94b514b358c65e7a0af123cc5666aa54",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-cc2c738ce31d7f69121941bc38157b983db782a846e0d26713490c190d17c5d3-history.json",
+      "bytes": 24558,
+      "sha256": "9d5e36fa87186a39e53cc35bbe34d79b855f8d2f8ee33b88226a62352681f407",
+      "workflowId": "aw/review-reader/neutral-supervised/one/tester/47e70784b2724b6e0e87217f8fb8a33adad26f3be9c72c3644ed39c07d2d0004",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-full-cdeca9d6b366707d89d048ccb4d94f83841d9fcdde3342d216d1f67ddff8539a-history.json",
+      "bytes": 24574,
+      "sha256": "acd1f7c925e0b0602d659a78052f4220b42385257cb5b8dc4faa3f38d47b8b62",
+      "workflowId": "aw/review-reader/neutral-supervised/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-full",
+      "origin": "temporal-supervised-YARKLo",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-cancel-1f6c80df36f1ef2e781a04e051024649efc48ea22dac15363194214a2a0f171a-history.json",
+      "bytes": 24564,
+      "sha256": "bd8d9fc77bcc828657d8dc55d53095893e4728f5f16713ea143434482e648ce4",
+      "workflowId": "aw/review-reader/neutral-supervised/one/tester/67e74c3c60770f6bdaf38c4ba5e375dad640405af184bad510d3fb2097bd537b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-cancel",
+      "origin": "temporal-supervised-C7XX5a",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-cancel-86c069e9fb05a63c973abb50964d89b431b2c92be4d4076fe6decf628aef6558-history.json",
+      "bytes": 24166,
+      "sha256": "b141ddbe22d754aba8230077e26cba5274449ef5996234cce3492535675864fc",
+      "workflowId": "aw/review/neutral-supervised/one/planning-c50725c927521dd9acd8eb9f8e6a534d",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-cancel",
+      "origin": "temporal-supervised-C7XX5a",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-cancel-a74251967d34449186d422c47bcb08bf59d9fece2ca8e2a33c41ca9c871d672e-history.json",
+      "bytes": 21905,
+      "sha256": "4095e1bf055c947cec926c360443bc7c2948066f796883392ee0cea4cd9f018e",
+      "workflowId": "aw/audit/neutral-supervised/one/writing-overrun",
+      "workflowType": "AuditWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-cancel",
+      "origin": "temporal-supervised-C7XX5a",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-cancel-b683749353abc23379e096ec4806427d3062eb9afa2fed1b7563c43ae4f55d6a-history.json",
+      "bytes": 70000,
+      "sha256": "3fa36b9be6e6d6e70a42b9809645ad4fa038f5209e2ce8bbe5efb334698ceaac",
+      "workflowId": "aw/task/neutral-supervised/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-cancel",
+      "origin": "temporal-supervised-C7XX5a",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-writing-cancel-cdeca9d6b366707d89d048ccb4d94f83841d9fcdde3342d216d1f67ddff8539a-history.json",
+      "bytes": 24572,
+      "sha256": "3fa0a472f294dae8d9752135e2e34f4926d9d03c298457433d037f1101483da4",
+      "workflowId": "aw/review-reader/neutral-supervised/one/reviewer/af8edda7cf6d6447c720ef0e41959e85992b435206e414c6b66810c3551871fe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-writing-cancel",
+      "origin": "temporal-supervised-C7XX5a",
+      "unfinished": false
+    }
+  ]
+}

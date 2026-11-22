@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "workflow-reliability-cost/1",
+  "pairs": 2,
+  "reserve": 0.1,
+  "limits": {
+    "elapsed_ms": 28800000,
+    "responses": 600,
+    "input_uncached": 3000000,
+    "output": 600000
+  },
+  "scenarios": [
+    {
+      "id": "H-01",
+      "task": "Исправить локальный дефект в общей функции; пройти независимую приёмку и обязательные проверки.",
+      "stimulus": [
+        "Один воспроизводимый дефект, два потребителя общей функции, отрицательный граничный случай."
+      ],
+      "checks": [
+        "root-cause",
+        "both-consumers",
+        "independent-acceptance",
+        "validation",
+        "no-extra-authority"
+      ]
+    },
+    {
+      "id": "H-02",
+      "task": "Исправить одно замечание совета при нескольких прежних полных PASS.",
+      "stimulus": [
+        "Изменение одной зависимости роли.",
+        "Новая зависимость, общий scope, открытый FAIL и неполная карта проверяются раздельно."
+      ],
+      "checks": [
+        "unchanged-pass",
+        "changed-dependency",
+        "new-dependency",
+        "shared-scope",
+        "open-fail",
+        "incomplete-map",
+        "role-rationale"
+      ]
+    },
+    {
+      "id": "H-03",
+      "task": "Продолжить незавершённую задачу после настоящего сжатия в том же разрешённом чате.",
+      "stimulus": [
+        "Сжатие при открытом FAIL и незавершённой операции.",
+        "Пропущенный запрет, устаревший источник, неверная роль, новое действие."
+      ],
+      "checks": [
+        "real-compaction",
+        "fresh-observed-read",
+        "mandatory-rules",
+        "invalid-context-refused",
+        "full-load-recovery",
+        "pending-preserved"
+      ]
+    },
+    {
+      "id": "H-04",
+      "task": "Дождаться результата длительной операции одним ожидающим инструментом текущего хода.",
+      "stimulus": [
+        "Длительное неизменное состояние и обычные записи журнала, затем первичный результат."
+      ],
+      "checks": [
+        "one-wait-call",
+        "no-model-poll",
+        "same-turn",
+        "primary-result",
+        "no-duplicate-effect"
+      ]
+    },
+    {
+      "id": "H-05",
+      "task": "Восстановить потерянную доставку, учесть дубли и отмену без повторного побочного действия.",
+      "stimulus": [
+        "Завершение до подписки, потеря, дубликат и перестановка уведомлений.",
+        "Перезапуск среды, прежний owner/generation, отмена и позднее событие."
+      ],
+      "checks": [
+        "pre-subscription",
+        "delivery-recovered",
+        "deduplicated",
+        "reordered",
+        "restart-reconciled",
+        "owner-fenced",
+        "late-cancel-refused"
+      ]
+    },
+    {
+      "id": "H-06",
+      "task": "Продлить владение при долгой работе; проверить активность непосредственно перед STOP и восстановление.",
+      "stimulus": [
+        "Переход границы lease при долгом этапе.",
+        "Живой writer непосредственно перед STOP; resume в прежней среде и холодное восстановление раздельно."
+      ],
+      "checks": [
+        "lease-renewed",
+        "live-writer-detected",
+        "stop-confirmed",
+        "resume-distinct",
+        "no-double-launch",
+        "harness-compatible",
+        "fail-history"
+      ]
+    }
+  ]
+}

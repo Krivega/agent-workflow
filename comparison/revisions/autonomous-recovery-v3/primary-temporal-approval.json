@@ -1,0 +1,27 @@
+{
+  "kind": "explicit-h06-temporal-autonomous-recovery-v3-approval",
+  "source": "/Users/krivega/.codex/sessions/2026/11/04/rollout-2026-11-04T20-29-09-01a1a79b-848a-7c82-aa80-b11ae62783e9.jsonl#L17210",
+  "sha256RawLineWithLF": "bcb331add4ce15bb6610bacf6334867824bb2d9c18395c1eb628fcbb283677df",
+  "timestamp": "2026-11-05T14:28:41.167Z",
+  "questionCallId": "call_4af92480373f4141acb797689b4a118b",
+  "answer": "Автономный Temporal: один отдельный допуск на весь прогон, ручной /2 сохранить (рекомендую)",
+  "scope": {
+    "profile": "h06-autonomous-recovery/3",
+    "variant": "temporal",
+    "implementation": true,
+    "initialGrantCovers": [
+      "server setup and shutdown",
+      "managed model turns",
+      "derived PAUSE and RESUME",
+      "warm and cold recovery",
+      "completion"
+    ],
+    "freshNumericGrantRequired": true,
+    "reuseLegacyGrant": false,
+    "manualV2Preserved": true,
+    "trustedHostExecutionOriginOptIn": true,
+    "humanControlQualification": false,
+    "defaultSeriesConsumerSwitch": false,
+    "productionCommandAuthorityChange": false
+  }
+}

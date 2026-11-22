@@ -1,0 +1,479 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "modelStarts": 0,
+    "baseCommit": "5cd976d4db560cb9e55174d8ace10a39cb09d24d",
+    "uncommitted": true
+  },
+  "origin": {
+    "nativeModelStarts": 0,
+    "qualification": false,
+    "scope": "real Temporal SDK choreography with synthetic Activities/authority/checkpoint and credit storage; not native task/human grant/production recovery qualification",
+    "sdkBasicAttempt": 2,
+    "sdkCanAttempt": 1,
+    "serverVersion": "1.32.0",
+    "cliVersion": "1.9.1",
+    "canThreshold": 40,
+    "actualCanSuggestionAndNewRun": true,
+    "historyFormat": "temporal-json"
+  },
+  "sourceInventories": [
+    {
+      "file": "basic-source.json",
+      "sha256": "ce1a60b870fdd287ecc842ffe3bab002bc3afe8db2fe58f2a0f3b9a435fea7bf",
+      "bytes": 3286,
+      "origin": "sdk-basic-final-02",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "can-source.json",
+      "sha256": "e4dfdaf997b02048cc33cac3273db7d5df978363b447965e8a70cef143a59257",
+      "bytes": 3286,
+      "origin": "sdk-can-final-01",
+      "nativeModelStarts": 0
+    }
+  ],
+  "fixtures": [],
+  "cases": [
+    {
+      "file": "basic-001-history.json",
+      "sha256": "1469217a92c90eeaf9840a48c602061da218f62cea9ac55a7765cdefb9a6d431",
+      "bytes": 197014,
+      "workflowId": "aw/task/candidate-requirements/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/candidate-requirements/final-01a1895d-9a31-7687-9c2d-5729a3b20bb2.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-002-history.json",
+      "sha256": "f5303e25bea42418a79e336e173e31608023364777ee4c5f360856c7b44aa23d",
+      "bytes": 47163,
+      "workflowId": "aw/task/candidate-requirements/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/candidate-requirements/unfinished-before-control-01a1895d-9a31-7687-9c2d-5729a3b20bb2.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-003-history.json",
+      "sha256": "dca3bd8838b8db3e9d6fe60fc881b2c9ada3620cb98819c2a699d386dab32fd4",
+      "bytes": 84050,
+      "workflowId": "aw/task/candidate-requirements/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/candidate-requirements/unfinished-requirements-held-01a1895d-9a31-7687-9c2d-5729a3b20bb2.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-004-history.json",
+      "sha256": "a5c8a1f519a6b2061a0b77e43d6feeec83a538c326725421a737814c83081d3d",
+      "bytes": 68383,
+      "workflowId": "aw/task/candidate-requirements/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/candidate-requirements/unfinished-stop-confirmed-activity-undrained-01a1895d-9a31-7687-9c2d-5729a3b20bb2.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-005-history.json",
+      "sha256": "b8e07a93fc6ae25fbbd97a475a8e124802de8846579022845660b6550988df8d",
+      "bytes": 110439,
+      "workflowId": "aw/task/finish-DONE-raw-cancel/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/finish-DONE-raw-cancel/final-01a1895d-b1d1-7d23-ab2b-8ece138f10c4.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-006-history.json",
+      "sha256": "1e7b41fa6e764d4788072c8969335389c5ec2ec9046a6f2d40acf468b2f7c429",
+      "bytes": 86732,
+      "workflowId": "aw/task/finish-DONE-raw-cancel/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/finish-DONE-raw-cancel/unfinished-before-control-01a1895d-b1d1-7d23-ab2b-8ece138f10c4.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-007-history.json",
+      "sha256": "93ae6152b4427e4cc07f5017b47db432b64d1f57269207e29734c0c2f6872158",
+      "bytes": 92871,
+      "workflowId": "aw/task/finish-DONE-raw-cancel/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/finish-DONE-raw-cancel/unfinished-stop-confirmed-activity-undrained-01a1895d-b1d1-7d23-ab2b-8ece138f10c4.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-008-history.json",
+      "sha256": "a2558f7ad119c6b5886b37e25d2de1715a8f71486414cda2988a0db2747878a6",
+      "bytes": 106986,
+      "workflowId": "aw/task/held-pending-resume/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/held-pending-resume/final-01a1895d-bb00-7a6f-aaf5-68a6614c85b9.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-009-history.json",
+      "sha256": "84b2588e7819130b8b7a5f873f27ef6b86673a1179e3964c96d714c246f8184e",
+      "bytes": 40515,
+      "workflowId": "aw/task/held-pending-resume/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/held-pending-resume/unfinished-before-control-01a1895d-bb00-7a6f-aaf5-68a6614c85b9.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-010-history.json",
+      "sha256": "997d929912fe271c36d4050f0727df5b2841851d4e6dc08f42b2bab4fbc83ab2",
+      "bytes": 95561,
+      "workflowId": "aw/task/held-pending-resume/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/held-pending-resume/unfinished-raw-cancel-pending-update-01a1895d-bb00-7a6f-aaf5-68a6614c85b9.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-011-history.json",
+      "sha256": "d3e61deb435fdeccd71283c6c15a5b2b5a5593e28265bff26b6bf77be4ca1ef3",
+      "bytes": 61698,
+      "workflowId": "aw/task/held-pending-resume/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/held-pending-resume/unfinished-stop-confirmed-activity-undrained-01a1895d-bb00-7a6f-aaf5-68a6614c85b9.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-012-history.json",
+      "sha256": "d4f013f188c05380bcaa8ce9a214c199c50d5a9302e37e99dc0a8005dd24d23a",
+      "bytes": 120953,
+      "workflowId": "aw/task/integrated-pause/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/integrated-pause/final-01a1895d-a9a2-7877-b253-52b39bd11ff5.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-013-history.json",
+      "sha256": "f4bb89221fd51244e7e3862af1236131fc932d8100108dc0d24d47a686fb48b1",
+      "bytes": 65320,
+      "workflowId": "aw/task/integrated-pause/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/integrated-pause/unfinished-before-control-01a1895d-a9a2-7877-b253-52b39bd11ff5.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-014-history.json",
+      "sha256": "acdc086b427bb3d31614414ce463a426f65ecfc7550d06eff27043ce38215c03",
+      "bytes": 86470,
+      "workflowId": "aw/task/integrated-pause/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/integrated-pause/unfinished-stop-confirmed-activity-undrained-01a1895d-a9a2-7877-b253-52b39bd11ff5.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-015-history.json",
+      "sha256": "5bee4503b918318077ac7731506337c3f20f05b083b9fc39aaa91aef54059fe2",
+      "bytes": 78686,
+      "workflowId": "aw/task/writer-cancel/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-cancel/final-01a1895d-9464-735b-a006-751c741e9232.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-016-history.json",
+      "sha256": "f30dc7ed3e8e411562abca26565307dd3f9d5fb9549c1ec3c41ea4d9c5849610",
+      "bytes": 40419,
+      "workflowId": "aw/task/writer-cancel/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-cancel/unfinished-before-control-01a1895d-9464-735b-a006-751c741e9232.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-017-history.json",
+      "sha256": "aa1280dea239f2ae44c0f8b55880d58f517f76065c75d10e06ed700e4f07b606",
+      "bytes": 61550,
+      "workflowId": "aw/task/writer-cancel/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-cancel/unfinished-stop-confirmed-activity-undrained-01a1895d-9464-735b-a006-751c741e9232.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-018-history.json",
+      "sha256": "b9874e240df00a942fdc8bf47b6a889c2248024c06523c6046c125c73aa2f686",
+      "bytes": 124788,
+      "workflowId": "aw/task/writer-pause-lost-response/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-pause-lost-response/final-01a1895d-901a-7870-98da-e691d60799bf.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-019-history.json",
+      "sha256": "5cb6ab8d6f020547d35bad902278d9ed2a24768b6cee59765f1d18ff9b95f8fb",
+      "bytes": 40612,
+      "workflowId": "aw/task/writer-pause-lost-response/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-pause-lost-response/unfinished-before-control-01a1895d-901a-7870-98da-e691d60799bf.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-020-history.json",
+      "sha256": "45d16bd078d283adf710efe4dd030e577684006071d8a4334206650ab216ce71",
+      "bytes": 106218,
+      "workflowId": "aw/task/writer-pause-lost-response/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-pause-lost-response/unfinished-held-before-human-01a1895d-901a-7870-98da-e691d60799bf.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-021-history.json",
+      "sha256": "3c026dc0e16f4c3232ec9250160f3f9d384acfdcf9e2457ba763e49585d0911a",
+      "bytes": 58022,
+      "workflowId": "aw/task/writer-pause-lost-response/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-pause-lost-response/unfinished-lost-response-01a1895d-901a-7870-98da-e691d60799bf.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-022-history.json",
+      "sha256": "03dd2e061705964bc0ecffb2b0078bdc1f58e60d473ce591e5b5fe07a25cfc27",
+      "bytes": 79571,
+      "workflowId": "aw/task/writer-pause-lost-response/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/writer-pause-lost-response/unfinished-stop-confirmed-activity-undrained-01a1895d-901a-7870-98da-e691d60799bf.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": true
+    },
+    {
+      "file": "basic-023-history.json",
+      "sha256": "82a6e1379268b8b51da0efa31fb946ae1cceb4c0aab3f428dd59693a18bc6042",
+      "bytes": 14148,
+      "workflowId": "aw/review/finish-DONE-raw-cancel/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/2205c74d0c10d4928821c70b15db97f75e193cb1e33fc03fa793991b11a354a7.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-024-history.json",
+      "sha256": "9541875c33ada7fd494f91acf4d04a9b36f693ad473e4ba119cdd2341aabe718",
+      "bytes": 14159,
+      "workflowId": "aw/review/candidate-requirements/one/acceptance-a1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/34a7c8ae710332fe688b3aaf11789df575b40fe8b731728641f701998d88dcd1.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-025-history.json",
+      "sha256": "c514cdec0075fce27204404e9c6407e44dc39314ef16355524a3c76c77cd95ae",
+      "bytes": 14106,
+      "workflowId": "aw/review/integrated-pause/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/3d490968b80ed8d69af3c28fd8f6a86fe4e8756ffa327aeabb4d3dfe83daa7bc.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-026-history.json",
+      "sha256": "3fef7a675ae8534ec57ee54a929900ba666d12ef035daf4d7f29c2ebe63f793e",
+      "bytes": 14172,
+      "workflowId": "aw/review/writer-pause-lost-response/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/64cbf115aceae6784c0889c930c152e4c544f71b3b819ce73aa8a6db828970a8.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-027-history.json",
+      "sha256": "b3734ae6992ed0bfc703fd0d808a418c6017f2c71561bb1dabf0297cc99d58a7",
+      "bytes": 14158,
+      "workflowId": "aw/review/finish-DONE-raw-cancel/one/acceptance-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/6623bc256048398ede2f67c76277ac926811248f8fdae3c6bc5e7fdab67da52f.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-028-history.json",
+      "sha256": "00be06e6833988bcf8a9e9048808b4a4bcce6f46f296a9f7a1ffb31ff5c3ee1b",
+      "bytes": 14149,
+      "workflowId": "aw/review/candidate-requirements/one/planning-a1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/c9bdd02ffc80f502f78f8949a25e624fda06abdb6f37ce5228c54ada9df8546e.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-029-history.json",
+      "sha256": "677b13b46ee7d5b33b7e083dd11223bc0174dc768f96da4f6b9a0271ff914a92",
+      "bytes": 14148,
+      "workflowId": "aw/review/candidate-requirements/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/e6b873da4b44edc31ac93edfc3adfb025bb48919bae128dfa46a4aea89733457.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-030-history.json",
+      "sha256": "7d7da53e4b0e50db42aa55d5c48747ae3feea504c5003391816c89cfec31f665",
+      "bytes": 14127,
+      "workflowId": "aw/review/held-pending-resume/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/efe6578b966dae0f31c99d6b51f2cc62b2357e756d3577b9d6a877816aa12d97.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "basic-031-history.json",
+      "sha256": "21eb3c30402952a0743c72f8d14607fb8d2933b8f0fa6298e2ad2cadbe00aeb6",
+      "bytes": 14085,
+      "workflowId": "aw/review/writer-cancel/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/f9a0fb4a22117c74ec8e2b6e89d574b74de63702d576e88fb82028b8d5ecb4b0.json",
+      "origin": "sdk-basic-final-02",
+      "unfinished": false
+    },
+    {
+      "file": "can-001-history.json",
+      "sha256": "fabaf33ade8fb970992c932244a64579f08f22b136d5492dab6a9823e093ac21",
+      "bytes": 90213,
+      "workflowId": "aw/task/bounded-actual-CAN/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/bounded-actual-CAN/CAN-probe-1-01a18956-e39a-7591-ae63-48ec0ef87291.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": false
+    },
+    {
+      "file": "can-002-history.json",
+      "sha256": "2581cb8352e267a9cf9c895c8bd016b99440b0c20078da896bbd05b58b5ec8a7",
+      "bytes": 139055,
+      "workflowId": "aw/task/bounded-actual-CAN/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/bounded-actual-CAN/final-c3d46856-f256-4a41-b74d-14978b08cd92.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": false
+    },
+    {
+      "file": "can-003-history.json",
+      "sha256": "4fb74822b67c8cfb82cdf5e4762d386a4966804d5cd22fc7f4d5e1f935e8d433",
+      "bytes": 82706,
+      "workflowId": "aw/task/bounded-actual-CAN/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/bounded-actual-CAN/unfinished-before-CAN-probe-01a18956-e39a-7591-ae63-48ec0ef87291.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": true
+    },
+    {
+      "file": "can-004-history.json",
+      "sha256": "4cdc68ec264dd696cbc5a76e4cd47d5b5e10b5c2789ca2c10d2dda3cb5012bbf",
+      "bytes": 40640,
+      "workflowId": "aw/task/bounded-actual-CAN/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/bounded-actual-CAN/unfinished-before-control-01a18956-e39a-7591-ae63-48ec0ef87291.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": true
+    },
+    {
+      "file": "can-005-history.json",
+      "sha256": "5ca6308fea1271750ebf33ffcae077977f1d213710a142cb535aa2740cd1d3e9",
+      "bytes": 23871,
+      "workflowId": "aw/task/bounded-actual-CAN/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/bounded-actual-CAN/unfinished-new-run-held-before-fresh-RESUME-c3d46856-f256-4a41-b74d-14978b08cd92.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": true
+    },
+    {
+      "file": "can-006-history.json",
+      "sha256": "b9a1837aed8f976ac04302eacb944089b184e03c38d24ac33f4d3de37dceb1a1",
+      "bytes": 62282,
+      "workflowId": "aw/task/bounded-actual-CAN/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "cases/bounded-actual-CAN/unfinished-stop-confirmed-activity-undrained-01a18956-e39a-7591-ae63-48ec0ef87291.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": true
+    },
+    {
+      "file": "can-007-history.json",
+      "sha256": "56094f6b8e5f77f718a3367df6ebf3c40e4f1709c4b5b5c3c030ebf041f9ac78",
+      "bytes": 14120,
+      "workflowId": "aw/review/bounded-actual-CAN/one/planning-a1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/496c9109922d505f0681668afca071aff97c373f63dcf4e0fca2cd1d56a79250.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": false
+    },
+    {
+      "file": "can-008-history.json",
+      "sha256": "6c9d997145d0c12b55da82e784341c8feb179f753d655cae0fd7f8dd4d96c036",
+      "bytes": 14120,
+      "workflowId": "aw/review/bounded-actual-CAN/one/planning-a0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/80ac2d56793948daf936bfe2704bbb0915bb053c1f660f932e79a9ea9fe2be7a.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": false
+    },
+    {
+      "file": "can-009-history.json",
+      "sha256": "960dd1b943fad708f47261f59fc0e070818e019fc69bbe57e2ef3cbfb1207e83",
+      "bytes": 14127,
+      "workflowId": "aw/review/bounded-actual-CAN/one/acceptance-a1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "histories/8aa4e6310ac3b80a5bc1bff72e769dc1535d83b3586cf6e18adb7d5dcd5eec3b.json",
+      "origin": "sdk-can-final-01",
+      "unfinished": false
+    }
+  ]
+}

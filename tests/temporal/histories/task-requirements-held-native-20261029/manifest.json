@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "modelStarts": 0,
+    "baseCommit": "a79757f3d82c648ac8e0a8a459a5be3cd786d0a4",
+    "uncommitted": true
+  },
+  "origin": {
+    "nativeModelStarts": 4,
+    "qualification": "Incomplete native requirements attempt: initial planning FAIL and confirmed held, no writer or grant; exact command arrived through unsupported primary question-reply envelope. Four actual starts; cleanup within45min, controlledStop=false; no full continuation qualification. Pinning/replay adds no model execution.",
+    "harnessSha256": "6c94049399b70b0e66dfe40d8ce3c745bbcd6a89e9b9f28bfca2ddc63b53eb86"
+  },
+  "sourceInventories": [
+    {
+      "file": "native-requirements-source.json",
+      "sha256": "ee9200ef050c140f2f1d52cc3cf20c2a2a1e4cbba2751daa359b2640bd19a6cf",
+      "bytes": 56842,
+      "origin": "temporal-continuation-IY7n3S",
+      "nativeModelStarts": 4
+    }
+  ],
+  "fixtures": [],
+  "cases": [
+    {
+      "file": "native-requirements-held-history.json",
+      "sha256": "933aa0df25d62398865bc5bf47217f3588992bbd5a74dd2a4d0a59e08b8493a5",
+      "bytes": 18756,
+      "workflowId": "aw/task/neutral-continuation/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "native-requirements-held-format-incomplete",
+      "origin": "temporal-continuation-IY7n3S",
+      "unfinished": true
+    }
+  ]
+}

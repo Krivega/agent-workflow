@@ -1,0 +1,84 @@
+{
+  "kind": "h06-v2-isolated-integration-consumer-map",
+  "semanticAccepted": true,
+  "mayRun": false,
+  "executionAuthority": "none",
+  "assets": {
+    "suite": {
+      "path": "/Users/krivega/workspace/mathematical-detective/tools/agent-workflow/tmp/team-next/h06-implementation-20261101-12/t5/criteria-r03/suite.json",
+      "sha256": "571e38933ef284d88fae801b632c220c48847eca728c6127dc02506b40954e37",
+      "bytes": 5214
+    },
+    "materials": {
+      "path": "/Users/krivega/workspace/mathematical-detective/tools/agent-workflow/tmp/team-next/h06-implementation-20261101-12/t5/criteria-r03/materials.json",
+      "sha256": "ff17050ec0de67190a04aa1108379e25c86b06db48a324c37ce121b018b90bfa",
+      "bytes": 14152
+    }
+  },
+  "hostOwner": "T3 in isolated development copy; Root owns commands/docs/profile/canonical",
+  "newConsumers": [
+    {
+      "consumer": "test-owned H06 contract/host/checker",
+      "input": "these exact /2 asset refs; criteria and material hashes part of plan/report",
+      "required": "No default import from active /1, no false historical lease PASS; --plan proposes duration/legacy boundary/budget; parser cannot manufacture authority."
+    },
+    {
+      "consumer": "H06 isolated unit tests",
+      "input": "H06/2 criterion IDs + backend-specific evidence",
+      "required": "Meaningful refusal for owner/scope mismatch, uncertain effect/stop, duplicate/lost dispatch, missing native proof and old criterion equivalence."
+    }
+  ],
+  "unchangedConsumers": [
+    "tools/agent-workflow/cli/comparisonSeries.ts",
+    "tools/agent-workflow/cli/comparisonReport.ts",
+    "tools/agent-workflow/tests/comparisonReadiness.ts",
+    "tools/agent-workflow/tests/comparisonH01.ts",
+    "tools/agent-workflow/tests/comparisonH01Preparation.ts"
+  ],
+  "unchangedReason": "Their persisted suite/material hashes and pinned /1 authority must remain valid; no import switch before full qualification.",
+  "docsOwners": [
+    {
+      "path": "docs/testing/profiles/agent-workflow.md",
+      "owner": "Root",
+      "change": "Add proposed insertion distinguishing semantic acceptance, pure tests and actual/native acceptance."
+    },
+    {
+      "path": "tools/agent-workflow/comparison/README.md",
+      "owner": "Root",
+      "change": "Document explicit /1 historical vs /2 test-owned host criteria; retain current import contract."
+    },
+    {
+      "path": "owning Temporal migration plan",
+      "owner": "Root",
+      "change": "Record semantic choice and implementation scope, leave actual qualification/TEMP17–18 open."
+    }
+  ],
+  "testsAfterImplementation": [
+    "Scoped host/contract/workflow sources explicit coverage with four100; preserve timeouts",
+    "Relevant criteria/material parsers and negative hash/version cases",
+    "ESLint/format/type diagnostics then one owner canonical yarn validate:brief"
+  ],
+  "notAuthorized": [
+    "SDK/server/native/H01/model runs",
+    "duration or budget selection as granted",
+    "current main/docs/index edits",
+    "candidate08 updates",
+    "series import migration"
+  ],
+  "causalOrdering": {
+    "legacy": [
+      "observe old deadline",
+      "accepted renew before old deadline",
+      "stage crosses OLD deadline while now<newLeaseUntil",
+      "stage end before newLeaseUntil"
+    ],
+    "expiryRecovery": "recover-owner is distinct and never renew",
+    "temporalSymbols": ["LocalTaskWorkflow", "ManagedTaskWorkflow"],
+    "proposedPlanOnly": {
+      "stageMs": 35000,
+      "oldDeadlineOffsetMs": 20000,
+      "newLeaseUntil": "must exceed stage end"
+    },
+    "executionDurationOrBudgetGranted": false
+  }
+}

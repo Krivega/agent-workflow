@@ -1,0 +1,1058 @@
+{
+  "schemaVersion": 1,
+  "source": "extracted root baseline; tool subset and preserved pool regression plus H05 adapter tests",
+  "rootTests": [
+    {
+      "path": "adapters/codex/harness2Bridge.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "cli/harness2.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/appServer.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/appServerCoder.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/appServerTransport.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/appServerTransportProcesses.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/archiveJson.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/auditLaunchObservation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/boundaries.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/chatChecks.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatCommand.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatCommandSettlement.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatCompactContext.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatCompactHost.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatControl.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatCouncil.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatDiscovery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatHost.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatMessages.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatOutput.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatPeer.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatRecovery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatRoles.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatRuntime.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatTaskConnection.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/chatWriter.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/checkReadiness.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/cli.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/coder.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coderCapabilities.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coderCreation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coderDurability.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/coderFileFailures.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/coderFiles.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/coderOutput.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coderRuntime.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coderWorkflow.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/compactContext.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparison.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonCompaction.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Contract.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Guard.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Keeper.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Legacy.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Operator.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Preparation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH01Temporal.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH04.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH05.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06AutonomousAcceptance.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedAuthority.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedDelivery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedLegacy.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedRun.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedUsage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06DelegatedWriter.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeAttempt.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeCapabilities.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeChatRelay.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeFailure.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeFullAccounting.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeHarness.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeJournal.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacy.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyActor.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyBudget.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyControl.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyControlOperator.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyCouncilUsage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyDispatch.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyDriver.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyEvidence.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyOperator.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyParentUsage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyPreparation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyRun.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyTransportPhase.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyTransportPhase.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyUsage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyUsageSummary.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeLegacyWriterPhase.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeReaderFailure.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeResume.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeStand.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporal.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalDispatch.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalDriver.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalDuration.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalEvidence.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalHistory.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalOperator.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalProcesses.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalRun.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalServer.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTemporalServerSetup.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTransport.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeTurnLedger.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06NativeUsage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06OperatorContinuation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06Package.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06Preflight.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/comparisonH06RecoveryPackage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06RetainedWarmContinuation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomous.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomousAuthority.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomousControls.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonH06TemporalAutonomousRun.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonInputs.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonMaterials.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonParticipants.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonReadiness.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonReport.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonSeries.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonSession.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonTiming.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/comparisonUsage.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coordination.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/coordinationPersistence.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/council.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/councilProfiles.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/councilProgress.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/dataRoutes.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/designReview.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/evidenceStore.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/execution.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/finalization.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/finalizationArchive.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/finalizationPersistence.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/localPlanning.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/localRun.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/localWorkflow.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/main.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/managedOriginal.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/nativeChatPermissions.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/nativeCouncil.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/nativeRead.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/ownerLease.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/preparedChecks.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/projectCards.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/projectConnection.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/projectInspection.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/refreshCouncilInputs.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/rejectedSend.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/relay.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/relayCheckpoint.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/relayOwnership.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/relayPersistence.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/relayWriters.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/restoredDependencies.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/retention.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/retentionMaintenance.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/sharedJson.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/sharedProofs.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/storageInspection.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/storageInspection.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/storageMaintenance.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/storageProcess.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/storageRecovery.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/storageRetrieval.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/supervision.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/supervisionPersistence.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/taskChatCommand.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/taskChatCouncil.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/taskChatSelection.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/taskConnection.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/taskFileMaintenance.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/td054DeadlineNative.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/td054DeadlineProbeRun.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/td054DeadlineReference.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/arbitration.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/arbitrationPolicy.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/artifacts.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/audit.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/auditPolicy.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/auditWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/backup.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/backupRecovery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/boundaries.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/contracts.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/controlledReader.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/correction.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/correctionHost.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/finalization.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/finalizationWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/initialArbitration.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/legacyArchive.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/localAdmission.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/localTask.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/localTaskSafety.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/localTaskShutdown.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/localTaskWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/mechanicalTask.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/nativeQuestion.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/nativeWorkspace.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/observedLoad.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/preparation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/progressAudit.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/reader.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerAuthority.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerContext.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerControl.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerExecution.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerHeartbeat.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerHost.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerLoadCommandOutputs.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerMessages.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerRecovery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerStatus.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/readerStop.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/recoveredSend.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/retention.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/review.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/reviewWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/stageAudit.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/substantialTask.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskAttemptPaths.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskAudit.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskAuditWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskBackend.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskBackendClient.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskBudget.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskBudgetProcess.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskChecks.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskCompletionProcess.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskCompletionRecovery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskContinuation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskContinuationWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskExecution.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskExecutionClient.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskExecutionWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskFiles.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskGate.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHuman.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanActivities.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanAuthority.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanCompletion.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanCompletionGate.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanExecution.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanExecutionLocal.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanLocalTask.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskHumanWorkflow.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskPermissionLock.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskRecovery.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskStartAdmission.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/taskWriter.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/temporal/taskWriter.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/temporal/writerProcesses.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/transportJournal.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/userCommands.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/workflowDiskSpace.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/workflowGuards.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/workflowHistory.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "tests/workflowPersistence.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/workflowUpgrade.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/writerProcesses.integration.test.ts",
+      "project": "integration"
+    },
+    {
+      "path": "tests/writerProcesses.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "scripts/vitestTestSequencer.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "scripts/adrChangeValidation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "scripts/adrValidation.test.ts",
+      "project": "unit"
+    },
+    {
+      "path": "scripts/validateAdrChanges.test.ts",
+      "project": "unit"
+    }
+  ]
+}

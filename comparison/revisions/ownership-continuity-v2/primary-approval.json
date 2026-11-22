@@ -1,0 +1,25 @@
+{
+  "kind": "explicit-H06-v2-semantics-and-implementation-approval",
+  "source": "/Users/krivega/.codex/sessions/2026/10/30/rollout-2026-10-30T21-52-11-01a18e27-beea-73c2-b8ec-597eb9e92ec7.jsonl#L23154",
+  "sha256RawLineWithLF": "355a68335b8d06b3739dff0d21886526a2e05b2f21e173d9c177d0ee06519d8c",
+  "content": [
+    {
+      "type": "input_text",
+      "text": "<send_user_message_question_reply>\n[{\"questionItemId\":\"[\\\"request_user_input_async\\\",\\\"call_a84cb957caf3438693fbbde895907594\\\",0]\",\"question\":\"Подготовлен и проверен [черновик H06/2](/Users/krivega/workspace/mathematical-detective/tools/agent-workflow/tmp/team-next/h06-preparation-20261101-11/t5/h06-draft-r01/README.md). Можно ли продолжить его реализацию с общим критерием сохранения владельца: legacy доказывает продление lease, Temporal — сохранение состояния и полномочий согласно ADR-0067? Это меняет смысл сравнения H06, поэтому действующий критерий пока не переключён.\",\"answer\":\"Продолжить с H06/2 (рекомендую)\"}]\n</send_user_message_question_reply>\n"
+    }
+  ],
+  "timestamp": "2026-11-01T09:04:22.795Z",
+  "context": {
+    "turn_id": "01a1965a-4cad-7c33-a7d6-b151a3b5c2cf",
+    "cwd": "/Users/krivega/workspace/mathematical-detective"
+  },
+  "scope": {
+    "semanticRevision": "H06/2 ownership continuity with engine-specific evidence",
+    "implementation": true,
+    "H01Grant": false,
+    "nativeModelRun": false,
+    "SDKServerRun": false,
+    "canonicalAndPureChecks": true,
+    "defaultConsumerSwitch": false
+  }
+}

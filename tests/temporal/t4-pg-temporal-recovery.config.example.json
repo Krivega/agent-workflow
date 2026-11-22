@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "recoverySet": null,
+  "executables": {
+    "postgresDirectory": "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin",
+    "temporalServer": "/absolute/path/to/runtime/temporal-1.32.0/temporal-server",
+    "temporalSqlTool": "/absolute/path/to/runtime/temporal-1.32.0/temporal-sql-tool"
+  },
+  "target": {
+    "parent": "/private/tmp",
+    "postgresPort": 55438,
+    "grpcPort": 17239,
+    "renderedConfiguration": null
+  },
+  "budget": {
+    "mainMs": 180000,
+    "cleanupMs": 20000,
+    "maxObservedDiskBytes": 1073741824,
+    "postgresSharedBuffersMb": 64,
+    "postgresMaxConnections": 32,
+    "temporalMaxObservedRssBytes": 1073741824,
+    "outerMs": 420000
+  },
+  "authorization": {
+    "evidence": null,
+    "sourceQuiescenceVerified": false,
+    "writerReconciliationVerified": false
+  },
+  "executablePins": {
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/postgres": {
+      "sha256": "1ab0d3a42862c98e78e564da1989e7b09a64f7a11d7a1239321f64b1517c27c7",
+      "bytes": 7194160
+    },
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/initdb": {
+      "sha256": "1298a282f360bc9502a84804cff45f0b8ecd87a8d157d286ae809af35850905a",
+      "bytes": 172016
+    },
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/pg_ctl": {
+      "sha256": "894fa43009bb98c2853533701380397bb67308e0d78a74d8afffd0da8260d75c",
+      "bytes": 94008
+    },
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/psql": {
+      "sha256": "c32cc12b549f3fab56d1c61c628f9ffab625e8df9d14ae6e3a6eea168cde586d",
+      "bytes": 601040
+    },
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/pg_dump": {
+      "sha256": "b0d564d25b885515b537b03d252f5928abcdb0a32a4ecdc47e8dc3ca41bbd7ea",
+      "bytes": 446848
+    },
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/pg_restore": {
+      "sha256": "ee7fd959ebff61509e55f40b61885f722f9f4a611aaf1b9b3bb9a595feeb2117",
+      "bytes": 218400
+    },
+    "/opt/homebrew/Cellar/postgresql@12/12.22_2/bin/createdb": {
+      "sha256": "4b0eb19ac05f876d36bbb224658d1799e628512850d305c54e98f21aca77d7e6",
+      "bytes": 113936
+    },
+    "/bin/ps": {
+      "sha256": "e377e9efa80518ccdee91cc9a85ae235d44b9672bc5ace7e65f7bc397173809b",
+      "bytes": 170816
+    },
+    "/usr/sbin/lsof": {
+      "sha256": "9bbfa0946ed9653a7a951e44384ca9d2c3e2b07f7f40914b3cbee6f330e8e881",
+      "bytes": 307600
+    },
+    "/absolute/path/to/runtime/temporal-1.32.0/temporal-server": null,
+    "/absolute/path/to/runtime/temporal-1.32.0/temporal-sql-tool": null
+  },
+  "temporalBinaryInventory": null
+}

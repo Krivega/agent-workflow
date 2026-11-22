@@ -1,0 +1,1156 @@
+{
+  "schemaVersion": 1,
+  "baseline": {
+    "rootFiles": 263,
+    "workflowOwnedRootFiles": 258,
+    "harness2OwnedRootFiles": 1,
+    "standaloneFiles": 78,
+    "toolingFiles": 4
+  },
+  "temporal": {
+    "cwd": ".",
+    "originalConfig": "vitest.temporal.config.mjs",
+    "config": "vitest.areas.config.mjs",
+    "coverageInclude": ["src/**/*.ts"],
+    "groups": [
+      {
+        "id": "contracts",
+        "files": [
+          "tests/temporal/arbitrationPolicy.test.ts",
+          "tests/temporal/auditPolicy.test.ts",
+          "tests/temporal/contracts.test.ts"
+        ],
+        "command": "yarn test:areas:contracts",
+        "resources": ["vitest.temporal.config.mjs", "check-areas.profiles.json"],
+        "env": ["Standalone package dependencies"],
+        "output": [
+          "tmp/check-areas/temporal-contracts/junit.xml",
+          "tmp/check-areas/temporal-contracts/coverage"
+        ],
+        "limits": "Standalone local config; partial coverage retains whole original source scope and four100% thresholds. It does not replace the separate root registration.",
+        "status": "registered"
+      },
+      {
+        "id": "workflows",
+        "files": [
+          "tests/temporal/auditWorkflow.test.ts",
+          "tests/temporal/controlledReader.test.ts",
+          "tests/temporal/finalizationWorkflow.test.ts",
+          "tests/temporal/localTaskWorkflow.test.ts",
+          "tests/temporal/reviewWorkflow.test.ts",
+          "tests/temporal/taskAuditWorkflow.test.ts",
+          "tests/temporal/taskContinuationWorkflow.test.ts",
+          "tests/temporal/taskExecutionWorkflow.test.ts",
+          "tests/temporal/taskHumanWorkflow.test.ts"
+        ],
+        "command": "yarn test:areas:workflows",
+        "resources": ["vitest.temporal.config.mjs", "check-areas.profiles.json"],
+        "env": ["Standalone package dependencies"],
+        "output": [
+          "tmp/check-areas/temporal-workflows/junit.xml",
+          "tmp/check-areas/temporal-workflows/coverage"
+        ],
+        "limits": "Standalone local config; partial coverage retains whole original source scope and four100% thresholds. It does not replace the separate root registration.",
+        "status": "registered"
+      },
+      {
+        "id": "client",
+        "files": [
+          "tests/temporal/backup.test.ts",
+          "tests/temporal/legacyArchive.test.ts",
+          "tests/temporal/readerStatus.test.ts",
+          "tests/temporal/retention.test.ts",
+          "tests/temporal/taskBackendClient.test.ts",
+          "tests/temporal/taskExecutionClient.test.ts"
+        ],
+        "command": "yarn test:areas:client",
+        "resources": ["vitest.temporal.config.mjs", "check-areas.profiles.json"],
+        "env": ["Standalone package dependencies"],
+        "output": [
+          "tmp/check-areas/temporal-client/junit.xml",
+          "tmp/check-areas/temporal-client/coverage"
+        ],
+        "limits": "Standalone local config; partial coverage retains whole original source scope and four100% thresholds. It does not replace the separate root registration.",
+        "status": "registered"
+      },
+      {
+        "id": "execution",
+        "files": [
+          "tests/temporal/arbitration.test.ts",
+          "tests/temporal/artifacts.test.ts",
+          "tests/temporal/audit.test.ts",
+          "tests/temporal/backupRecovery.test.ts",
+          "tests/temporal/boundaries.test.ts",
+          "tests/temporal/correction.test.ts",
+          "tests/temporal/correctionHost.test.ts",
+          "tests/temporal/finalization.test.ts",
+          "tests/temporal/initialArbitration.test.ts",
+          "tests/temporal/localAdmission.test.ts",
+          "tests/temporal/localTask.test.ts",
+          "tests/temporal/localTaskSafety.test.ts",
+          "tests/temporal/localTaskShutdown.test.ts",
+          "tests/temporal/mechanicalTask.test.ts",
+          "tests/temporal/nativeQuestion.test.ts",
+          "tests/temporal/nativeWorkspace.test.ts",
+          "tests/temporal/observedLoad.test.ts",
+          "tests/temporal/preparation.test.ts",
+          "tests/temporal/progressAudit.test.ts",
+          "tests/temporal/reader.test.ts",
+          "tests/temporal/readerAuthority.test.ts",
+          "tests/temporal/readerContext.test.ts",
+          "tests/temporal/readerControl.test.ts",
+          "tests/temporal/readerExecution.test.ts",
+          "tests/temporal/readerHeartbeat.test.ts",
+          "tests/temporal/readerHost.test.ts",
+          "tests/temporal/readerLoadCommandOutputs.test.ts",
+          "tests/temporal/readerMessages.test.ts",
+          "tests/temporal/readerRecovery.test.ts",
+          "tests/temporal/readerStop.test.ts",
+          "tests/temporal/recoveredSend.test.ts",
+          "tests/temporal/review.test.ts",
+          "tests/temporal/stageAudit.test.ts",
+          "tests/temporal/substantialTask.test.ts",
+          "tests/temporal/taskAttemptPaths.test.ts",
+          "tests/temporal/taskAudit.test.ts",
+          "tests/temporal/taskBackend.test.ts",
+          "tests/temporal/taskBudget.test.ts",
+          "tests/temporal/taskBudgetProcess.test.ts",
+          "tests/temporal/taskChecks.test.ts",
+          "tests/temporal/taskCompletionProcess.test.ts",
+          "tests/temporal/taskCompletionRecovery.test.ts",
+          "tests/temporal/taskContinuation.test.ts",
+          "tests/temporal/taskExecution.test.ts",
+          "tests/temporal/taskFiles.test.ts",
+          "tests/temporal/taskGate.test.ts",
+          "tests/temporal/taskHuman.test.ts",
+          "tests/temporal/taskHumanActivities.test.ts",
+          "tests/temporal/taskHumanAuthority.test.ts",
+          "tests/temporal/taskHumanCompletion.test.ts",
+          "tests/temporal/taskHumanCompletionGate.test.ts",
+          "tests/temporal/taskHumanExecution.test.ts",
+          "tests/temporal/taskHumanExecutionLocal.test.ts",
+          "tests/temporal/taskHumanLocalTask.test.ts",
+          "tests/temporal/taskPermissionLock.test.ts",
+          "tests/temporal/taskRecovery.test.ts",
+          "tests/temporal/taskStartAdmission.test.ts",
+          "tests/temporal/taskWriter.integration.test.ts",
+          "tests/temporal/taskWriter.test.ts",
+          "tests/temporal/writerProcesses.test.ts",
+          "tests/temporal/observedWrite.test.ts",
+          "tests/temporal/writtenTaskRecovery.test.ts"
+        ],
+        "command": "yarn test:areas:execution",
+        "resources": ["vitest.temporal.config.mjs", "check-areas.profiles.json"],
+        "env": ["Standalone package dependencies"],
+        "output": [
+          "tmp/check-areas/temporal-execution/junit.xml",
+          "tmp/check-areas/temporal-execution/coverage"
+        ],
+        "limits": "Standalone local config; partial coverage retains whole original source scope and four100% thresholds. It does not replace the separate root registration.",
+        "status": "registered"
+      }
+    ]
+  },
+  "repository": {
+    "cwd": ".",
+    "groups": [
+      {
+        "id": "legacy",
+        "files": [
+          "adapters/codex/harness2Bridge.test.ts",
+          "tests/comparisonH06NativeCapabilities.test.ts",
+          "tests/comparisonH06NativeChatRelay.test.ts",
+          "tests/comparisonH06NativeJournal.test.ts",
+          "tests/comparisonH06NativeReaderFailure.test.ts",
+          "tests/comparisonH06NativeResume.test.ts",
+          "tests/comparisonH06NativeTemporal.test.ts",
+          "tests/comparisonH06NativeTemporalDriver.test.ts",
+          "tests/comparisonH06NativeTemporalEvidence.test.ts",
+          "tests/comparisonH06NativeTemporalOperator.test.ts",
+          "tests/comparisonH06NativeTemporalProcesses.test.ts",
+          "tests/comparisonH06NativeTemporalServer.test.ts",
+          "tests/comparisonH06NativeTemporalServerSetup.test.ts",
+          "tests/comparisonH06NativeTransport.test.ts",
+          "tests/comparisonH06OperatorContinuation.test.ts",
+          "tests/comparisonH06TemporalAutonomousControls.test.ts",
+          "tests/main.test.ts",
+          "tests/td054DeadlineNative.test.ts"
+        ],
+        "coverageInclude": ["**/*.ts"],
+        "command": "yarn test:repo:legacy",
+        "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
+        "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
+        "output": [
+          "tmp/check-areas/workflow.legacy/junit.xml",
+          "tmp/check-areas/workflow.legacy/coverage"
+        ],
+        "limits": "Same root file/project, SWC/setup/pool/timeouts and 100% thresholds; local result is not full repository admission.",
+        "status": "registered"
+      },
+      {
+        "id": "core",
+        "files": [
+          "tests/chatControl.test.ts",
+          "tests/chatCouncil.test.ts",
+          "tests/chatMessages.test.ts",
+          "tests/coder.test.ts",
+          "tests/coderDurability.integration.test.ts",
+          "tests/coderFileFailures.integration.test.ts",
+          "tests/coderFiles.integration.test.ts",
+          "tests/coderWorkflow.integration.test.ts",
+          "tests/comparison.test.ts",
+          "tests/comparisonH06NativeHarness.test.ts",
+          "tests/comparisonH06NativeLegacyActor.test.ts",
+          "tests/comparisonMaterials.test.ts",
+          "tests/comparisonTiming.test.ts",
+          "tests/coordination.test.ts",
+          "tests/execution.test.ts",
+          "tests/finalization.test.ts",
+          "tests/localRun.test.ts",
+          "tests/relayCheckpoint.test.ts"
+        ],
+        "coverageInclude": ["core/**/*.ts", "application/**/*.ts", "ports/**/*.ts"],
+        "command": "yarn test:repo:core",
+        "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
+        "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
+        "output": [
+          "tmp/check-areas/workflow.core/junit.xml",
+          "tmp/check-areas/workflow.core/coverage"
+        ],
+        "limits": "Same root file/project, SWC/setup/pool/timeouts and 100% thresholds; local result is not full repository admission.",
+        "status": "registered"
+      },
+      {
+        "id": "adapters",
+        "files": [
+          "tests/appServer.test.ts",
+          "tests/appServerCoder.test.ts",
+          "tests/appServerTransport.test.ts",
+          "tests/appServerTransportProcesses.test.ts",
+          "tests/archiveJson.test.ts",
+          "tests/auditLaunchObservation.test.ts",
+          "tests/chatChecks.test.ts",
+          "tests/chatCommandSettlement.test.ts",
+          "tests/chatCompactHost.test.ts",
+          "tests/chatHost.test.ts",
+          "tests/chatPeer.test.ts",
+          "tests/chatRecovery.test.ts",
+          "tests/chatTaskConnection.test.ts",
+          "tests/chatWorkflow.test.ts",
+          "tests/chatWriter.test.ts",
+          "tests/cli.integration.test.ts",
+          "tests/coderCapabilities.test.ts",
+          "tests/coderCreation.test.ts",
+          "tests/compactContext.test.ts",
+          "tests/comparisonCompaction.test.ts",
+          "tests/comparisonH01Contract.test.ts",
+          "tests/comparisonH01Guard.test.ts",
+          "tests/comparisonH01Keeper.test.ts",
+          "tests/comparisonH01Legacy.test.ts",
+          "tests/comparisonH01Operator.test.ts",
+          "tests/comparisonH01Preparation.test.ts",
+          "tests/comparisonH01Temporal.test.ts",
+          "tests/comparisonH06.test.ts",
+          "tests/comparisonH06AutonomousAcceptance.test.ts",
+          "tests/comparisonH06DelegatedAuthority.test.ts",
+          "tests/comparisonH06DelegatedDelivery.test.ts",
+          "tests/comparisonH06DelegatedRun.test.ts",
+          "tests/comparisonH06DelegatedUsage.test.ts",
+          "tests/comparisonH06DelegatedWriter.test.ts",
+          "tests/comparisonH06NativeAttempt.test.ts",
+          "tests/comparisonH06NativeFailure.test.ts",
+          "tests/comparisonH06NativeFullAccounting.test.ts",
+          "tests/comparisonH06NativeLegacy.test.ts",
+          "tests/comparisonH06NativeLegacyBudget.test.ts",
+          "tests/comparisonH06NativeLegacyControl.test.ts",
+          "tests/comparisonH06NativeLegacyControlOperator.test.ts",
+          "tests/comparisonH06NativeLegacyCouncilUsage.test.ts",
+          "tests/comparisonH06NativeLegacyDispatch.test.ts",
+          "tests/comparisonH06NativeLegacyDriver.test.ts",
+          "tests/comparisonH06NativeLegacyEvidence.test.ts",
+          "tests/comparisonH06NativeLegacyOperator.test.ts",
+          "tests/comparisonH06NativeLegacyParentUsage.test.ts",
+          "tests/comparisonH06NativeLegacyRun.test.ts",
+          "tests/comparisonH06NativeLegacyUsage.test.ts",
+          "tests/comparisonH06NativeLegacyUsageSummary.test.ts",
+          "tests/comparisonH06NativeLegacyWriterPhase.test.ts",
+          "tests/comparisonH06NativeStand.test.ts",
+          "tests/comparisonH06NativeTemporalDispatch.test.ts",
+          "tests/comparisonH06NativeTemporalDuration.test.ts",
+          "tests/comparisonH06NativeTemporalHistory.test.ts",
+          "tests/comparisonH06NativeTemporalRun.test.ts",
+          "tests/comparisonH06NativeTurnLedger.test.ts",
+          "tests/comparisonH06NativeUsage.test.ts",
+          "tests/comparisonH06Package.test.ts",
+          "tests/comparisonH06RecoveryPackage.test.ts",
+          "tests/comparisonH06RetainedWarmContinuation.test.ts",
+          "tests/comparisonH06TemporalAutonomous.integration.test.ts",
+          "tests/comparisonH06TemporalAutonomousAuthority.test.ts",
+          "tests/comparisonH06TemporalAutonomousRun.test.ts",
+          "tests/comparisonInputs.test.ts",
+          "tests/comparisonParticipants.test.ts",
+          "tests/comparisonReadiness.test.ts",
+          "tests/comparisonSession.test.ts",
+          "tests/comparisonUsage.test.ts",
+          "tests/coordinationPersistence.integration.test.ts",
+          "tests/councilProfiles.test.ts",
+          "tests/dataRoutes.test.ts",
+          "tests/evidenceStore.test.ts",
+          "tests/finalizationArchive.integration.test.ts",
+          "tests/finalizationPersistence.integration.test.ts",
+          "tests/localWorkflow.integration.test.ts",
+          "tests/managedOriginal.test.ts",
+          "tests/nativeChatPermissions.test.ts",
+          "tests/nativeRead.test.ts",
+          "tests/projectCards.test.ts",
+          "tests/rejectedSend.test.ts",
+          "tests/relay.test.ts",
+          "tests/relayOwnership.integration.test.ts",
+          "tests/relayPersistence.integration.test.ts",
+          "tests/relayWriters.test.ts",
+          "tests/retention.test.ts",
+          "tests/storageInspection.integration.test.ts",
+          "tests/storageInspection.test.ts",
+          "tests/storageMaintenance.test.ts",
+          "tests/storageProcess.test.ts",
+          "tests/storageRecovery.integration.test.ts",
+          "tests/storageRetrieval.test.ts",
+          "tests/supervision.test.ts",
+          "tests/supervisionPersistence.integration.test.ts",
+          "tests/td054DeadlineProbeRun.test.ts",
+          "tests/td054DeadlineReference.test.ts",
+          "tests/transportJournal.test.ts",
+          "tests/workflowDiskSpace.test.ts",
+          "tests/workflowGuards.integration.test.ts",
+          "tests/workflowHistory.test.ts",
+          "tests/workflowPersistence.integration.test.ts",
+          "tests/workflowUpgrade.integration.test.ts",
+          "tests/writerProcesses.integration.test.ts",
+          "tests/writerProcesses.test.ts"
+        ],
+        "coverageInclude": ["adapters/**/*.ts", "project/**/*.ts"],
+        "command": "yarn test:repo:adapters",
+        "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
+        "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
+        "output": [
+          "tmp/check-areas/workflow.adapters/junit.xml",
+          "tmp/check-areas/workflow.adapters/coverage"
+        ],
+        "limits": "Same root file/project, SWC/setup/pool/timeouts and 100% thresholds; local result is not full repository admission.",
+        "status": "registered"
+      },
+      {
+        "id": "cli",
+        "files": [
+          "tests/boundaries.integration.test.ts",
+          "tests/chatCommand.test.ts",
+          "tests/chatCompactContext.test.ts",
+          "tests/chatDiscovery.test.ts",
+          "tests/chatOutput.test.ts",
+          "tests/chatRoles.test.ts",
+          "tests/chatRuntime.test.ts",
+          "tests/checkReadiness.test.ts",
+          "tests/coderOutput.test.ts",
+          "tests/coderRuntime.test.ts",
+          "tests/comparisonH01.test.ts",
+          "tests/comparisonH04.test.ts",
+          "tests/comparisonH05.test.ts",
+          "tests/comparisonH06DelegatedLegacy.test.ts",
+          "tests/comparisonH06NativeLegacyPreparation.test.ts",
+          "tests/comparisonH06NativeLegacyTransportPhase.integration.test.ts",
+          "tests/comparisonH06NativeLegacyTransportPhase.test.ts",
+          "tests/comparisonH06Preflight.integration.test.ts",
+          "tests/comparisonReport.test.ts",
+          "tests/comparisonSeries.test.ts",
+          "tests/council.test.ts",
+          "tests/councilProgress.test.ts",
+          "tests/designReview.test.ts",
+          "tests/localPlanning.test.ts",
+          "tests/nativeCouncil.test.ts",
+          "tests/ownerLease.test.ts",
+          "tests/preparedChecks.test.ts",
+          "tests/projectConnection.test.ts",
+          "tests/projectInspection.test.ts",
+          "tests/refreshCouncilInputs.test.ts",
+          "tests/restoredDependencies.test.ts",
+          "tests/retentionMaintenance.integration.test.ts",
+          "tests/sharedJson.test.ts",
+          "tests/sharedProofs.test.ts",
+          "tests/taskChatCommand.test.ts",
+          "tests/taskChatCouncil.test.ts",
+          "tests/taskChatSelection.test.ts",
+          "tests/taskConnection.test.ts",
+          "tests/taskFileMaintenance.test.ts",
+          "tests/userCommands.test.ts"
+        ],
+        "coverageInclude": ["cli/**/*.ts", "comparison/**/*.ts"],
+        "command": "yarn test:repo:cli",
+        "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
+        "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
+        "output": [
+          "tmp/check-areas/workflow.cli/junit.xml",
+          "tmp/check-areas/workflow.cli/coverage"
+        ],
+        "limits": "Same root file/project, SWC/setup/pool/timeouts and 100% thresholds; local result is not full repository admission.",
+        "status": "registered"
+      },
+      {
+        "id": "temporal",
+        "files": [
+          "tests/temporal/arbitration.test.ts",
+          "tests/temporal/arbitrationPolicy.test.ts",
+          "tests/temporal/artifacts.test.ts",
+          "tests/temporal/audit.test.ts",
+          "tests/temporal/auditPolicy.test.ts",
+          "tests/temporal/auditWorkflow.test.ts",
+          "tests/temporal/backup.test.ts",
+          "tests/temporal/backupRecovery.test.ts",
+          "tests/temporal/boundaries.test.ts",
+          "tests/temporal/contracts.test.ts",
+          "tests/temporal/controlledReader.test.ts",
+          "tests/temporal/correction.test.ts",
+          "tests/temporal/correctionHost.test.ts",
+          "tests/temporal/finalization.test.ts",
+          "tests/temporal/finalizationWorkflow.test.ts",
+          "tests/temporal/initialArbitration.test.ts",
+          "tests/temporal/legacyArchive.test.ts",
+          "tests/temporal/localAdmission.test.ts",
+          "tests/temporal/localTask.test.ts",
+          "tests/temporal/localTaskSafety.test.ts",
+          "tests/temporal/localTaskShutdown.test.ts",
+          "tests/temporal/localTaskWorkflow.test.ts",
+          "tests/temporal/mechanicalTask.test.ts",
+          "tests/temporal/nativeQuestion.test.ts",
+          "tests/temporal/nativeWorkspace.test.ts",
+          "tests/temporal/observedLoad.test.ts",
+          "tests/temporal/preparation.test.ts",
+          "tests/temporal/progressAudit.test.ts",
+          "tests/temporal/reader.test.ts",
+          "tests/temporal/readerAuthority.test.ts",
+          "tests/temporal/readerContext.test.ts",
+          "tests/temporal/readerControl.test.ts",
+          "tests/temporal/readerExecution.test.ts",
+          "tests/temporal/readerHeartbeat.test.ts",
+          "tests/temporal/readerHost.test.ts",
+          "tests/temporal/readerLoadCommandOutputs.test.ts",
+          "tests/temporal/readerMessages.test.ts",
+          "tests/temporal/readerRecovery.test.ts",
+          "tests/temporal/readerStatus.test.ts",
+          "tests/temporal/readerStop.test.ts",
+          "tests/temporal/recoveredSend.test.ts",
+          "tests/temporal/retention.test.ts",
+          "tests/temporal/review.test.ts",
+          "tests/temporal/reviewWorkflow.test.ts",
+          "tests/temporal/stageAudit.test.ts",
+          "tests/temporal/substantialTask.test.ts",
+          "tests/temporal/taskAttemptPaths.test.ts",
+          "tests/temporal/taskAudit.test.ts",
+          "tests/temporal/taskAuditWorkflow.test.ts",
+          "tests/temporal/taskBackend.test.ts",
+          "tests/temporal/taskBackendClient.test.ts",
+          "tests/temporal/taskBudget.test.ts",
+          "tests/temporal/taskBudgetProcess.test.ts",
+          "tests/temporal/taskChecks.test.ts",
+          "tests/temporal/taskCompletionProcess.test.ts",
+          "tests/temporal/taskCompletionRecovery.test.ts",
+          "tests/temporal/taskContinuation.test.ts",
+          "tests/temporal/taskContinuationWorkflow.test.ts",
+          "tests/temporal/taskExecution.test.ts",
+          "tests/temporal/taskExecutionClient.test.ts",
+          "tests/temporal/taskExecutionWorkflow.test.ts",
+          "tests/temporal/taskFiles.test.ts",
+          "tests/temporal/taskGate.test.ts",
+          "tests/temporal/taskHuman.test.ts",
+          "tests/temporal/taskHumanActivities.test.ts",
+          "tests/temporal/taskHumanAuthority.test.ts",
+          "tests/temporal/taskHumanCompletion.test.ts",
+          "tests/temporal/taskHumanCompletionGate.test.ts",
+          "tests/temporal/taskHumanExecution.test.ts",
+          "tests/temporal/taskHumanExecutionLocal.test.ts",
+          "tests/temporal/taskHumanLocalTask.test.ts",
+          "tests/temporal/taskHumanWorkflow.test.ts",
+          "tests/temporal/taskPermissionLock.test.ts",
+          "tests/temporal/taskRecovery.test.ts",
+          "tests/temporal/taskStartAdmission.test.ts",
+          "tests/temporal/taskWriter.integration.test.ts",
+          "tests/temporal/taskWriter.test.ts",
+          "tests/temporal/writerProcesses.test.ts"
+        ],
+        "coverageInclude": ["src/**/*.ts"],
+        "command": "yarn test:repo:temporal",
+        "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
+        "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
+        "output": [
+          "tmp/check-areas/workflow.temporal/junit.xml",
+          "tmp/check-areas/workflow.temporal/coverage"
+        ],
+        "limits": "Same root file/project, SWC/setup/pool/timeouts and 100% thresholds; local result is not full repository admission.",
+        "status": "registered"
+      },
+      {
+        "id": "harness2",
+        "files": ["cli/harness2.test.ts"],
+        "coverageInclude": ["cli/harness2.ts", "adapters/codex/harness2Bridge.ts"],
+        "command": "yarn test:repo:harness2",
+        "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
+        "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
+        "output": [
+          "tmp/check-areas/workflow.harness2/junit.xml",
+          "tmp/check-areas/workflow.harness2/coverage"
+        ],
+        "limits": "Same root file/project, SWC/setup/pool/timeouts and 100% thresholds; local result is not full repository admission.",
+        "status": "registered"
+      },
+      {
+        "id": "infra",
+        "files": [
+          "scripts/adrChangeValidation.test.ts",
+          "scripts/adrValidation.test.ts",
+          "scripts/validateAdrChanges.test.ts",
+          "scripts/vitestTestSequencer.test.ts"
+        ],
+        "coverageInclude": ["scripts/**/*.ts"],
+        "resources": [
+          "scripts/vitestScratch.mjs",
+          "scripts/vitestTestSequencer.mjs",
+          "scripts/vitestToolAwarePool.mjs",
+          "scripts/vitestToolDependencies.mjs"
+        ],
+        "command": "yarn test:repo:infra"
+      }
+    ]
+  },
+  "additionalRunners": [
+    {
+      "id": "workflow.node.pinned-consumers",
+      "cwd": ".",
+      "command": "yarn test:pinned-consumers:unit",
+      "config": null,
+      "files": ["tests/temporal/pinned-consumers.test.mjs"],
+      "resources": ["tests/temporal/pinned-consumers.mjs", "yarn.lock"],
+      "env": [],
+      "output": ["stdout TAP; temporary fixture directories cleaned by the existing driver"],
+      "limits": "Unit validation of lock/package boundaries; does not install a consumer or qualify runtime.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.installed-consumers",
+      "cwd": ".",
+      "command": "yarn test:installed-full-consumers:unit",
+      "config": null,
+      "files": [
+        "tests/temporal/installed-full-consumers.test.mjs",
+        "tests/temporal/full-process-guard.test.mjs",
+        "tests/temporal/full-game-source.test.mjs"
+      ],
+      "resources": [
+        "tests/temporal/installed-full-consumers.mjs",
+        "tests/temporal/full-game-source.mjs",
+        "tests/temporal/full-game-release.mjs",
+        "examples/temporal-consumers/full/spec.mjs",
+        "examples/temporal-consumers/full/safety.mjs"
+      ],
+      "env": [],
+      "output": ["stdout TAP; synthetic fixture/process logs in temporary directories"],
+      "limits": "full-process-guard is imported by installed-full-consumers.test.mjs; no second process is needed. Synthetic process/package checks do not qualify an installed live consumer.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.package-closure",
+      "cwd": ".",
+      "command": "yarn test:package-closure",
+      "config": null,
+      "files": ["tests/temporal/packageClosure.test.mjs"],
+      "resources": ["tests/temporal/packageClosure.mjs", "tests/temporal/pinned-consumers.mjs"],
+      "env": [],
+      "output": ["stdout TAP; synthetic archive fixtures in temporary directories"],
+      "limits": "Manifest/archive validation only; not a live package installation.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.deadline",
+      "cwd": ".",
+      "command": "yarn test:node:deadline",
+      "config": null,
+      "files": ["tests/td054DeadlineProbe.test.mjs"],
+      "resources": ["tests/td054DeadlineProbe.mjs", "adapters/storage/storeCodec.ts"],
+      "env": [
+        "Monorepository dev dependency tsx (resolves legacy .js source imports to TypeScript)"
+      ],
+      "output": ["stdout TAP; synthetic fixtures in temporary directories"],
+      "limits": "Repository-only legacy probe unit checks; not a live deadline qualification or a standalone package test.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.retention",
+      "cwd": ".",
+      "command": "yarn test:node:retention",
+      "config": null,
+      "files": ["tests/temporal/t4-pg-temporal-retention.test.mjs"],
+      "resources": [
+        "tests/temporal/t4-pg-temporal-retention.mjs",
+        "tests/temporal/t4-pg-temporal-plan.mjs",
+        "tests/temporal/t4-pg-temporal-runner.mjs",
+        "dist/adapters/artifacts/files.js"
+      ],
+      "env": ["yarn build before running this profile; tests read compiled dist modules"],
+      "output": ["stdout TAP; synthetic CAS/dump fixtures in temporary directories"],
+      "limits": "Synthetic retention/readback checks; no PostgreSQL or Temporal server is started.",
+      "status": "registered",
+      "buildPrerequisite": "yarn build"
+    },
+    {
+      "id": "workflow.harness2.python",
+      "cwd": ".",
+      "command": "yarn harness2:test",
+      "config": "harness2/.coveragerc",
+      "files": ["harness2/test.sh", "harness2/test_pilot.py"],
+      "resources": ["harness2/pilot.py", "harness2/README.md"],
+      "env": [
+        "HARNESS2_PYTHON: isolated interpreter with coverage 7.10.7",
+        "HARNESS2_UPSTREAM: pinned clean upstream checkout"
+      ],
+      "output": ["tmp/harness2-coverage", "stdout coverage report"],
+      "limits": "The shell entrypoint runs test_pilot.py and enforces its own pinned upstream/interpreter boundary. No fallback to host Python and no automatic environment setup.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.installed.pinned-consumers",
+      "cwd": ".",
+      "command": "yarn test:pinned-consumers --run NEW_EVIDENCE_DIRECTORY",
+      "config": "new evidence directory argument",
+      "files": [],
+      "drivers": ["tests/temporal/pinned-consumers.mjs"],
+      "resources": ["yarn.lock"],
+      "env": [
+        "Built dist",
+        "Pinned consumers and package-manager tools",
+        "macOS source-isolation capability",
+        "Separate authorization for installation/network and new output directory"
+      ],
+      "output": [
+        "NEW_EVIDENCE_DIRECTORY/report.json",
+        "Package archive, package-files.json and consumer install logs"
+      ],
+      "limits": "Installs pinned consumers in a disposable copy and denies source-repository reads; not part of an ordinary test command.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.installed.full-consumers",
+      "cwd": ".",
+      "command": "yarn test:installed-full-consumers --run REQUEST.json",
+      "config": "REQUEST.json validated by the existing driver",
+      "files": [],
+      "drivers": ["tests/temporal/installed-full-consumers.mjs"],
+      "resources": [
+        "examples/temporal-consumers/full/spec.mjs",
+        "examples/temporal-consumers/full/inventories.mjs",
+        "examples/temporal-consumers/full/safety.mjs"
+      ],
+      "env": [
+        "Built dist and locked dependencies",
+        "Pinned Git checker revision and exact guarded source set",
+        "Separate authorization required by the driver"
+      ],
+      "output": [
+        "New evidence directory from REQUEST.json",
+        "Packed runtime, consumer/test logs and source-isolation proof"
+      ],
+      "limits": "--plan is a plan only; --run performs an installation qualification in a separate checker. Historical game paths come from the pinned revision, not current workspace bytes.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.native.temporal",
+      "cwd": ".",
+      "command": "yarn test:temporal",
+      "config": "Existing per-driver request and explicit native/service configuration",
+      "files": [],
+      "drivers": [
+        "tests/temporal/preparation.mjs",
+        "tests/temporal/control.mjs",
+        "tests/temporal/crash.mjs",
+        "tests/temporal/review.mjs",
+        "tests/temporal/b1.mjs"
+      ],
+      "resources": ["dist", "examples/temporal-consumers"],
+      "env": [
+        "Pinned Temporal SDK/CLI or explicitly configured service",
+        "Required driver-specific executable/model credentials and authority",
+        "New bound output/workspace required by selected native driver",
+        "Separate native/service/model authorization required by the selected driver"
+      ],
+      "output": ["Driver-specific evidence directory and process/history logs"],
+      "limits": "Each alias preserves its own request, budget, cleanup and authorization checks. It is not inferred from a *.test.ts name and is never included in test/test:areas.",
+      "status": "pending",
+      "buildPrerequisite": "yarn build"
+    },
+    {
+      "id": "workflow.native.restore",
+      "cwd": ".",
+      "command": "yarn test:pg-temporal-recovery --run CONFIG.json",
+      "config": "CONFIG.json with fresh roots, binary pins and direct authorization",
+      "files": [],
+      "drivers": [
+        "tests/temporal/t4-postgres-recovery.mjs",
+        "tests/temporal/t4-temporal-restore.mjs",
+        "tests/temporal/t4-pg-temporal-recovery.mjs"
+      ],
+      "resources": [
+        "tests/temporal/t4-pg-temporal-runner.mjs",
+        "tests/temporal/t4-pg-temporal-plan.mjs"
+      ],
+      "env": [
+        "Pinned PostgreSQL/Temporal executables and service profile",
+        "New direct service authorization required by existing drivers",
+        "Disposable new database/restore roots and ports"
+      ],
+      "output": ["Bound evidence directories, immutable dumps, history and recovery reports"],
+      "limits": "--self-test is bounded synthetic evidence; a real restore/server start requires a separate selected --run configuration and is not included in ordinary test.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.node.profile-contract",
+      "cwd": ".",
+      "command": "yarn test:profiles",
+      "config": "check-areas.profiles.json",
+      "files": ["check-areas.profiles.test.mjs"],
+      "resources": [
+        "vitest.areas.config.mjs",
+        "vitest.temporal.config.mjs",
+        "check-areas",
+        "scripts/check-area-config.mjs",
+        "check-areas.baseline.json"
+      ],
+      "env": [
+        "Monorepository dev dependencies for configuration discovery; no test module is launched by list --filesOnly"
+      ],
+      "output": ["stdout TAP"],
+      "limits": "Repository-only profile/discovery contract; this is not a native or service qualification.",
+      "status": "registered"
+    }
+  ],
+  "supplementalProfiles": [
+    {
+      "id": "workflow.node.history-sources",
+      "cwd": ".",
+      "command": "node --test tests/temporal/historySources.test.mjs",
+      "config": null,
+      "files": [
+        "tests/temporal/historySources.test.mjs"
+      ],
+      "resources": [
+        "tests/temporal/historySources.mjs",
+        "tests/temporal/histories"
+      ],
+      "env": [],
+      "output": [
+        "stdout TAP"
+      ],
+      "limits": "Original manifests and source bytes are verified without a server or model.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.package-supply",
+      "cwd": ".",
+      "command": "node --test tests/packageSupply.test.mjs",
+      "config": null,
+      "files": [
+        "tests/packageSupply.test.mjs"
+      ],
+      "resources": [
+        "package.json",
+        "dist",
+        "tests/temporal/packageClosure.mjs",
+        "tests/temporal/pinned-consumers.mjs",
+        "project/workflow.json",
+        "procedures"
+      ],
+      "buildPrerequisite": "yarn build",
+      "env": [],
+      "output": [
+        "stdout TAP; temporary local archive and extracted CLI/SDK imports"
+      ],
+      "limits": "Reuses local dependencies; no installation, source denial, service or live qualification.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.pinned-consumers",
+      "cwd": ".",
+      "command": "yarn test:pinned-consumers:unit",
+      "config": null,
+      "files": ["tests/temporal/pinned-consumers.test.mjs"],
+      "resources": ["tests/temporal/pinned-consumers.mjs", "yarn.lock"],
+      "env": [],
+      "output": ["stdout TAP; temporary fixture directories cleaned by the existing driver"],
+      "limits": "Unit validation of lock/package boundaries; does not install a consumer or qualify runtime.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.installed-consumers",
+      "cwd": ".",
+      "command": "yarn test:installed-full-consumers:unit",
+      "config": null,
+      "files": [
+        "tests/temporal/installed-full-consumers.test.mjs",
+        "tests/temporal/full-process-guard.test.mjs",
+        "tests/temporal/full-game-source.test.mjs"
+      ],
+      "resources": [
+        "tests/temporal/installed-full-consumers.mjs",
+        "tests/temporal/full-game-source.mjs",
+        "tests/temporal/full-game-release.mjs",
+        "examples/temporal-consumers/full/spec.mjs",
+        "examples/temporal-consumers/full/safety.mjs"
+      ],
+      "env": [],
+      "output": ["stdout TAP; synthetic fixture/process logs in temporary directories"],
+      "limits": "full-process-guard is imported by installed-full-consumers.test.mjs; no second process is needed. Synthetic process/package checks do not qualify an installed live consumer.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.package-closure",
+      "cwd": ".",
+      "command": "yarn test:package-closure",
+      "config": null,
+      "files": ["tests/temporal/packageClosure.test.mjs"],
+      "resources": ["tests/temporal/packageClosure.mjs", "tests/temporal/pinned-consumers.mjs"],
+      "env": [],
+      "output": ["stdout TAP; synthetic archive fixtures in temporary directories"],
+      "limits": "Manifest/archive validation only; not a live package installation.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.deadline",
+      "cwd": ".",
+      "command": "yarn test:node:deadline",
+      "config": null,
+      "files": ["tests/td054DeadlineProbe.test.mjs"],
+      "resources": ["tests/td054DeadlineProbe.mjs", "adapters/storage/storeCodec.ts"],
+      "env": [
+        "Monorepository dev dependency tsx (resolves legacy .js source imports to TypeScript)"
+      ],
+      "output": ["stdout TAP; synthetic fixtures in temporary directories"],
+      "limits": "Repository-only legacy probe unit checks; not a live deadline qualification or a standalone package test.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.node.retention",
+      "cwd": ".",
+      "command": "yarn test:node:retention",
+      "config": null,
+      "files": ["tests/temporal/t4-pg-temporal-retention.test.mjs"],
+      "resources": [
+        "tests/temporal/t4-pg-temporal-retention.mjs",
+        "tests/temporal/t4-pg-temporal-plan.mjs",
+        "tests/temporal/t4-pg-temporal-runner.mjs",
+        "dist/adapters/artifacts/files.js"
+      ],
+      "env": ["yarn build before running this profile; tests read compiled dist modules"],
+      "output": ["stdout TAP; synthetic CAS/dump fixtures in temporary directories"],
+      "limits": "Synthetic retention/readback checks; no PostgreSQL or Temporal server is started.",
+      "status": "registered",
+      "buildPrerequisite": "yarn build"
+    },
+    {
+      "id": "workflow.harness2.python",
+      "cwd": ".",
+      "command": "yarn harness2:test",
+      "config": "harness2/.coveragerc",
+      "files": ["harness2/test.sh", "harness2/test_pilot.py"],
+      "resources": ["harness2/pilot.py", "harness2/README.md"],
+      "env": [
+        "HARNESS2_PYTHON: isolated interpreter with coverage 7.10.7",
+        "HARNESS2_UPSTREAM: pinned clean upstream checkout"
+      ],
+      "output": ["tmp/harness2-coverage", "stdout coverage report"],
+      "limits": "The shell entrypoint runs test_pilot.py and enforces its own pinned upstream/interpreter boundary. No fallback to host Python and no automatic environment setup.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.installed.pinned-consumers",
+      "cwd": ".",
+      "command": "yarn test:pinned-consumers --run NEW_EVIDENCE_DIRECTORY",
+      "config": "new evidence directory argument",
+      "files": [],
+      "drivers": ["tests/temporal/pinned-consumers.mjs"],
+      "resources": ["yarn.lock"],
+      "env": [
+        "Built dist",
+        "Pinned consumers and package-manager tools",
+        "macOS source-isolation capability",
+        "Separate authorization for installation/network and new output directory"
+      ],
+      "output": [
+        "NEW_EVIDENCE_DIRECTORY/report.json",
+        "Package archive, package-files.json and consumer install logs"
+      ],
+      "limits": "Installs pinned consumers in a disposable copy and denies source-repository reads; not part of an ordinary test command.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.installed.full-consumers",
+      "cwd": ".",
+      "command": "yarn test:installed-full-consumers --run REQUEST.json",
+      "config": "REQUEST.json validated by the existing driver",
+      "files": [],
+      "drivers": ["tests/temporal/installed-full-consumers.mjs"],
+      "resources": [
+        "examples/temporal-consumers/full/spec.mjs",
+        "examples/temporal-consumers/full/inventories.mjs",
+        "examples/temporal-consumers/full/safety.mjs"
+      ],
+      "env": [
+        "Built dist and locked dependencies",
+        "Pinned Git checker revision and exact guarded source set",
+        "Separate authorization required by the driver"
+      ],
+      "output": [
+        "New evidence directory from REQUEST.json",
+        "Packed runtime, consumer/test logs and source-isolation proof"
+      ],
+      "limits": "--plan is a plan only; --run performs an installation qualification in a separate checker. Historical game paths come from the pinned revision, not current workspace bytes.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.native.temporal",
+      "cwd": ".",
+      "command": "yarn test:temporal",
+      "config": "Existing per-driver request and explicit native/service configuration",
+      "files": [],
+      "drivers": [
+        "tests/temporal/preparation.mjs",
+        "tests/temporal/control.mjs",
+        "tests/temporal/crash.mjs",
+        "tests/temporal/review.mjs",
+        "tests/temporal/b1.mjs"
+      ],
+      "resources": ["dist", "examples/temporal-consumers"],
+      "env": [
+        "Pinned Temporal SDK/CLI or explicitly configured service",
+        "Required driver-specific executable/model credentials and authority",
+        "New bound output/workspace required by selected native driver",
+        "Separate native/service/model authorization required by the selected driver"
+      ],
+      "output": ["Driver-specific evidence directory and process/history logs"],
+      "limits": "Each alias preserves its own request, budget, cleanup and authorization checks. It is not inferred from a *.test.ts name and is never included in test/test:areas.",
+      "status": "pending",
+      "buildPrerequisite": "yarn build"
+    },
+    {
+      "id": "workflow.native.restore",
+      "cwd": ".",
+      "command": "yarn test:pg-temporal-recovery --run CONFIG.json",
+      "config": "CONFIG.json with fresh roots, binary pins and direct authorization",
+      "files": [],
+      "drivers": [
+        "tests/temporal/t4-postgres-recovery.mjs",
+        "tests/temporal/t4-temporal-restore.mjs",
+        "tests/temporal/t4-pg-temporal-recovery.mjs"
+      ],
+      "resources": [
+        "tests/temporal/t4-pg-temporal-runner.mjs",
+        "tests/temporal/t4-pg-temporal-plan.mjs"
+      ],
+      "env": [
+        "Pinned PostgreSQL/Temporal executables and service profile",
+        "New direct service authorization required by existing drivers",
+        "Disposable new database/restore roots and ports"
+      ],
+      "output": ["Bound evidence directories, immutable dumps, history and recovery reports"],
+      "limits": "--self-test is bounded synthetic evidence; a real restore/server start requires a separate selected --run configuration and is not included in ordinary test.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.node.profile-contract",
+      "cwd": ".",
+      "command": "yarn test:profiles",
+      "config": "check-areas.profiles.json",
+      "files": ["check-areas.profiles.test.mjs"],
+      "resources": [
+        "vitest.areas.config.mjs",
+        "vitest.temporal.config.mjs",
+        "check-areas",
+        "scripts/check-area-config.mjs",
+        "check-areas.baseline.json"
+      ],
+      "env": [
+        "Monorepository dev dependencies for configuration discovery; no test module is launched by list --filesOnly"
+      ],
+      "output": ["stdout TAP"],
+      "limits": "Repository-only profile/discovery contract; this is not a native or service qualification.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.native.h01-series",
+      "cwd": ".",
+      "command": "yarn comparison:series --step REQUEST.json",
+      "config": "Pinned series manifest v1 through v6, readiness and one bound step request; v6 binds H06/2 materials and an H06/3 package per H06 slot",
+      "files": [],
+      "drivers": [
+        "tests/comparisonH01Series.ts"
+      ],
+      "resources": [
+        "tests/comparisonH01SeriesEvidence.ts",
+        "tests/comparisonH01Operator.ts",
+        "tests/comparisonH06Operator.ts",
+        "tests/comparisonH06SeriesAccounting.ts",
+        "tests/comparisonH06TemporalSeriesPrimary.ts",
+        "tests/comparisonReadiness.ts",
+        "comparison/suite.json",
+        "comparison/materials.json"
+      ],
+      "env": [
+        "Repository dependencies and pinned scenario runtime inputs",
+        "Separate exact native/service/model authorization for each H01–H06 step; no series grant is inferred"
+      ],
+      "output": [
+        "Bound series ledger, immutable pending/result evidence and scenario-specific operator evidence"
+      ],
+      "limits": "Versions 1–5 retain their four-slot increments; v6 binds the full 24-run schedule. Plan/status are read-only. Each --step needs its own exact authorization. H06 --reconcile appends a verified full-usage receipt, checks external turns and STOP and can open the next slot within the same cap. FAIL, unresolved UNKNOWN and unconfirmed STOP block advancement. Local reconciliation has no qualification effect.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.comparison.h02-technical",
+      "cwd": ".",
+      "command": "yarn comparison:h02 --self-test NEW_OUTPUT_DIRECTORY",
+      "config": "New isolated output directory; fixed local RPC only",
+      "files": [],
+      "drivers": [
+        "tests/comparisonH02.ts"
+      ],
+      "resources": [
+        "tests/comparisonH02Contract.ts",
+        "tests/comparisonH02Legacy.ts",
+        "tests/comparisonH02LegacyFixture.ts",
+        "tests/comparisonH02Temporal.ts",
+        "tests/comparisonH02TemporalFixture.ts",
+        "comparison/suite.json",
+        "comparison/materials.json"
+      ],
+      "env": [
+        "Repository development dependencies; no native client, model credentials or Temporal service"
+      ],
+      "output": [
+        "Technical case reports, original review evidence and local RPC observations under the new output directory"
+      ],
+      "limits": "Real Legacy council and Temporal activities with fixed local RPC. This does not execute ReviewWorkflow, qualify native models, or append a native H02 result to the series. Native usage remains null; qualification/nativeAcceptance are false.",
+      "status": "registered"
+    },
+    {
+      "id": "workflow.native.h02-operator",
+      "cwd": ".",
+      "command": "yarn comparison:h02:operator --plan SPEC.json REQUEST.json",
+      "config": "Pinned H02 operator spec and executionVersion2 request; own exact H02 primary grant for --run",
+      "files": [],
+      "drivers": ["tests/comparisonH02Operator.ts"],
+      "resources": [
+        "tests/comparisonH02Native.ts",
+        "tests/comparisonH02NativeRpc.ts",
+        "tests/comparisonH02NativeLegacy.ts",
+        "tests/comparisonH02NativeTemporal.ts",
+        "tests/comparisonH02Contract.ts",
+        "tests/comparisonH02Legacy.ts",
+        "tests/comparisonH02Temporal.ts",
+        "tests/comparisonH01Contract.ts",
+        "tests/comparisonH01Operator.ts",
+        "tests/comparisonH01Preparation.ts",
+        "tests/comparisonH01Guard.ts",
+        "tests/comparisonH01Keeper.ts"
+      ],
+      "env": [
+        "Repository development dependencies; plan/prepare do not start services or models",
+        "--run separately requires pinned native Codex, primary H02 grant and local Temporal CLI for candidate"
+      ],
+      "output": ["Pinned drafts or one owned H02 attempt report, primary accounting and STOP evidence"],
+      "limits": "Closed H02 scenario uses the shared interval/keeper/native guard. H01 grants are rejected. Local unit providers do not qualify live Codex, SDK lifecycle or installed consumers; native qualification remains pending.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.native.h03-operator",
+      "cwd": ".",
+      "command": "yarn comparison:h03:operator --plan SPEC.json REQUEST.json",
+      "config": "Pinned H03 operator spec and executionVersion2 request; own exact H03 primary grant and separately completed root recovery notices for candidate --run",
+      "files": [],
+      "drivers": ["tests/comparisonH03Operator.ts"],
+      "resources": [
+        "tests/comparisonH03Native.ts",
+        "tests/comparisonH03Contract.ts",
+        "tests/comparisonH03Legacy.ts",
+        "tests/comparisonH03State.ts",
+        "tests/comparisonH03Temporal.ts",
+        "tests/comparisonH02NativeRpc.ts",
+        "tests/comparisonH01Contract.ts",
+        "tests/comparisonH01Guard.ts",
+        "tests/comparisonH01Keeper.ts",
+        "tests/comparisonH01Preparation.ts"
+      ],
+      "env": [
+        "Repository development dependencies; plan/prepare/issue-recovery do not start services or models",
+        "--run separately requires exact primary H03 grant, native Codex and local Temporal service for candidate"
+      ],
+      "output": ["Pinned drafts or one owned H03 attempt with native compaction, observed LOAD, retained FAIL/pending, accounting and STOP proof"],
+      "limits": "Closed H03 uses one same-session native compact with a separate reservation and primary usage barrier. Unsupported compaction is NOT RUN; UNKNOWN blocks retry. Human pause/resume notices cannot be fabricated or replaced by initial-grant authority. Unit doubles do not qualify native execution or full series.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.native.h04-operator",
+      "cwd": ".",
+      "command": "yarn comparison:h04:operator --plan SPEC.json REQUEST.json",
+      "config": "Pinned H04 operator spec and executionVersion2 request; own exact H04 primary grant for --run",
+      "files": [],
+      "drivers": ["tests/comparisonH04Operator.ts"],
+      "resources": [
+        "tests/comparisonH04Native.ts",
+        "tests/comparisonH04NativeContract.ts",
+        "tests/comparisonH04NativeOperation.ts",
+        "tests/comparisonH04NativeLegacy.ts",
+        "tests/comparisonH04NativeTemporal.ts",
+        "tests/comparisonH04NativeWait.mjs",
+        "tests/comparisonH04.ts",
+        "tests/comparisonH04Contract.ts",
+        "tests/comparisonH04Workflow.ts",
+        "tests/comparisonH02NativeRpc.ts",
+        "tests/comparisonH01Contract.ts",
+        "tests/comparisonH01Guard.ts",
+        "tests/comparisonH01Keeper.ts",
+        "tests/comparisonH01Preparation.ts"
+      ],
+      "env": [
+        "Repository development dependencies; plan/prepare do not start services or models",
+        "--run separately requires exact primary H04 grant, native Codex and local Temporal service for candidate"
+      ],
+      "output": ["Pinned drafts or one owned H04 attempt with primary native wait, operation/result/application, accounting and STOP evidence"],
+      "limits": "Closed H04 keeps operation and application at the host owner. Native access remains read-only. One launch and exactly one terminal wait must be linked to the original native turn and primary operation receipts. Unit doubles and the model-free helper do not qualify native execution or full series.",
+      "status": "pending"
+    },
+    {
+      "id": "workflow.native.h05-operator",
+      "cwd": ".",
+      "command": "yarn comparison:h05:operator --plan SPEC.json REQUEST.json",
+      "config": "Pinned H05 spec/request, identity generation at least 2 and own exact H05 primary grant for --run",
+      "files": [],
+      "drivers": ["tests/comparisonH05Operator.ts"],
+      "resources": [
+        "tests/comparisonH05Native.ts",
+        "tests/comparisonH05Contract.ts",
+        "tests/comparisonH05Legacy.ts",
+        "tests/comparisonH05Temporal.ts",
+        "tests/comparisonH05Workflow.ts",
+        "adapters/codex/appServerWaits.ts",
+        "adapters/codex/appServerTransport.ts",
+        "tests/comparisonH02NativeRpc.ts",
+        "tests/comparisonH01Contract.ts",
+        "tests/comparisonH01Guard.ts",
+        "tests/comparisonH01Keeper.ts",
+        "tests/comparisonH01Preparation.ts"
+      ],
+      "env": [
+        "Repository dependencies; plan/prepare do not start services or models",
+        "--run separately requires exact primary H05 grant, native Codex and local Temporal service for candidate"
+      ],
+      "output": ["One known native turn, original primary history, separate transport interventions, retained waiting state, physical restart, accounting and STOP evidence"],
+      "limits": "Closed H05 reuses the existing completion owner. Recovery never repeats create/send or reopens a sealed participant. Restart preserves owner/generation; stale generation and late cancelled results are refused. Unit doubles do not qualify native recovery, active grants or full series.",
+      "status": "pending"
+    }
+  ]
+}

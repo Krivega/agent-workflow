@@ -1,0 +1,6 @@
+interface:
+  display_name: 'Agent workflow'
+  short_description: 'Ведение выбранной задачи из текущего чата'
+  default_prompt: 'Используй $agent-workflow для этой задачи и веди её из текущего чата.'
+policy:
+  allow_implicit_invocation: true

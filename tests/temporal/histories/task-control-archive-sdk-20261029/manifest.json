@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "producer": {
+    "modelStarts": 0,
+    "baseCommit": "481989b6304fb4230ada599044b184767b6432f8",
+    "uncommitted": true
+  },
+  "origin": {
+    "nativeModelStarts": 0,
+    "qualification": "Real Temporal SDK and filesystem checks; model responses and human authority are simulated. Timeout uses the explicitly declared test-only 1s outbound interceptor. Administrative termination only cleans up an observed exited Activity; unknown is not archive completion."
+  },
+  "sourceInventories": [
+    {
+      "file": "sdk-continuation-source.json",
+      "sha256": "89206055bde50a2b619dd2c8eb57e0a9730c83d1d6667e2ae7b63437b9bb2887",
+      "bytes": 56842,
+      "origin": "temporal-continuation-j38l4i",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-requirements-source.json",
+      "sha256": "89206055bde50a2b619dd2c8eb57e0a9730c83d1d6667e2ae7b63437b9bb2887",
+      "bytes": 56842,
+      "origin": "temporal-continuation-jaa2Fb",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-finalization-source.json",
+      "sha256": "89206055bde50a2b619dd2c8eb57e0a9730c83d1d6667e2ae7b63437b9bb2887",
+      "bytes": 56842,
+      "origin": "temporal-b1-7BmLZc",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-cancel-before-source.json",
+      "sha256": "89206055bde50a2b619dd2c8eb57e0a9730c83d1d6667e2ae7b63437b9bb2887",
+      "bytes": 56842,
+      "origin": "temporal-b1-aCGjho",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-cancel-after-source.json",
+      "sha256": "89206055bde50a2b619dd2c8eb57e0a9730c83d1d6667e2ae7b63437b9bb2887",
+      "bytes": 56842,
+      "origin": "temporal-b1-duUG56",
+      "nativeModelStarts": 0
+    },
+    {
+      "file": "sdk-timeout-cancel-source.json",
+      "sha256": "89206055bde50a2b619dd2c8eb57e0a9730c83d1d6667e2ae7b63437b9bb2887",
+      "bytes": 56842,
+      "origin": "temporal-b1-9HmCCg",
+      "nativeModelStarts": 0
+    }
+  ],
+  "fixtures": [
+    {
+      "file": "sdk-finalization-fixture.json",
+      "sha256": "ad53a4acc72f80a85554d1ef6667f8e3a957605cdaa8d3a60646df92a4b1f448",
+      "bytes": 220,
+      "mode": "--finalization"
+    },
+    {
+      "file": "sdk-cancel-before-fixture.json",
+      "sha256": "347ec5b261c9e0924d584ed2403e8e25b8b7c9e61cda22876114933644875c2d",
+      "bytes": 234,
+      "mode": "--finalization-cancel-before"
+    },
+    {
+      "file": "sdk-cancel-after-fixture.json",
+      "sha256": "2e3c29e353af42149f3ef14e001592a1f43a966de8f89e509032115cddc1f128",
+      "bytes": 233,
+      "mode": "--finalization-cancel-after"
+    },
+    {
+      "file": "sdk-timeout-cancel-fixture.json",
+      "sha256": "dc473424de048482192e3ec9ef28249916a091c85b248c669c1c3023c845592d",
+      "bytes": 520,
+      "mode": "--finalization-timeout-cancel"
+    }
+  ],
+  "cases": [
+    {
+      "file": "sdk-continuation-144db0decb611d45cbe9f5eb1ffb8fb7a5c62bc68aa02a187343d673d23dcf49-history.json",
+      "sha256": "bd8dfedc1983fffdce12374047d202c80926722e2b653a942942bbecaf3ca29f",
+      "bytes": 24233,
+      "workflowId": "aw/review-reader/neutral-continuation/one/tester/3daf9bb469e97deed1d769820d282ff075a216fbf59eca8d90ca6c0ab6119490",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-3321b06bfbdba886adece262a2f65d5222ab4fa37f9f60e6ece391dadbeaeb17-history.json",
+      "sha256": "0798d385d7da8fb97e9f1f3a486dcc5fa533992619383745032ead114e791a51",
+      "bytes": 23560,
+      "workflowId": "aw/review/neutral-continuation/one/planning-c50725c927521dd9acd8eb9f8e6a534d-c1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-40dfef546a5d31c6fa3c283c45233710e1682e9de6b4bc2f46e8b42df1502c81-history.json",
+      "sha256": "fcdec1bf07fd129945777cab19b27a3fdb3d94cee8e909a78f2d8cdb32782cf1",
+      "bytes": 24271,
+      "workflowId": "aw/review-reader/neutral-continuation/one/reviewer/961d06e2ce8ec25648960d309f60bc51de3c34281c65d3be4cc480c3ba12124c",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-46bb7d81dc7efde50d11c1f05934cac8fa602bb1b9ddc1819691cb18ab2aa42e-history.json",
+      "sha256": "5b93e356adf2a1c4cbd346cc98fe01ecf440a9ce35e26d521cd8321ecc2bc3d3",
+      "bytes": 23521,
+      "workflowId": "aw/review/neutral-continuation/one/b1-4ad9e5d9a9120a5f4fe784d46ae408bb",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-53a99eaa0ecf2dd3a19646494cd16d9ba6711b9d2b5c376b64af797b37bd8312-history.json",
+      "sha256": "37ab7f0a64222db7a86cf3a3a54326024c18971c582b990cabae065b56f235af",
+      "bytes": 24245,
+      "workflowId": "aw/review-reader/neutral-continuation/one/tester/26911c9f7bfe943afd00f5f191bd48b371d52fb653bd47f430d48403b8813186",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-5c223f0f3d0364b58267d11172ee6de722233d22856c1226b82cd28a0411781e-history.json",
+      "sha256": "99f7574e8ac55ce157c64562ee62103dcda3c7c77e3701cf7ed6eaa36ca0ae37",
+      "bytes": 98258,
+      "workflowId": "aw/task/neutral-continuation/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-7679dee0d044079eed0d989f69551db0bf22b374127f4a117a8adea1afcff721-history.json",
+      "sha256": "74a6dd80bbbe03639a65f712c280d96de8213952d5da197dc3e747c7064f441c",
+      "bytes": 24274,
+      "workflowId": "aw/review-reader/neutral-continuation/one/reviewer/b42fe8f46a5725e94df605343a77370554002f6944d55033e724dfbcdb7d0fbe",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-9e6207613395757d20c2fbeb2343397a167d789aa9ff567108c22ca62e88bc37-history.json",
+      "sha256": "503bb93bc5615f79ecf49ab64eda6d742132946bae5c22bcb465ffd3491aa709",
+      "bytes": 24259,
+      "workflowId": "aw/review-reader/neutral-continuation/one/reviewer/ef1fbbc429c6752fcfde22c76e56cec8da0761dd4fa0cf7fc3d6e77f5ed91dc1",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-bf4fd129fb8f25397c077bd0eabb6e01b653925cedbb0db5afdf3d652f88439c-history.json",
+      "sha256": "86ae43adc3d10b70224f6c1e1e58f20e2948c85a7267d133e12089e7d5fbb353",
+      "bytes": 23554,
+      "workflowId": "aw/review/neutral-continuation/one/planning-c50725c927521dd9acd8eb9f8e6a534d-c0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-ef184a0a347fc7478324d497fcaa921213d1ea8da7451f9bd6fb88ea3735008e-history.json",
+      "sha256": "e112f8a4163d68cca0c2101406c28df2441ac41a6510363a7fc5fea78640f016",
+      "bytes": 24248,
+      "workflowId": "aw/review-reader/neutral-continuation/one/tester/6716de88860f0cae7175bce712b25446f96dc2afdca40a181c7d8552ce5b3858",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-continuation-pending-main-5c223f0f3d0364b58267d11172ee6de722233d22856c1226b82cd28a0411781e-history.json",
+      "sha256": "ca9d34738f5056c4d16864c621053922a0fe83a6b8cff83ff75ef9ee3a51d6ae",
+      "bytes": 18754,
+      "workflowId": "aw/task/neutral-continuation/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-continuation",
+      "origin": "temporal-continuation-j38l4i",
+      "unfinished": true
+    },
+    {
+      "file": "sdk-requirements-58bea04ca1f9286f5458797bf386c82686f199f7e7ca3f3cd0c230e1a2f264f2-history.json",
+      "sha256": "7e8a5c15a3fd9c62e474037628c70d49e18bb55a3b7013eacc842cbe0c0d5246",
+      "bytes": 24248,
+      "workflowId": "aw/review-reader/neutral-continuation/one/tester/07057aa600e417f4652e47e6f97bbc11f4bd0662e773b6480eca8eb3bd02262f",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-5c223f0f3d0364b58267d11172ee6de722233d22856c1226b82cd28a0411781e-history.json",
+      "sha256": "a4bc7ecee5217b327dc8f83a0411192f5d7628870f8421e91c0a71bd142a2ec5",
+      "bytes": 98551,
+      "workflowId": "aw/task/neutral-continuation/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-6e11cdf8879022120c937e773b4462dc9cf90cc1cb8cc4dd83fda9cf4fe421ae-history.json",
+      "sha256": "a13c31cac1917a42d9913c173eb9915dcea1578f819e3675733e22fb6e527d05",
+      "bytes": 24245,
+      "workflowId": "aw/review-reader/neutral-continuation/one/tester/1849c740c0aee76aab61da7630aecf9edf534189566face721234d8c8e7ab5b7",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-a4cf3a1eee38d349782373fcca6af4c6d8258f76638d353b0ff45451b664f802-history.json",
+      "sha256": "1c118c6bc36386f8f11e3e9b46b49afbc5abae2d4641a5b808c89c522acc2952",
+      "bytes": 24271,
+      "workflowId": "aw/review-reader/neutral-continuation/one/reviewer/601ab6c6013fe27c971150f25b0950abc9b0f6620ea592dbb4cc71122f8f24e2",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-c7287b59041776ecb69bfebf9d9da534a07dbeb4420c297c83a8bb78d4688a3a-history.json",
+      "sha256": "3e957ce550735ffffb10fd2ff3df57b48e5c1377cc9d208c5857eb64240871ff",
+      "bytes": 24274,
+      "workflowId": "aw/review-reader/neutral-continuation/one/reviewer/384b2e7a654851416e1766c813aae75c506e9956908107134bf22e2416f6f498",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-e10c2d3927664ec09f466bee0a98275fda1c3dbc3026285f599068e559241095-history.json",
+      "sha256": "af3d70dff5bb2782f3afb5e9d8e34c21f5aa8fc2e03e85dc1d5cf73d444faed8",
+      "bytes": 23557,
+      "workflowId": "aw/review/neutral-continuation/one/planning-a9324b826897070c93fe5c339acfc066-c0",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-e46d795c29da8d078300f969246bb17404fb45f525fbafd442972ab7147d94bf-history.json",
+      "sha256": "06a332e43bba0ec46fbe488265c798e9ddbb6696b03322598827795db98b6297",
+      "bytes": 23516,
+      "workflowId": "aw/review/neutral-continuation/one/b1-d00bbcb365059494a00cb66b5c303b4b",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-e4f4c9ec5f973a114ce592a8cb23960cc68e80c81ca84e465cb10bad1fba5e86-history.json",
+      "sha256": "516c058193737d37005b61fd598ebbcbcad853a27a3504df6daf5d66334a5ab9",
+      "bytes": 24265,
+      "workflowId": "aw/review-reader/neutral-continuation/one/reviewer/efbd066e84ee2f8a14ede346db9d69f725a4f668550bb5600d95685c662e0143",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-ef004b62214d5d5b66405d32ad7b8b31c4c2424ae3df549439462b6be8b754ac-history.json",
+      "sha256": "d87847d694a1d6d764fb9980fd12be1fc7268140d3a45fd635e39fac800e92ba",
+      "bytes": 23560,
+      "workflowId": "aw/review/neutral-continuation/one/planning-437d0012f6f3662a86afde397f7e691a-c1",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-fa97137f561473fada031e949ffd87d3c1d7aa6c7e56ebba75133fdff2b2340d-history.json",
+      "sha256": "395b5b476149b20641ef3c7aef9c34557b0631300c9bc1d92901260925940305",
+      "bytes": 24239,
+      "workflowId": "aw/review-reader/neutral-continuation/one/tester/cd0b09b5f39487a43178943537ec17cae5772b8a9cb345fdd511b5ddb102c45b",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-requirements-pending-main-5c223f0f3d0364b58267d11172ee6de722233d22856c1226b82cd28a0411781e-history.json",
+      "sha256": "9b70d21115fb73d3d82b5090ce89320341d830e0c851e0bb94ff85945c349dc6",
+      "bytes": 18754,
+      "workflowId": "aw/task/neutral-continuation/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-requirements",
+      "origin": "temporal-continuation-jaa2Fb",
+      "unfinished": true
+    },
+    {
+      "file": "sdk-finalization-04d97b483f5d2c62d8dafd73db76b0285da1f00b94feb246d9a4c22f3e0c9d71-history.json",
+      "sha256": "f466f640fcead3301cb3ba8625890154217e68fe99337594083a848b21024f56",
+      "bytes": 23726,
+      "workflowId": "aw/review-reader/neutral-b1/one/reviewer/c9b4e8ccc509c30a62966bcf0a02fa040d6c4ad031ff234173bda39e147a3602",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-finalization",
+      "origin": "temporal-b1-7BmLZc",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-finalization-28804d0556f0159e181e1d6a9be121a0dd4a7347a8597b768a39265e55060d8b-history.json",
+      "sha256": "05fe5db8627b062febb4d72ee3fd21c481da3b5cd819b071652947f965682afc",
+      "bytes": 15834,
+      "workflowId": "aw/finalization/neutral-b1/one/911c008fdd3fef8312b5776e8b95651f3b120b1b4bf8d5188692aff22de3940b/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-finalization",
+      "origin": "temporal-b1-7BmLZc",
+      "unfinished": false,
+      "replayProfile": "finalization"
+    },
+    {
+      "file": "sdk-finalization-34ef2a3c6bdea9613806e72aaad07fe750d77958fdce19226fcbedabfe996d96-history.json",
+      "sha256": "6b4d11fd9695c29e5b0650bd9014e5babfbca9839a6412969be002ebab14fd56",
+      "bytes": 17467,
+      "workflowId": "aw/review/neutral-b1/one/b1-301e8745bc5c5e6eb0342aceb3bdd70a",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-finalization",
+      "origin": "temporal-b1-7BmLZc",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-finalization-40297bd87d500a564ce6898c8fae9f508dc26487a6b13069e250fc641f55d520-history.json",
+      "sha256": "d512fbf569443a129aafefeed9f7a000a4091a51e72dbafbf0b4229ce3e36bf3",
+      "bytes": 50390,
+      "workflowId": "aw/task/neutral-b1/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-finalization",
+      "origin": "temporal-b1-7BmLZc",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-finalization-pending-finalization-28804d0556f0159e181e1d6a9be121a0dd4a7347a8597b768a39265e55060d8b-history.json",
+      "sha256": "7ad988e9b67eedf9cedf7dd9c55232629e0b4e040bced55daafa6660ea72a13b",
+      "bytes": 9058,
+      "workflowId": "aw/finalization/neutral-b1/one/911c008fdd3fef8312b5776e8b95651f3b120b1b4bf8d5188692aff22de3940b/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-finalization",
+      "origin": "temporal-b1-7BmLZc",
+      "unfinished": true,
+      "replayProfile": "finalization"
+    },
+    {
+      "file": "sdk-cancel-before-11bd45eec500b0a28fa29bfa9816a6f0aaa4486ccca453a63718746a19d8ec6b-history.json",
+      "sha256": "e6ae3713e868e2321d37183f93942f93994d1514ea568d37fec8d9de494bbc64",
+      "bytes": 9639,
+      "workflowId": "aw/finalization/neutral-b1/one/7776e37a609eca91bf36e96d86a2ec11cadab8aec80e7fc2913ddb927717d6ef/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-before",
+      "origin": "temporal-b1-aCGjho",
+      "unfinished": false,
+      "replayProfile": "finalization"
+    },
+    {
+      "file": "sdk-cancel-before-40297bd87d500a564ce6898c8fae9f508dc26487a6b13069e250fc641f55d520-history.json",
+      "sha256": "3790ec953dc34fd9ee21a67ef45768bd9069c11ff0856e0171d2064a09e039cb",
+      "bytes": 50376,
+      "workflowId": "aw/task/neutral-b1/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-before",
+      "origin": "temporal-b1-aCGjho",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-cancel-before-68739138026080626d9dab91db7bf052869e195ede1e0c123aef02b88c6a2085-history.json",
+      "sha256": "0cfe5bbc33d6b787f1a5009e829fe750fb1a0332e6a3f4a5a7606ecbd0c0f98c",
+      "bytes": 23731,
+      "workflowId": "aw/review-reader/neutral-b1/one/reviewer/3624a2a994fde784e61e510c38fb92e76ed1922002e97b7bfbb3880ba8969191",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-before",
+      "origin": "temporal-b1-aCGjho",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-cancel-before-afab09d826d4058c745d94d752b45430beb1c1eafd59bc86130f62aa71286e56-history.json",
+      "sha256": "8e5e9e58e05c84f3cc5ce47cfe8e3e97204fda9c87a023206fa586b1cba488a5",
+      "bytes": 17470,
+      "workflowId": "aw/review/neutral-b1/one/b1-7dd8be418942102d7ada36cbf88eb141",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-before",
+      "origin": "temporal-b1-aCGjho",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-cancel-before-pending-finalization-11bd45eec500b0a28fa29bfa9816a6f0aaa4486ccca453a63718746a19d8ec6b-history.json",
+      "sha256": "c0a161d3cb176850c37dcda5a0164f73afe3277f657eb2642ddd6991466a2321",
+      "bytes": 7588,
+      "workflowId": "aw/finalization/neutral-b1/one/7776e37a609eca91bf36e96d86a2ec11cadab8aec80e7fc2913ddb927717d6ef/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-before",
+      "origin": "temporal-b1-aCGjho",
+      "unfinished": true,
+      "replayProfile": "finalization"
+    },
+    {
+      "file": "sdk-cancel-after-334a9b4896cfec8df90e5dfd514647b0648b56a802d0bf135f83a4aeb56b562b-history.json",
+      "sha256": "ac83c75f3598eb8dfcb16c71a692cd549ca214e27f4ab8704cb8ffbb21b938a9",
+      "bytes": 23713,
+      "workflowId": "aw/review-reader/neutral-b1/one/reviewer/666d21e0ceaebd79768978a54593ac1edac408ae01db356f9b6f92af4f1e88f7",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-after",
+      "origin": "temporal-b1-duUG56",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-cancel-after-40297bd87d500a564ce6898c8fae9f508dc26487a6b13069e250fc641f55d520-history.json",
+      "sha256": "81fdd9bbffc188fe1924a78f95e0c1348b371c489374ed4d558efa60496a6b68",
+      "bytes": 50384,
+      "workflowId": "aw/task/neutral-b1/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-after",
+      "origin": "temporal-b1-duUG56",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-cancel-after-794419b89e49cf67a008440d8d7225c6f91e744a30f6a716a0e133ef23f8e9a7-history.json",
+      "sha256": "00b5151037520790149d7fd7cf99d4d4f2b44a8c666afa069407943c07213027",
+      "bytes": 17470,
+      "workflowId": "aw/review/neutral-b1/one/b1-c4c7c7a81224012c543a5b0a970ff83f",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-after",
+      "origin": "temporal-b1-duUG56",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-cancel-after-cbbc67e6158055cb848b53e632792634026b90411722c10f4f661dde284da717-history.json",
+      "sha256": "558e442f5b3a2001cea95a5f9e73adf372b9bfa954dc1430d399ce05d80d3c1c",
+      "bytes": 10476,
+      "workflowId": "aw/finalization/neutral-b1/one/56b8a74ae3e1b8e3f5a322e414a46c698a78032a2e4a1ca6f522da200c1a717b/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-after",
+      "origin": "temporal-b1-duUG56",
+      "unfinished": false,
+      "replayProfile": "finalization"
+    },
+    {
+      "file": "sdk-cancel-after-pending-finalization-cbbc67e6158055cb848b53e632792634026b90411722c10f4f661dde284da717-history.json",
+      "sha256": "86b9038c80f303b0cb945790c0334592329794c9a66cbdbb81b2050aa0c046e2",
+      "bytes": 7578,
+      "workflowId": "aw/finalization/neutral-b1/one/56b8a74ae3e1b8e3f5a322e414a46c698a78032a2e4a1ca6f522da200c1a717b/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-cancel-after",
+      "origin": "temporal-b1-duUG56",
+      "unfinished": true,
+      "replayProfile": "finalization"
+    },
+    {
+      "file": "sdk-timeout-cancel-40297bd87d500a564ce6898c8fae9f508dc26487a6b13069e250fc641f55d520-history.json",
+      "sha256": "7f442e3283e2ea9c15d936562d391064039fa3f9cac639fad49074e5682cc7a3",
+      "bytes": 50390,
+      "workflowId": "aw/task/neutral-b1/one",
+      "workflowType": "LocalTaskWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-timeout-cancel",
+      "origin": "temporal-b1-9HmCCg",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-timeout-cancel-42a223f42aa6b00e47f750546b89ab69bb155332ccc10f4edea34c79b0edf094-history.json",
+      "sha256": "04c1b487d34d5fcd226d48cd3b4331928bddbb83978bdc0e15cffd9e376c0bb9",
+      "bytes": 15657,
+      "workflowId": "aw/finalization/neutral-b1/one/b1988cbe5dd793ed5a36a303b1033bda17d37f4ebdcf32c8ad6c285788548c6a/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-timeout-cancel",
+      "origin": "temporal-b1-9HmCCg",
+      "unfinished": false,
+      "replayProfile": "finalization-timeout"
+    },
+    {
+      "file": "sdk-timeout-cancel-77264ed5a9fb13a6641c5d1cd6bd7ae3a3de9c6771e7d2388f3cbc7e869f745f-history.json",
+      "sha256": "48511ffa6bf23aacd3c1a752ec8654f854898c7bd66a5c106caf648e7beba0ea",
+      "bytes": 23725,
+      "workflowId": "aw/review-reader/neutral-b1/one/reviewer/3a8d74e8befcdacd6a39ec8f28b1c5ea968471222999d34cb2da0b784bdaf324",
+      "workflowType": "ControlledReaderWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-timeout-cancel",
+      "origin": "temporal-b1-9HmCCg",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-timeout-cancel-b859d7599235790237c82c1b115bc2fa2e199fd8ba40605fe7eb3b752392b9b2-history.json",
+      "sha256": "d49b2ded84feecb1bab422330ca3e7b8b22c86029b0b3d690ebe294e699c6ae3",
+      "bytes": 17470,
+      "workflowId": "aw/review/neutral-b1/one/b1-c72b1c557874cc44f76ca7c25f457fe5",
+      "workflowType": "ReviewWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-timeout-cancel",
+      "origin": "temporal-b1-9HmCCg",
+      "unfinished": false
+    },
+    {
+      "file": "sdk-timeout-cancel-pending-finalization-42a223f42aa6b00e47f750546b89ab69bb155332ccc10f4edea34c79b0edf094-history.json",
+      "sha256": "d34fbba58457ed23a5a7d7e0889aff1c6e73c96a56c6c4c6d7b8ea2497ec8d34",
+      "bytes": 9365,
+      "workflowId": "aw/finalization/neutral-b1/one/b1988cbe5dd793ed5a36a303b1033bda17d37f4ebdcf32c8ad6c285788548c6a/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-timeout-cancel",
+      "origin": "temporal-b1-9HmCCg",
+      "unfinished": true,
+      "replayProfile": "finalization-timeout"
+    },
+    {
+      "file": "sdk-timeout-cancel-unknown-finalization-42a223f42aa6b00e47f750546b89ab69bb155332ccc10f4edea34c79b0edf094-history.json",
+      "sha256": "e69401e73597d365f4184142b961c9413fd8de5b4aaf9b3c11d74ed7837b7690",
+      "bytes": 15307,
+      "workflowId": "aw/finalization/neutral-b1/one/b1988cbe5dd793ed5a36a303b1033bda17d37f4ebdcf32c8ad6c285788548c6a/archive-one",
+      "workflowType": "FinalizationWorkflow",
+      "expected": "compatible",
+      "scenario": "sdk-timeout-cancel",
+      "origin": "temporal-b1-9HmCCg",
+      "unfinished": true,
+      "replayProfile": "finalization-timeout"
+    }
+  ]
+}
