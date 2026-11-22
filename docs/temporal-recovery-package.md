@@ -40,8 +40,8 @@ native dumps, artifacts, receipts, projections, build и workspaces. Его test
 ```
 
 ```sh
-yarn comparison:h06:recovery --plan /absolute/request.json
-yarn comparison:h06:recovery --run /absolute/request.json
+yarn recovery-package --plan /absolute/request.json
+yarn recovery-package --run /absolute/request.json
 ```
 
 `--plan` только читает входы. Он требует завершённый `PASS` профиля

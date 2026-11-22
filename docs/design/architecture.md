@@ -7,7 +7,7 @@
 Подробные условия: [процесс и внешние действия](temporal-workflow.md),
 [данные, версии и подключение](temporal-data-and-projects.md).
 Текущее состояние и открытые критерии принадлежат
-[плану миграции](../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
+[плану миграции](../exec-plans/active/2026-11-23-temporal-production-rollout.md).
 
 ## Инженерные принципы
 

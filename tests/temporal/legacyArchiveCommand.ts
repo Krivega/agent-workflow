@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { exportLegacyArchive, readLegacyArchive } from '../adapters/artifacts/legacyArchive.js';
+import { exportLegacyArchive, readLegacyArchive } from './legacyArchive.js';
 
 export function legacyArchiveCommand(args: string[]) {
   const [action, file] = args;

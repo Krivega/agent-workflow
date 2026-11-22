@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "baseline": {
-    "rootFiles": 263,
-    "workflowOwnedRootFiles": 258,
+    "rootFiles": 260,
+    "workflowOwnedRootFiles": 255,
     "harness2OwnedRootFiles": 1,
     "standaloneFiles": 78,
     "toolingFiles": 4
@@ -289,7 +289,6 @@
           "tests/comparisonH06TemporalAutonomousRun.test.ts",
           "tests/comparisonInputs.test.ts",
           "tests/comparisonParticipants.test.ts",
-          "tests/comparisonReadiness.test.ts",
           "tests/comparisonSession.test.ts",
           "tests/comparisonUsage.test.ts",
           "tests/coordinationPersistence.integration.test.ts",
@@ -360,8 +359,6 @@
           "tests/comparisonH06NativeLegacyTransportPhase.integration.test.ts",
           "tests/comparisonH06NativeLegacyTransportPhase.test.ts",
           "tests/comparisonH06Preflight.integration.test.ts",
-          "tests/comparisonReport.test.ts",
-          "tests/comparisonSeries.test.ts",
           "tests/council.test.ts",
           "tests/councilProgress.test.ts",
           "tests/designReview.test.ts",
@@ -383,7 +380,7 @@
           "tests/taskFileMaintenance.test.ts",
           "tests/userCommands.test.ts"
         ],
-        "coverageInclude": ["cli/**/*.ts", "comparison/**/*.ts"],
+        "coverageInclude": ["cli/**/*.ts"],
         "command": "yarn test:repo:cli",
         "resources": ["vitest.config.ts", "scripts/check-area-config.mjs", "tsconfig.test.json"],
         "env": ["Monorepository dependencies; existing native-tool prerequisites stay unchanged"],
@@ -979,178 +976,6 @@
       "output": ["stdout TAP"],
       "limits": "Repository-only profile/discovery contract; this is not a native or service qualification.",
       "status": "registered"
-    },
-    {
-      "id": "workflow.native.h01-series",
-      "cwd": ".",
-      "command": "yarn comparison:series --step REQUEST.json",
-      "config": "Pinned series manifest v1 through v6, readiness and one bound step request; v6 binds H06/2 materials and an H06/3 package per H06 slot",
-      "files": [],
-      "drivers": [
-        "tests/comparisonH01Series.ts"
-      ],
-      "resources": [
-        "tests/comparisonH01SeriesEvidence.ts",
-        "tests/comparisonH01Operator.ts",
-        "tests/comparisonH06Operator.ts",
-        "tests/comparisonH06SeriesAccounting.ts",
-        "tests/comparisonH06TemporalSeriesPrimary.ts",
-        "tests/comparisonReadiness.ts",
-        "comparison/suite.json",
-        "comparison/materials.json"
-      ],
-      "env": [
-        "Repository dependencies and pinned scenario runtime inputs",
-        "Separate exact native/service/model authorization for each H01–H06 step; no series grant is inferred"
-      ],
-      "output": [
-        "Bound series ledger, immutable pending/result evidence and scenario-specific operator evidence"
-      ],
-      "limits": "Versions 1–5 retain their four-slot increments; v6 binds the full 24-run schedule. Plan/status are read-only. Each --step needs its own exact authorization. H06 --reconcile appends a verified full-usage receipt, checks external turns and STOP and can open the next slot within the same cap. FAIL, unresolved UNKNOWN and unconfirmed STOP block advancement. Local reconciliation has no qualification effect.",
-      "status": "pending"
-    },
-    {
-      "id": "workflow.comparison.h02-technical",
-      "cwd": ".",
-      "command": "yarn comparison:h02 --self-test NEW_OUTPUT_DIRECTORY",
-      "config": "New isolated output directory; fixed local RPC only",
-      "files": [],
-      "drivers": [
-        "tests/comparisonH02.ts"
-      ],
-      "resources": [
-        "tests/comparisonH02Contract.ts",
-        "tests/comparisonH02Legacy.ts",
-        "tests/comparisonH02LegacyFixture.ts",
-        "tests/comparisonH02Temporal.ts",
-        "tests/comparisonH02TemporalFixture.ts",
-        "comparison/suite.json",
-        "comparison/materials.json"
-      ],
-      "env": [
-        "Repository development dependencies; no native client, model credentials or Temporal service"
-      ],
-      "output": [
-        "Technical case reports, original review evidence and local RPC observations under the new output directory"
-      ],
-      "limits": "Real Legacy council and Temporal activities with fixed local RPC. This does not execute ReviewWorkflow, qualify native models, or append a native H02 result to the series. Native usage remains null; qualification/nativeAcceptance are false.",
-      "status": "registered"
-    },
-    {
-      "id": "workflow.native.h02-operator",
-      "cwd": ".",
-      "command": "yarn comparison:h02:operator --plan SPEC.json REQUEST.json",
-      "config": "Pinned H02 operator spec and executionVersion2 request; own exact H02 primary grant for --run",
-      "files": [],
-      "drivers": ["tests/comparisonH02Operator.ts"],
-      "resources": [
-        "tests/comparisonH02Native.ts",
-        "tests/comparisonH02NativeRpc.ts",
-        "tests/comparisonH02NativeLegacy.ts",
-        "tests/comparisonH02NativeTemporal.ts",
-        "tests/comparisonH02Contract.ts",
-        "tests/comparisonH02Legacy.ts",
-        "tests/comparisonH02Temporal.ts",
-        "tests/comparisonH01Contract.ts",
-        "tests/comparisonH01Operator.ts",
-        "tests/comparisonH01Preparation.ts",
-        "tests/comparisonH01Guard.ts",
-        "tests/comparisonH01Keeper.ts"
-      ],
-      "env": [
-        "Repository development dependencies; plan/prepare do not start services or models",
-        "--run separately requires pinned native Codex, primary H02 grant and local Temporal CLI for candidate"
-      ],
-      "output": ["Pinned drafts or one owned H02 attempt report, primary accounting and STOP evidence"],
-      "limits": "Closed H02 scenario uses the shared interval/keeper/native guard. H01 grants are rejected. Local unit providers do not qualify live Codex, SDK lifecycle or installed consumers; native qualification remains pending.",
-      "status": "pending"
-    },
-    {
-      "id": "workflow.native.h03-operator",
-      "cwd": ".",
-      "command": "yarn comparison:h03:operator --plan SPEC.json REQUEST.json",
-      "config": "Pinned H03 operator spec and executionVersion2 request; own exact H03 primary grant and separately completed root recovery notices for candidate --run",
-      "files": [],
-      "drivers": ["tests/comparisonH03Operator.ts"],
-      "resources": [
-        "tests/comparisonH03Native.ts",
-        "tests/comparisonH03Contract.ts",
-        "tests/comparisonH03Legacy.ts",
-        "tests/comparisonH03State.ts",
-        "tests/comparisonH03Temporal.ts",
-        "tests/comparisonH02NativeRpc.ts",
-        "tests/comparisonH01Contract.ts",
-        "tests/comparisonH01Guard.ts",
-        "tests/comparisonH01Keeper.ts",
-        "tests/comparisonH01Preparation.ts"
-      ],
-      "env": [
-        "Repository development dependencies; plan/prepare/issue-recovery do not start services or models",
-        "--run separately requires exact primary H03 grant, native Codex and local Temporal service for candidate"
-      ],
-      "output": ["Pinned drafts or one owned H03 attempt with native compaction, observed LOAD, retained FAIL/pending, accounting and STOP proof"],
-      "limits": "Closed H03 uses one same-session native compact with a separate reservation and primary usage barrier. Unsupported compaction is NOT RUN; UNKNOWN blocks retry. Human pause/resume notices cannot be fabricated or replaced by initial-grant authority. Unit doubles do not qualify native execution or full series.",
-      "status": "pending"
-    },
-    {
-      "id": "workflow.native.h04-operator",
-      "cwd": ".",
-      "command": "yarn comparison:h04:operator --plan SPEC.json REQUEST.json",
-      "config": "Pinned H04 operator spec and executionVersion2 request; own exact H04 primary grant for --run",
-      "files": [],
-      "drivers": ["tests/comparisonH04Operator.ts"],
-      "resources": [
-        "tests/comparisonH04Native.ts",
-        "tests/comparisonH04NativeContract.ts",
-        "tests/comparisonH04NativeOperation.ts",
-        "tests/comparisonH04NativeLegacy.ts",
-        "tests/comparisonH04NativeTemporal.ts",
-        "tests/comparisonH04NativeWait.mjs",
-        "tests/comparisonH04.ts",
-        "tests/comparisonH04Contract.ts",
-        "tests/comparisonH04Workflow.ts",
-        "tests/comparisonH02NativeRpc.ts",
-        "tests/comparisonH01Contract.ts",
-        "tests/comparisonH01Guard.ts",
-        "tests/comparisonH01Keeper.ts",
-        "tests/comparisonH01Preparation.ts"
-      ],
-      "env": [
-        "Repository development dependencies; plan/prepare do not start services or models",
-        "--run separately requires exact primary H04 grant, native Codex and local Temporal service for candidate"
-      ],
-      "output": ["Pinned drafts or one owned H04 attempt with primary native wait, operation/result/application, accounting and STOP evidence"],
-      "limits": "Closed H04 keeps operation and application at the host owner. Native access remains read-only. One launch and exactly one terminal wait must be linked to the original native turn and primary operation receipts. Unit doubles and the model-free helper do not qualify native execution or full series.",
-      "status": "pending"
-    },
-    {
-      "id": "workflow.native.h05-operator",
-      "cwd": ".",
-      "command": "yarn comparison:h05:operator --plan SPEC.json REQUEST.json",
-      "config": "Pinned H05 spec/request, identity generation at least 2 and own exact H05 primary grant for --run",
-      "files": [],
-      "drivers": ["tests/comparisonH05Operator.ts"],
-      "resources": [
-        "tests/comparisonH05Native.ts",
-        "tests/comparisonH05Contract.ts",
-        "tests/comparisonH05Legacy.ts",
-        "tests/comparisonH05Temporal.ts",
-        "tests/comparisonH05Workflow.ts",
-        "adapters/codex/appServerWaits.ts",
-        "adapters/codex/appServerTransport.ts",
-        "tests/comparisonH02NativeRpc.ts",
-        "tests/comparisonH01Contract.ts",
-        "tests/comparisonH01Guard.ts",
-        "tests/comparisonH01Keeper.ts",
-        "tests/comparisonH01Preparation.ts"
-      ],
-      "env": [
-        "Repository dependencies; plan/prepare do not start services or models",
-        "--run separately requires exact primary H05 grant, native Codex and local Temporal service for candidate"
-      ],
-      "output": ["One known native turn, original primary history, separate transport interventions, retained waiting state, physical restart, accounting and STOP evidence"],
-      "limits": "Closed H05 reuses the existing completion owner. Recovery never repeats create/send or reopens a sealed participant. Restart preserves owner/generation; stale generation and late cancelled results are refused. Unit doubles do not qualify native recovery, active grants or full series.",
-      "status": "pending"
     }
   ]
 }

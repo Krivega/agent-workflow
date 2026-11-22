@@ -28,11 +28,15 @@ Temporal используется только в ранее разрешённ�
 
 ## Адресные проверки
 
+<!-- documentation-check: historical:start -->
+
 ```sh
 yarn test tests/comparisonMaterials.test.ts tests/council.test.ts tests/temporal/review.test.ts --coverage --coverage.include='tests/comparisonH02*.ts' --coverage.reportsDirectory=tmp/temporal-h02-20261117/profile-coverage
 yarn comparison:h02 --plan
 yarn comparison:h02 --self-test /Users/krivega/workspace/agent-workflow/tmp/temporal-h02-20261117/self-test
 ```
+
+<!-- documentation-check: historical:end -->
 
 Три набора, 110/110 PASS; все шесть новых файлов имеют четыре 100%:
 statements 632/632, branches 220/220, functions 120/120, lines 598/598.
@@ -70,5 +74,5 @@ statements 31162/31162, branches 20453/20453, functions 5404/5404, lines 29332/2
 `partialScope:true`. Моделей, SDK-сервисов и установок в техническом CLI — 0.
 Прямые Activities не доказывают Workflow/SDK lifecycle; STOP читателя не доказывает
 остановку native-процесса. Результат не принимается за H02-слот живой серии.
-[Договор](../temporal-comparison.md#технический-адаптер-h02) оставляет отдельными следующий
+Договор технического адаптера оставляет отдельными следующий
 native-оператор H02, его точный допуск и подключение к общему исполнителю.

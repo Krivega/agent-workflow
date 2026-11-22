@@ -101,9 +101,8 @@ export function setupConsumer(action, cwd) {
       root,
       skill,
       frontmatter[0] +
-        '\nСледуй общему навыку из пакета `@krivega/agent-workflow` (' +
-        skill +
-        ') и его `CURRENT-CHAT.md`. Корень пакета найди по установленной зависимости проекта. ' +
+        '\nДля запуска открой раздел «Запуск через Temporal» в CURRENT-CHAT.md установленного ' +
+        'пакета `@krivega/agent-workflow`. Подготовь Input12 по docs/temporal-sdk.md. ' +
         'Рабочий дескриптор проекта — `' +
         path +
         '`.\n',

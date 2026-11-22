@@ -1,6 +1,7 @@
 # Подключение задачи и обратный переход
 
-Выбери действие; автоматического преобразования старых задач нет.
+Рабочий запуск описан в [руководстве Temporal](CURRENT-CHAT.md#запуск-через-temporal).
+Команды через `cli/main.ts` обслуживают проверки прежнего процесса в checkout Agent Workflow. Автоматического преобразования старых задач нет.
 
 | Действие | Раздел |
 | --- | --- |
@@ -25,8 +26,7 @@
 `agent-workflow/backend-assignments`; SDK требует явной доверенной регистрации клиента.
 Штатный `task-chat start` при действующей политике версии 2 принимает подготовленный вход
 Temporal. Квалификация установленного потребителя и включение T6 остаются отдельными шагами.
-Новые модельные запуски Harness² запрещены до RPC, процесса и записи; прежний comparison runner
-отказывает при включённой backend-policy. Назначение нельзя вывести только из версии карточки,
+Новые модельные запуски Harness² запрещены до RPC, процесса и записи. Назначение нельзя вывести только из версии карточки,
 наличия Store или Temporal workflow ID.
 [Единая карта границ и порядок включения](https://github.com/Krivega/agent-workflow/blob/main/docs/temporal-consumers.md#границы-создания-продолжения-и-записи-перед-t6)
 перечисляет обходные пути, подготовительные действия и отсутствующие проверки.
@@ -38,7 +38,7 @@ Temporal. Квалификация установленного потребит
 
 Возврат default сохраняет назначения уже созданных задач. После сбоя Temporal-задачи нужны
 остановка, сверка эффектов и восстановление Temporal. Границы текущего перехода закреплены
-в [плане миграции](https://github.com/Krivega/agent-workflow/blob/main/docs/exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md#переключение-и-восстановление).
+в [плане миграции](https://github.com/Krivega/agent-workflow/blob/main/docs/exec-plans/completed/2026-10-27-agent-workflow-temporal-migration.md#переключение-и-восстановление).
 
 ## Допуск B1 и ограниченный coder B2
 
@@ -67,15 +67,15 @@ Store. Не переносить отдельные старые checkpoint/blob
 
 ## Проверка выпуска в подключённом проекте
 
-Перед передачей аргументов CLI адаптер потребителя вызывает публичную функцию
+В установленном пакете проверка `checkConsumerRelease` отклоняет команды прежнего движка.
+Регрессии прежнего процесса проверяют функцию
 `await checkConsumerRelease(args, { root, version })` из
-`@krivega/agent-workflow/consumer-release`. `root` указывает рабочую копию потребителя,
+`tests/legacyConsumerRelease.mjs`. `root` указывает рабочую копию потребителя,
 `version` — версию установленного пакета. Новый процесс сохраняет `runtime_package_version`
 в плане подключения, журнале выбора, managed-chat и идентичности Store.
 
 При изменении сохранённой задачи проверяются найденные записи. Старый план, журнал, чат или
-Store без совпадающей версии требуют исходного выпуска до первой записи. Для `comparison-run`
-дополнительно сверяются корень исполнителя и SHA-256 его `package.json` с сохранённой серией.
+Store без совпадающей версии требуют исходного выпуска до первой записи.
 Независимое чтение и подготовка новых входов доступны; подготовка с указанным managed-chat
 или журналом проверяет их версию. Для продолжения старой задачи используй сохранённую копию
 её выпуска и исходные пути.
@@ -83,7 +83,7 @@ Store без совпадающей версии требуют исходног
 ## Предварительный просмотр
 
 ```sh
-yarn agent-workflow preview-task project/workflow.json docs/exec-plans/active/selected.md TASK-ID /absolute/project
+node --import tsx cli/main.ts preview-task project/workflow.json docs/exec-plans/active/selected.md TASK-ID /absolute/project
 ```
 
 Команда только читает. Выход — полный план преобразования: версии, descriptor/procedure/rule
@@ -100,9 +100,9 @@ Legacy карточка без TaskNotes или с TaskNotes 1 явно пере
 ## Подключение и отключение
 
 ```sh
-yarn agent-workflow apply-task /absolute/connection-plan.json /absolute/external-journal /absolute/project
-yarn agent-workflow disable-task /absolute/external-journal /absolute/project
-yarn agent-workflow rollback-task /absolute/external-journal /absolute/project
+node --import tsx cli/main.ts apply-task /absolute/connection-plan.json /absolute/external-journal /absolute/project
+node --import tsx cli/main.ts disable-task /absolute/external-journal /absolute/project
+node --import tsx cli/main.ts rollback-task /absolute/external-journal /absolute/project
 ```
 
 `apply-task` — явное действие подключения одной задачи. Перед записью снова проверяются
@@ -201,7 +201,7 @@ check proof/intent и записи совета используют общий 
 чтения полного проверенного JSON. Старые JSON и локальные пулы остаются читаемыми.
 
 Для разрешённого переноса завершённой/остановленной задачи:
-`yarn agent-workflow relocate-files /absolute/request.json`. Запрос содержит `schema_version: 1`,
+`node --import tsx cli/main.ts relocate-files /absolute/request.json`. Запрос содержит `schema_version: 1`,
 `root` проекта, `namespace`, `storage: {root, grant}` и `relocation`:
 `{operation_id, expected_revision, expected_generation, expected_owner, files}`.
 `files` — точная карта относительных имён в namespace: `{hash, kind: archive|tool}`.
@@ -221,7 +221,7 @@ SHA-256 и kind проверенного инструмента. Запуск с
 восстановления окружения; указатели не являются исполняемыми файлами.
 
 Для полного восстановления в новый пустой каталог:
-`yarn agent-workflow materialize-files /absolute/restore-request.json` с `schema_version: 1`,
+`node --import tsx cli/main.ts materialize-files /absolute/restore-request.json` с `schema_version: 1`,
 `root`, `namespace`, `destination`, `storage: {root, grant}`. Требуются manage, остановленный
 либо released/frozen Store и отсутствие незавершённых effects. Материализация держит
 транзакцию Store, проверяет байты и возвращает manifest восстановленных файлов; индекс внешних
@@ -253,7 +253,7 @@ SHA-256 и kind проверенного инструмента. Запуск с
 доставкой требует сверки нативной истории, слепое повторение недопустимо.
 
 Для явно разрешённой очистки остановленного namespace:
-`yarn agent-workflow retain-store /absolute/retention-request.json`.
+`node --import tsx cli/main.ts retain-store /absolute/retention-request.json`.
 Запрос содержит `schema_version: 1`, `root` workspace, `storage: {root, grant}` и `retention`:
 `operation_id`, `expected_revision`, `expected_generation`, `expected_owner`, абсолютный `backup`
 вне Store. Требуются manage, точная идентичность и истёкший lease либо release. Сначала проверяется

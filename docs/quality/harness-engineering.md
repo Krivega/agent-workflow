@@ -45,5 +45,5 @@
 ## Продолжение работы
 
 Актуальные этапы и открытые критерии ведутся в
-[плане Temporal-миграции](../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
+[плане Temporal-миграции](../exec-plans/active/2026-11-23-temporal-production-rollout.md).
 Правила качества и границы допуска собраны в [одном разделе](README.md).

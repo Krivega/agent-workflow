@@ -1,4 +1,4 @@
-import suiteSource from '../comparison/suite.json' with { type: 'json' };
+import suiteSource from './fixtures/qualification/suite.json' with { type: 'json' };
 import {
   comparisonReport,
   comparisonSchedule,

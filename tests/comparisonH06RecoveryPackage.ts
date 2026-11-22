@@ -17,7 +17,7 @@ import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import { evidenceSchema, type BackupReceipt, type EvidenceGrant } from '../core/evidence.js';
 import { createBackup, stageRestore, verifyBackup } from '../src/adapters/artifacts/backup.js';
 import { artifactStore, publishFile } from '../src/adapters/artifacts/files.js';
-import { readLegacyArchive } from '../src/adapters/artifacts/legacyArchive.js';
+import { readLegacyArchive } from './temporal/legacyArchive.js';
 import { controlRef } from '../src/policy/readerControl.js';
 import {
   exactFields,

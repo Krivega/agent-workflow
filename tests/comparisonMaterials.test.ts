@@ -10,8 +10,8 @@ import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import materialsSource from '../comparison/materials.json' with { type: 'json' };
-import suiteSource from '../comparison/suite.json' with { type: 'json' };
+import materialsSource from './fixtures/qualification/materials.json' with { type: 'json' };
+import suiteSource from './fixtures/qualification/suite.json' with { type: 'json' };
 import { parseComparisonMaterials, parseComparisonSuite } from '../core/comparison.js';
 import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import {

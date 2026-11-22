@@ -455,18 +455,6 @@
       "project": "unit"
     },
     {
-      "path": "tests/comparisonReadiness.test.ts",
-      "project": "unit"
-    },
-    {
-      "path": "tests/comparisonReport.test.ts",
-      "project": "unit"
-    },
-    {
-      "path": "tests/comparisonSeries.test.ts",
-      "project": "unit"
-    },
-    {
       "path": "tests/comparisonSession.test.ts",
       "project": "unit"
     },

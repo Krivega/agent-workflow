@@ -10,7 +10,7 @@
 | Подготовка изменения, совместная работа, завершение и выбор проверки | [Рабочий цикл](harness-engineering.md) |
 | Роли, карточка, совет, аудит, хранение, передача и финализация | [Договор процесса](agent-workflow-contracts.md) |
 | Связь требований с проверками | [Сценарии проверок](../testing/traceability.md) |
-| Оставшаяся реализация и приёмка Temporal | [Активный план](../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md) |
+| Оставшаяся реализация и приёмка Temporal | [Активный план](../exec-plans/active/2026-11-23-temporal-production-rollout.md) |
 
 ## Границы подтверждений
 

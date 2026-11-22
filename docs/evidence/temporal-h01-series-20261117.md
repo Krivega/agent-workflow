@@ -16,7 +16,7 @@ baseline/candidate/candidate/baseline через существующий `runH0
 Владелец обвязки — `tests/comparisonH01Series.ts`, первичной сверки —
 `tests/comparisonH01SeriesEvidence.ts`; прежние H01 authority/keeper/STOP не заменяются.
 Операционный журнал серии отделён от офлайн-формата `--series-check`.
-[Подробный договор](../temporal-comparison.md#исполняемый-срез-h01-общего-сравнения)
+Договор старой серии
 содержит рецепт общего runtime inventory и draft/sealed requests.
 
 - Долговечный pending предшествует оператору; единственный writer и привязка каталогов

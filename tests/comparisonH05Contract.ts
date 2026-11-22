@@ -1,6 +1,6 @@
 import { join } from 'node:path';
-import suiteSource from '../comparison/suite.json' with { type: 'json' };
-import materialSource from '../comparison/materials.json' with { type: 'json' };
+import suiteSource from './fixtures/qualification/suite.json' with { type: 'json' };
+import materialSource from './fixtures/qualification/materials.json' with { type: 'json' };
 import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import { parseComparisonMaterials, parseComparisonSuite } from '../core/comparison.js';
 import { object, requireWorkflow } from '../core/connection.js';

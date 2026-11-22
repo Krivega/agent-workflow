@@ -53,6 +53,6 @@ flowchart TD
 Это целевое состояние, а не подтверждение готовности текущей реализации.
 Схемы сокращены; полные условия и актуальные доказательства находятся в источниках:
 
-- [План миграции](../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
+- [План миграции](../exec-plans/active/2026-11-23-temporal-production-rollout.md).
 - [Договор процесса и внешних действий](temporal-workflow.md), [данные и подключение](temporal-data-and-projects.md).
 - [Выделение репозитория и актуальные границы ADR-0072](decisions/0072-extract-agent-workflow-repository.md).

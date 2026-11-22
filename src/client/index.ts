@@ -5,13 +5,17 @@ import { readReaderStatus } from './readerStatus.js';
 import { backupCommand } from './backup.js';
 import { bindTaskBackendClient, type TaskBackendRegistration } from './taskBackend.js';
 
-if (process.argv[2] === '--backup') {
-  console.log(JSON.stringify(backupCommand(process.argv.slice(3))));
-} else if (process.argv[2] === '--legacy-archive') {
-  throw new Error('legacy-archive-unsupported');
+const [file, ...args] = process.argv.slice(2);
+if (file === '--backup') {
+  console.log(JSON.stringify(backupCommand(args)));
 } else {
-  const [file, address, taskQueue, registrationFile] = process.argv.slice(2);
-  if (!file || !address || !taskQueue || (file !== '--status' && !registrationFile))
+  const [address, taskQueue, registrationFile] = args;
+  if (
+    !file ||
+    !address ||
+    !taskQueue ||
+    (file !== '--status' && (file.startsWith('--') || !registrationFile))
+  )
     throw new Error('Usage: prepare-project INPUT.json ADDRESS TASK_QUEUE REGISTRATION.json');
   const connection =
     file === '--status'

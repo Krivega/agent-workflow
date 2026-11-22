@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import suiteSource from '../comparison/suite.json' with { type: 'json' };
-import materialSource from '../comparison/materials.json' with { type: 'json' };
+import suiteSource from './fixtures/qualification/suite.json' with { type: 'json' };
+import materialSource from './fixtures/qualification/materials.json' with { type: 'json' };
 import { parseComparisonMaterials, parseComparisonSuite } from '../core/comparison.js';
 import type { InputRef } from '../core/localRun.js';
 import { digest } from '../adapters/storage/storeCodec.js';

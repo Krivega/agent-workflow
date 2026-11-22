@@ -52,7 +52,7 @@ export default defineConfig({
         statements: 100,
       },
       include: [
-        '{core,ports,application,adapters,cli,comparison,src,tests}/**/*.{ts,tsx}',
+        '{core,ports,application,adapters,cli,src,tests}/**/*.{ts,tsx}',
         'tests/comparisonH04NativeWait.mjs',
         'scripts/**/*.ts',
       ],
@@ -73,9 +73,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           globalSetup: ['./scripts/vitestScratch.mjs'],
-          include: [
-            '{core,ports,application,adapters,cli,comparison,src,tests,scripts}/**/*.test.{ts,tsx}',
-          ],
+          include: ['{core,ports,application,adapters,cli,src,tests,scripts}/**/*.test.{ts,tsx}'],
           exclude: [...configDefaults.exclude, '**/*.integration.test.{ts,tsx}', 'tmp/**'],
         },
       },

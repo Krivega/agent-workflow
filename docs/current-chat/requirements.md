@@ -1,7 +1,7 @@
 # Требования и повторная экспертиза текущего чата
 
 Подробный договор для соответствующего действия. Обычный рабочий цикл —
-в [основном руководстве](../../CURRENT-CHAT.md#штатный-вход-без-json).
+в [инструкции для сравнительных проверок](../../CURRENT-CHAT.md#сравнительный-запуск-из-исходников).
 
 ## Ранняя карта требований и адресные повторы
 
@@ -14,11 +14,11 @@
 Для нового пакета используй штатную последовательность:
 
 ```sh
-yarn --silent agent-workflow freeze-checks check-map.json
-yarn --silent agent-workflow preflight-checks-chat agent-request.json
-yarn --silent agent-workflow checks-chat agent-request.json
-yarn --silent agent-workflow package-checks package-request.json
-yarn --silent agent-workflow council-run-chat council-request.json
+node --import tsx cli/main.ts freeze-checks check-map.json
+node --import tsx cli/main.ts preflight-checks-chat agent-request.json
+node --import tsx cli/main.ts checks-chat agent-request.json
+node --import tsx cli/main.ts package-checks package-request.json
+node --import tsx cli/main.ts council-run-chat council-request.json
 ```
 
 `freeze-checks` принимает карту ниже: schema_version/root/evidence_root/card/checks и
@@ -159,9 +159,9 @@ refresh/revise; repeat не переносит такой PASS в незатро
 Штатный маршрут без подготовки JSON:
 
 ```sh
-yarn --silent agent-workflow task-chat wait --state /absolute/external/run
-yarn --silent agent-workflow task-chat wait --state /absolute/external/run --after cursor-from-previous-snapshot --timeout-ms 60000
-yarn --silent agent-workflow task-chat wait --state /absolute/external/run --until settled --timeout-ms 60000
+node --import tsx cli/main.ts task-chat wait --state /absolute/external/run
+node --import tsx cli/main.ts task-chat wait --state /absolute/external/run --after cursor-from-previous-snapshot --timeout-ms 60000
+node --import tsx cli/main.ts task-chat wait --state /absolute/external/run --until settled --timeout-ms 60000
 ```
 
 Он использует тот же файловый cursor и не читает нативную историю, не захватывает writer

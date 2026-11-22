@@ -6,7 +6,7 @@
 
 ## Маршрут контекста
 
-- [Текущий план Temporal-миграции](docs/exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
+- [Текущий план Temporal-миграции](docs/exec-plans/active/2026-11-23-temporal-production-rollout.md).
 - [Архитектура и границы](docs/design/architecture.md), [решения](docs/design/decisions/README.md).
 - [Рабочий цикл](docs/quality/harness-engineering.md), [проверки](docs/testing/strategy.md).
 - [Планы](docs/PLANS.md), [единственный реестр долга](docs/exec-plans/tech-debt-tracker.md).

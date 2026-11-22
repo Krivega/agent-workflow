@@ -145,7 +145,9 @@ it('binds separate evidence in targets, keeps compact requests small and rejects
   ) as { request_reader: unknown };
   expect(portable.request_reader).toEqual([
     process.execPath,
-    resolve(import.meta.dirname, '../cli/entry.mjs'),
+    '--import',
+    import.meta.resolve('tsx'),
+    resolve(import.meta.dirname, '../cli/main.ts'),
     'read-artifact',
     f.proof.locator + '.role.ref.json',
   ]);

@@ -392,10 +392,16 @@ async function draft(value: unknown, scenario: NativeComparisonScenario) {
     return pin;
   };
   const suite = parseComparisonSuite(
-    JSON.parse(h01RawFile(resolve(runtimeRoot, 'comparison/suite.json')).toString('utf8')),
+    JSON.parse(
+      h01RawFile(resolve(runtimeRoot, 'tests/fixtures/qualification/suite.json')).toString('utf8'),
+    ),
   );
   const materials = parseComparisonMaterials(
-    JSON.parse(h01RawFile(resolve(runtimeRoot, 'comparison/materials.json')).toString('utf8')),
+    JSON.parse(
+      h01RawFile(resolve(runtimeRoot, 'tests/fixtures/qualification/materials.json')).toString(
+        'utf8',
+      ),
+    ),
     suite,
   );
   const material = file(

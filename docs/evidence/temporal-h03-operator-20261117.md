@@ -68,5 +68,4 @@ Unit transports/SDK и синтетическая native история не д�
 операционное восстановление. Реальный owned Node-child в keeper-тестах также не является
 native-моделью. Полная серия 24, живая квалификация, TEMP-17/18 и T6 остаются открытыми.
 
-[Договор и команды](../temporal-comparison.md#оператор-h03-и-двенадцать-позиций-серии)
 сохраняют `partialScope:true`, `qualification:false`.

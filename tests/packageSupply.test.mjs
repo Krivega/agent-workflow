@@ -158,11 +158,18 @@ test('actual package keeps CLI, SDK and versioned instructions without developme
       );
       assert.doesNotMatch(
         entry,
-        /^package\/(?:comparison\/revisions|examples\/temporal-consumers|src\/(?:client|workflows|worker))\//u,
+        /^package\/(?:comparison|examples\/temporal-consumers|src\/(?:client|workflows|worker))\//u,
       );
       assert.doesNotMatch(entry, /^package\/harness2\/(?!README\.md$)/u);
     }
-    for (const testOnly of ['cli/storageWorker.ts', 'adapters/storage/processEvidenceStore.ts'])
+    for (const testOnly of [
+      'cli/storageWorker.ts',
+      'adapters/storage/processEvidenceStore.ts',
+      'cli/legacyTaskChatCommand.ts',
+      'cli/main.ts',
+      'cli/harness2-entry.mjs',
+      'tests/fixtures/qualification/suite.json',
+    ])
       assert.ok(
         !entries.includes('package/' + testOnly),
         'unexpected storage process: ' + testOnly,

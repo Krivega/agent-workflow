@@ -53,15 +53,15 @@ const discover = (config) =>
     }),
   );
 
-test('registers the exact 258 workflow and one harness2 root files without duplicate ownership', () => {
+test('registers the exact 255 workflow and one harness2 root files without duplicate ownership', () => {
   assert.equal(registry.schemaVersion, 1);
   const registered = files(registry.repository.groups);
-  assert.equal(new Set(registered).size, 263);
-  assert.equal(registered.length, 263);
+  assert.equal(new Set(registered).size, 260);
+  assert.equal(registered.length, 260);
   assert.deepEqual(sorted(registered), sorted(baseline.rootTests.map((item) => item.path)));
   const harness = registry.repository.groups.find((group) => group.id === 'harness2');
   assert.deepEqual(harness.files, ['cli/harness2.test.ts']);
-  assert.equal(registered.length - harness.files.length - registry.baseline.toolingFiles, 258);
+  assert.equal(registered.length - harness.files.length - registry.baseline.toolingFiles, 255);
 });
 
 test('keeps all 80 standalone tests independently from their root-project registration', () => {
@@ -248,12 +248,7 @@ test('developer commands referenced by the check profiles exist in the standalon
     const command = /^yarn ([-:\w]+)/u.exec(entry.command)?.[1];
     assert.ok(command && Object.hasOwn(packageJson.scripts, command), entry.command);
   }
-  for (const command of [
-    'comparison:h06:package',
-    'comparison:h06:preflight',
-    'harness2',
-    'harness2:test',
-  ])
+  for (const command of ['harness2', 'harness2:test'])
     assert.ok(Object.hasOwn(packageJson.scripts, command), command);
 });
 

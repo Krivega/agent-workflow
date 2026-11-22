@@ -11,5 +11,5 @@ RESULT/DONE и очистка имеют разные состояния и по
 
 Текущие договоры: [клиент](../../CURRENT-CHAT.md), [предварительный допуск](../temporal-consumers.md),
 [хранение и восстановление](../temporal-storage-recovery.md), [целевой процесс Temporal](temporal-workflow.md).
-Открытые критерии и приёмка находятся в [активном плане](../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
-Исторические архитектурные основания сохраняются в [provenance](decisions/sources/inherited-adr-context.json).
+Открытые критерии и приёмка находятся в [активном плане](../exec-plans/active/2026-11-23-temporal-production-rollout.md).
+Архитектурные решения и их основания перечислены в [журнале ADR](decisions/README.md).

@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
 import {
   copyFileSync,
   mkdirSync,
@@ -15,7 +14,7 @@ import { dirname, join, resolve } from 'node:path';
 import test from 'node:test';
 import { pathToFileURL } from 'node:url';
 import { tsImport } from 'tsx/esm/api';
-import { checkConsumerRelease } from '../cli/consumerRelease.mjs';
+import { checkConsumerRelease } from './legacyConsumerRelease.mjs';
 
 const installed = resolve(import.meta.dirname, '..');
 const metadata = readFileSync(join(installed, 'package.json'));
@@ -57,6 +56,10 @@ test('the consumer wrapper checks a Temporal start without loading Legacy storag
     ],
     { root, version },
   );
+  await assert.rejects(
+    guard.checkConsumerRelease(['task-chat', 'start', '--state', 'old']),
+    /backend-consumer-not-qualified/,
+  );
 });
 
 test('fresh starts, previews and read-only commands accept unmarked input without touching it', async (t) => {
@@ -72,8 +75,6 @@ test('fresh starts, previews and read-only commands accept unmarked input withou
     'wait-council',
     'status-chat',
     'compact-context-chat',
-    'comparison-report',
-    'comparison-prepare',
     'preview-task',
     'inspect-project',
     'inspect-connection',
@@ -179,21 +180,4 @@ test('newly prepared connection plans and journals must match before apply, disa
   put('pre/connection/selection.json', old);
   await assert.rejects(check('task-chat', 'start', '--state', 'pre'), refusal);
   await assert.rejects(check('task-chat', 'revise', '--state', 'missing'), refusal);
-});
-
-test('an existing comparison accepts only the runner and package bytes captured during preparation', async (t) => {
-  const { check, put } = fixture(t);
-  put('request', { series: 'series' });
-  const hash = createHash('sha256').update(metadata).digest('hex');
-  for (const [root, digest] of [
-    ['/old', hash],
-    [installed, 'old'],
-    [installed, hash],
-  ]) {
-    put('series', {
-      runner: { root, inputs: { inputs: [{ locator: 'package.json', hash: digest }] } },
-    });
-    if (root === installed && digest === hash) await check('comparison-run', 'request');
-    else await assert.rejects(check('comparison-run', 'request'), refusal);
-  }
 });

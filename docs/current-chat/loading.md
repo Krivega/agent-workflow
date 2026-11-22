@@ -1,7 +1,7 @@
 # Загрузка и совместимость текущего чата
 
 Подробный договор для соответствующего действия. Обычный рабочий цикл —
-в [основном руководстве](../../CURRENT-CHAT.md#штатный-вход-без-json).
+в [инструкции для сравнительных проверок](../../CURRENT-CHAT.md#сравнительный-запуск-из-исходников).
 
 ## Загрузка процедур по действию
 
@@ -17,7 +17,7 @@
 LOAD выдаёт набор последнего ожидающего действия. Для расширения используй, например:
 
 ```sh
-yarn --silent agent-workflow task-chat load --state /absolute/external/run --procedure audit
+node --import tsx cli/main.ts task-chat load --state /absolute/external/run --procedure audit
 ```
 
 Повторяемый `--procedure` допустим только для load и только для известного ID. Зависимости

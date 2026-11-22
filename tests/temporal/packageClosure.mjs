@@ -295,6 +295,8 @@ export function checkPackageClosure(value) {
       });
     else fault(from, line, specifier, 'undeclared-bare');
   }
+  const hostEntry = 'package/examples/temporal-host/worker.mjs';
+  if (archive.members.has(hostEntry)) roots.push({ target: hostEntry, kind: 'host-entry' });
   for (const [key, exported] of Object.entries(metadata.exports ?? {})) {
     if (typeof exported !== 'string' || !exported.startsWith('./'))
       fault('package/package.json', null, key, 'export-target-unresolved');

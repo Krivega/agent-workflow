@@ -3,7 +3,7 @@
 - **Status:** `accepted`
 - **Date:** 2026-11-18
 - **Owner:** инструменты разработки и обвязка агентов
-- **Decision basis:** [уточнение пользователя о границах Legacy от 2026-11-18](../../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md#границы-legacy)
+- **Decision basis:** [уточнение пользователя о границах Legacy от 2026-11-18](../../exec-plans/completed/2026-10-27-agent-workflow-temporal-migration.md#границы-legacy)
 
 ## Проблема
 

@@ -72,26 +72,6 @@ export default defineConfig([
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            {
-              group: [
-                '@workspace/*/**',
-                '!@workspace/math-detective-game/player',
-                '!@workspace/content-contracts/authoring',
-                '!@workspace/player-ui/*',
-                '!@workspace/player-ui/*/**',
-                '!@workspace/mini-games/*',
-                '!@workspace/mini-games/*/**',
-              ],
-              message:
-                'Import a workspace package only through its root or an explicitly declared public subpath.',
-            },
-          ],
-        },
-      ],
     },
   },
   {

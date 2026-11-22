@@ -35,7 +35,7 @@ interface Link {
 const historicalDirectories = [
   'docs/design/decisions/inherited/',
   'docs/design/decisions/sources/',
-  'comparison/revisions/',
+  'tests/fixtures/qualification/',
 ];
 const yarnBuiltins = new Set(['install', 'node', 'exec', 'run', 'pack', 'version']);
 const historicalStart = '<!-- documentation-check: historical:start -->';

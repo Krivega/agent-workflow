@@ -173,7 +173,8 @@ npm exec -- agent-workflow task-chat start --temporal-input input12.json --tempo
 
 ## Вход и договоры
 
-Работу в чате описывает [руководство Codex](CURRENT-CHAT.md). Для настройки Temporal
+CLI пакета предоставляет `init`, `doctor` и `task-chat start` с подготовленным входом Temporal.
+Порядок запуска описывает [руководство Codex](CURRENT-CHAT.md#запуск-через-temporal). Для настройки Temporal
 используйте [руководство SDK](docs/temporal-sdk.md). Общие [процедуры](procedures/README.md)
 и [профили совета](roles/README.md) соответствуют версии установленного runtime.
 

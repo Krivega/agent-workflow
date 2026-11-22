@@ -1,8 +1,6 @@
 # Текущий чат Codex
 
-Режим реализует [ADR-0048](https://github.com/Krivega/agent-workflow/blob/main/docs/design/decisions/inherited/0048-drive-agent-workflow-from-codex-chat.md).
-Он обслуживает одну явно выбранную задачу; текущий агент остаётся исполнителем.
-Процедуры и [descriptor](project/workflow.json) сохраняют владение процессом.
+Установленный пакет запускает явно выбранную задачу через Temporal.
 
 ## Запуск через Temporal
 
@@ -31,12 +29,13 @@ yarn --silent agent-workflow task-chat start --temporal-input input12.json --tem
 назначением использует тот же Workflow ID. При неизвестном исходе сохраняй запрос,
 регистрацию и идентификатор. Подробности исполнения описаны в [договоре SDK](docs/temporal-sdk.md#исполнение-и-независимое-завершение-b1).
 
-## Штатный вход без JSON
+<a id="штатный-вход-без-json"></a>
 
-До включения политики Temporal действует этот вход. Запускай `agent-workflow task-chat` из
-корня подключённого проекта. Примеры ниже используют
-команду Yarn для установленного пакета. Пользователь ставит задачу
-в чате; предметную карточку и предложение готовит агент. Поддержаны компактная карточка
+## Сравнительный запуск из исходников
+
+Для рабочего запуска используйте [Temporal](#запуск-через-temporal). Команды в этом
+разделе запускают прежний сценарий для сравнительных проверок из checkout Agent Workflow.
+Пользователь ставит задачу в чате; предметную карточку и предложение готовит агент. Поддержаны компактная карточка
 (`Цель`, `Границы`, `Критерии`) и полный ExecPlan (`Результат и не-цели`, `Критерии приёмки`).
 Технические запросы, ID и хеши инструмент формирует сам. Агент составляет
 [карту применимости совета](docs/current-chat/council.md#карта-применимости-совета); пользователь не готовит JSON или команды.
@@ -46,11 +45,11 @@ yarn --silent agent-workflow task-chat start --temporal-input input12.json --tem
 Это позволяет исполнять подробные критерии без пробелов и пунктуации в техническом ID.
 
 ```sh
-yarn --silent agent-workflow task-chat start --state /absolute/external/run --card docs/exec-plans/active/task.md --plan proposal.md --council-selection roles.json
-yarn --silent agent-workflow task-chat load --state /absolute/external/run
-yarn --silent agent-workflow task-chat start --state /absolute/external/run
-yarn --silent agent-workflow task-chat continue --state /absolute/external/run
-yarn --silent agent-workflow task-chat revise --state /absolute/external/run --plan proposal-v2.md --affected criterion-id --council-selection roles-v2.json
+node --import tsx cli/main.ts task-chat start --state /absolute/external/run --card docs/exec-plans/active/task.md --plan proposal.md --council-selection roles.json
+node --import tsx cli/main.ts task-chat load --state /absolute/external/run
+node --import tsx cli/main.ts task-chat start --state /absolute/external/run
+node --import tsx cli/main.ts task-chat continue --state /absolute/external/run
+node --import tsx cli/main.ts task-chat revise --state /absolute/external/run --plan proposal-v2.md --affected criterion-id --council-selection roles-v2.json
 ```
 
 `start` создаёт подключение выбранной карточки, отдельный Store и сохраняемые параметры.

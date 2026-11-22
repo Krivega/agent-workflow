@@ -45,7 +45,7 @@ module.exports = {
     {
       name: 'production-stays-inside-agent-workflow',
       severity: 'error',
-      from: { path: '^(core|ports|application|adapters|cli|comparison|src)/' },
+      from: { path: '^(core|ports|application|adapters|cli|src)/' },
       to: { path: '^(?:\\.\\./|/)' },
     },
     {

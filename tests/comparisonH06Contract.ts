@@ -62,7 +62,7 @@ export interface H06Request {
 export function h06Assets() {
   const pin = (name: keyof typeof h06AssetHashes): H04Pin => ({
     path: fileURLToPath(
-      new URL('../comparison/revisions/ownership-continuity-v2/' + name, import.meta.url),
+      new URL('./fixtures/qualification/ownership-continuity-v2/' + name, import.meta.url),
     ),
     sha256: h06AssetHashes[name],
   });

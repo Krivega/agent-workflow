@@ -1,6 +1,6 @@
 # Harness²: прежние результаты и отказ новым запускам
 
-По [плану миграции Temporal](../docs/exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md#единый-порядок-приёмки-без-повторных-прогонов)
+По [плану миграции Temporal](../docs/exec-plans/completed/2026-10-27-agent-workflow-temporal-migration.md#единый-порядок-приёмки-без-повторных-прогонов)
 новые модельные пилоты Harness² отключены в штатной поставке. Команды `yarn harness2`,
 `python3 harness2/pilot.py`, `node cli/harness2-entry.mjs`, прямые вызовы bridge,
 `modelCall`, Python `run` и `Broker` возвращают `h2-new-model-runs-disabled`.

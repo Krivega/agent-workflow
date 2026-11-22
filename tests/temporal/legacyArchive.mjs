@@ -8,12 +8,12 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import console from 'node:console';
 import process from 'node:process';
+import { legacyArchiveCommand } from './legacyArchiveCommand.ts';
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..'),
   root = realpathSync(mkdtempSync(join(tmpdir(), 'aw-legacy-cli-'))),
   store = join(root, 'store'),
   hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
-const { legacyArchiveCommand } = await import(join(packageRoot, 'dist/client/legacyArchive.js'));
 function command(action, input) {
   const config = join(root, action + '.json');
   writeFileSync(config, JSON.stringify(input));
@@ -22,13 +22,19 @@ function command(action, input) {
 try {
   const removed = spawnSync(
     process.execPath,
-    [join(packageRoot, 'dist/client/index.js'), '--legacy-archive'],
+    [
+      join(packageRoot, 'dist/client/index.js'),
+      '--legacy-archive',
+      'export',
+      'request.json',
+      'registration.json',
+    ],
     {
       encoding: 'utf8',
     },
   );
   assert.equal(removed.status, 1);
-  assert.match(removed.stderr, /legacy-archive-unsupported/u);
+  assert.match(removed.stderr, /Usage: prepare-project/u);
   mkdirSync(store);
   mkdirSync(join(store, 'blobs'));
   const db = new DatabaseSync(join(store, 'store.sqlite'));

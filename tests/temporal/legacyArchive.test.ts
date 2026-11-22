@@ -4,13 +4,10 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { gzipSync } from 'node:zlib';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {
-  readLegacyArchive,
-  exportLegacyArchive,
-} from '../../src/adapters/artifacts/legacyArchive.js';
+import { readLegacyArchive, exportLegacyArchive } from './legacyArchive.js';
 import { stageRestore, verifyBackup } from '../../src/adapters/artifacts/backup.js';
 import { digest } from '../../src/adapters/artifacts/files.js';
-import { legacyArchiveCommand } from '../../src/client/legacyArchive.js';
+import { legacyArchiveCommand } from './legacyArchiveCommand.js';
 
 const temporary: string[] = [];
 afterEach(() => {

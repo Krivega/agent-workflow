@@ -19,7 +19,7 @@ import { executionBlockers } from '../core/execution.js';
 import { FileCurrentChatHost } from '../adapters/codex/currentChatHost.js';
 import { FileWorkflowInputs } from '../adapters/project/workflowInputs.js';
 import { councilCurrentProfileRefs } from '../core/council.js';
-import { readLegacyArchive } from '../src/adapters/artifacts/legacyArchive.js';
+import { readLegacyArchive } from './temporal/legacyArchive.js';
 import {
   h01ReadJson,
   h01ReadPin,

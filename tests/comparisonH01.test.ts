@@ -180,11 +180,15 @@ vi.mock('@temporalio/worker', () => ({
 let root: string, request: H01ExecutionRequest, control: InputRef, requestRef: InputRef;
 let account: H01NativeAccounting, checkerStop: Record<string, unknown>, backendOutcome: string;
 const repo = resolve(import.meta.dirname, '..');
-const criteria = JSON.parse(readFileSync(resolve(repo, 'comparison/suite.json'), 'utf8')) as {
+const criteria = JSON.parse(
+  readFileSync(resolve(repo, 'tests/fixtures/qualification/suite.json'), 'utf8'),
+) as {
   scenarios: { checks: string[] }[];
 };
 const h01Criteria = criteria.scenarios[0]!;
-const material = JSON.parse(readFileSync(resolve(repo, 'comparison/materials.json'), 'utf8')) as {
+const material = JSON.parse(
+  readFileSync(resolve(repo, 'tests/fixtures/qualification/materials.json'), 'utf8'),
+) as {
   cases: ComparisonMaterial[];
 };
 const pin = (name: string, value: unknown) => h01Record(root, name, value);

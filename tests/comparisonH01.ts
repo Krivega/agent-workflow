@@ -16,8 +16,8 @@ import process from 'node:process';
 import { performance } from 'node:perf_hooks';
 import { Client, Connection } from '@temporalio/client';
 import { NativeConnection } from '@temporalio/worker';
-import suiteSource from '../comparison/suite.json' with { type: 'json' };
-import materialsSource from '../comparison/materials.json' with { type: 'json' };
+import suiteSource from './fixtures/qualification/suite.json' with { type: 'json' };
+import materialsSource from './fixtures/qualification/materials.json' with { type: 'json' };
 import {
   comparisonDuration,
   parseComparisonMaterials,
@@ -180,7 +180,7 @@ export async function captureH01RuntimeInventory(
     'src',
     'procedures',
     'roles',
-    'comparison',
+    'tests/fixtures/qualification',
     'harness2',
     'project',
   ];
@@ -200,6 +200,7 @@ export async function captureH01RuntimeInventory(
           (scenario === 'H-05' && /^comparisonH05.*\.(?:ts|mts|mjs)$/u.test(name)),
       )
       .map((name) => 'tests/' + name),
+    'tests/temporal/legacyArchive.ts',
     'examples/temporal-consumers/full/safety.mjs',
     'examples/temporal-consumers/full/spec.mjs',
   ];

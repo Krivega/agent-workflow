@@ -183,7 +183,7 @@ describe('documentation validation', () => {
         '[old](missing.md) `yarn old`\n# Old anchor',
       ),
       source('docs/design/decisions/sources/basis.md', '`yarn old`'),
-      source('comparison/revisions/v1/README.md', '[old](missing.md)'),
+      source('tests/fixtures/qualification/v1/README.md', '[old](missing.md)'),
       source('docs/exec-plans/completed/old.md', '[old](missing.md)'),
       source('docs/exec-plans/cancelled/old.md', '`yarn old`'),
       source('docs/exec-plans/completed/README.md', '[missing](missing.md)'),

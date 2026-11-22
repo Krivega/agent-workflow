@@ -4,9 +4,7 @@
 установочные результаты ниже относятся
 к своим закреплённым снимкам. Владелец решения —
 [ADR-0067](design/decisions/inherited/0067-run-reusable-agent-workflow-on-temporal.md),
-критериев и допуска — [план миграции](exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
-Решение о физическом выносе и текущая граница игры зафиксированы в
-[поручении от 2026-11-16](design/decisions/sources/2026-11-16-decision.md#завершение-физического-выноса).
+критериев и допуска — [план миграции](exec-plans/active/2026-11-23-temporal-production-rollout.md).
 
 Полный установочный прогон от 2026-11-05 прошёл на игровом и нейтральном потребителях
 с архивом SHA-256 `41fe8d8d8cb6fdafae5f33d5ed0ef77d8d8c46603be07deb2b0941d974ac6ed5`.
@@ -141,11 +139,9 @@ Root full7 прошёл:15074 теста, четыре100%,13371 исходни�
 | --- | --- | --- | --- |
 | Корневой CLI `package.json` → `cli/main.ts` | `task-chat start` при политике версии 2 проверяет Input12 и запускает Temporal через SDK; другие пути `task-chat`, `chatCommand.ts`, `chatRuntime.ts` и `application/currentChatWorkflow.ts` охраняют прежний Store | Квалифицировать штатный запуск и проверку единственного назначения до эффекта | Повтор зарегистрированной задачи под новым ID и пишущий Legacy-вход после T6 получают отказ до эффекта; неизвестный backend запрещает запись |
 | Навык `.agents/skills/agent-workflow/SKILL.md` | `task-chat`, `CURRENT-CHAT.md`, `project/workflow.json`, версии/hash процедур и прежние команды | В T6 согласованно обновить обнаружение клиента и команды запуска и управления в Temporal | Новый start идёт в Temporal, продолжение Temporal использует существующее исполнение; LOAD, требования, owner/generation сохраняются |
-| Repository H-01: `tests/comparisonH01.ts` | Отдельная version2 attempt: baseline legacy, candidate Temporal; подготовитель черновиков, ограниченный внешний оператор, общий primary grant, managed credits, checker и совет | Optional CLI не переключает task-chat или навык | Профильные doubles/Node-процессы и общий validate; настоящий H-01 требует собственного допуска и остаётся открытым |
-| Repository H06: `tests/comparisonH06Package.ts` | Команды инструмента `comparison:h06:package` и `comparison:h06:preflight` через `scripts/agentWorkflow.mjs dev` вызывают самостоятельный инструмент; пакет связывает существующие Legacy/Temporal API с точными входами | Репозиторный вход заменяет копируемый runner; подготовка и проверки не переключают backend рабочих задач | [Порядок проверок H06](temporal-comparison.md#подготовка-h06-и-порядок-проверок); preflight использует настоящий SQLite, журналы, копии, STOP процессов и /3 control с заменой только модельного RPC и первичных входов фикстуры; это не новый живой допуск |
+| Регрессии H01–H06 | `tests/fixtures/qualification/` и тесты из `tests/comparisonH*.test.ts` | Проверять из checkout | [Профиль проверок](testing/profiles/agent-workflow/comparison.md#порядок-проверок-перед-живой-квалификацией) |
 | Temporal CLI `src/client/index.ts` | Подготовка, статус и backup. Состав SDK закреплён публичными exports пакета | Проверять штатные входы Temporal через установленный пакет. Архивный вход удалён в кандидате T6 | Схема/версия, чужой project/task, дубликат и конфликт; новая модель не запускается ради статуса |
 | `harness2/pilot.py`, `cli/harness2.ts`, `adapters/codex/harness2Bridge.ts` | Прямой TS-вход, CLI и Python отвергают новые модельные запуски; чистые проверки и чтение прежних отчётов сохраняются | Выбранная часть TEMP-15 реализована локальным отказом до RPC, процесса и записи, без обходного флага. Исторический bridge на Temporal не переносится | TS/Python-регрессии проверяют отсутствие эффектов; остальные consumers и включение T6 требуют своих доказательств |
-| `comparison/`, `cli/comparisonSeries.ts`, `comparisonReport.ts` | Прежние `core/comparison.ts`, snapshot/materials, `FileCurrentChatHost`, journal/Store, native usage | Существующий исполнитель не сравнивает Temporal автоматически. `tests/comparisonReadiness.ts` офлайн сверяет manifest шести прежних cases; для полной серии ещё нужны оркестрация и квалификация двух путей; отдельный H01 уже реализован для одной attempt; методика — [temporal-comparison.md](temporal-comparison.md) | Одинаковые задача/байты/модель/критерии/среда, все попытки и расходы, первичные native-доказательства; прежняя живая серия не переиспользуется как разрешение |
 | Игра: `tools/agent-workflow/project/temporal.json` | `ProjectDescriptor` v1, `AGENTS.md`, `docs/exec-plans/active`, роль architecture, check ID `validate` | Preparation копирует только входы descriptor; отдельный installed-full использует реальное M1-приложение и полную verification-копию | Candidate и integrated `validate:brief` прошли на v5 и `41fe8d8d…`; роли синтетические, живая приёмка T5 открыта |
 | Нейтральный пример `examples/neutral/` | Descriptor v1; собственные `RULES.md`, `tasks`, reviewer, syntax; используется preparation/SDK стендами | `examples/temporal-consumers/neutral/` — отдельный устанавливаемый потребитель с `work-items`, `roles` и syntax | Полный прогон `41fe8d8d…` прошёл при запрете чтения исходного checkout; тот же пакет и схема с игрой, иные правила, пути и команды |
 | Installed neutral: `tests/temporal/installed-full-consumers.mjs`, `consumer:"neutral"` | Отдельная суммирующая функция `total.mjs`, project checks `baseline` и `validate`; реальные `node:test` команды | Optional request выбирает только neutral. Узкий v6 прошёл за 16,3 с с одной offline-установкой и одним SDK | Пять квитанций с kind/order/owner SHA/command/sourceError/stop, result/recovery/replay и экспорт подтверждены также в полном прогоне `41fe8d8d…` |
@@ -174,11 +170,10 @@ Root full7 прошёл:15074 теста, четыре100%,13371 исходни�
 | Exports `./task-continuation`, `./task-execution`, `./reader` | `controlTaskPlanning`, `controlTaskExecution`, `controlReader` получают handle и вызывают update; проверяют target/hash/receipt, но не общий backend | До update сверять назначение и целевой workflow. Ошибка соединения не разрешает fallback или новый start |
 | `src/workflows/localTask.ts`, `taskContinuation.ts`, `taskExecution.ts`, `taskAudit.ts`, `stageAudit.ts`, `review.ts` | Child Review/Audit/ControlledReader создаются через `executeChild`, из уже начатого родителя | Дочернее исполнение сохраняет принадлежность родителю; не назначать ему новый backend и не создавать второй журнал lifecycle |
 | Exports `./worker`, `./reader-host`, `./reader-recovery`, `./finalization-host`; `src/worker/taskRecovery.ts` | Workers исполняют полученные workflow/Activity; reader host уже отказывает незарегистрированному project/task/host. Recovery восстанавливает привязанный объект, а не выбирает движок | Сохранить существующие host-проверки и связать рабочий допуск с неизменным назначением задачи до внешнего эффекта. Регистрация host не является общим назначением backend; прямой RPC start не должен обходить границу эффектов |
-| `cli/comparisonSeries.ts` → `FileCurrentChatHost`; `cli/comparisonReport.ts` | `comparison-prepare` пишет изолированный комплект; `comparison-run` имеет собственный live-допуск, series lock и native-запуск; report читает прежний результат | Старый runner не становится Temporal от смены default. До штатного нового запуска либо квалифицировать маршрут обоих участников, либо явно исключить этот запуск; report и исходные FAIL сохранять |
 | `harness2/pilot.py` → `cli/harness2.ts` → `adapters/codex/harness2Bridge.ts` | Отказные входы без App Server transport и запуска модели; прежние отчёты и чистые проверки доступны | Новый запуск запрещён до RPC и записи независимо от backend. Локальный отказ не является квалификацией Temporal или приёмкой остальных consumers |
 | `tests/comparisonH01*`, `comparisonH04*`, `comparisonH06*`, `tests/temporal/*`, `examples/temporal-consumers/full/sdk-run.mjs` | Изолированные квалификационные producers, включая прямые `client.workflow.start` в control/native-reader/task-execution-sdk/T4-стенде и SDK starts в остальных | Сохранить точные разрешения стендов; они не должны принимать рабочую задачу в обход общего допуска. Их PASS не доказывает подключение CLI/навыка |
 | `adapters/storage/processEvidenceStore.ts` → `cli/storageWorker.ts` | Worker непосредственно открывает `SqliteEvidenceStore`; операции передаются отдельным запросом. Найденные потребители ProcessEvidenceStore — тесты ownerLease/storageProcess/storageRecovery/archiveJson; рабочего вызова вне тестов не найдено | Сохранить опись прямого storage-входа при подключении реального потребителя; один CLI guard его не защищает. Не добавлять в неиспользуемый адаптер новый маршрутизатор lifecycle |
-| `status-chat`, `compact-context-chat`, `./status`, `./legacy-archive`, comparison report, artifact readers | Чтение состояния/архива без модели; SQLite status/compact используют inspect и отказывают при WAL/journal recovery-required | Квалифицировать статус Temporal и неизменность первичных доказательств. Поддержка Legacy-форматов вне целевой поставки |
+| `status-chat`, `compact-context-chat`, `./status`, `./legacy-archive`, artifact readers | Чтение состояния/архива без модели; SQLite status/compact используют inspect и отказывают при WAL/journal recovery-required | Квалифицировать статус Temporal и неизменность первичных доказательств. Поддержка Legacy-форматов вне целевой поставки |
 
 Поиск по `client.workflow.start` в `src/client` на этом срезе даёт семь владельцев:
 preparation, localAdmission, localTask, reader, review, audit, finalization. Прямые SDK-вызовы,
@@ -199,7 +194,7 @@ child workflows и стенды перечислены отдельно, пос�
    источник назначения запрещают start/control/write до эффекта. После переключения
    пишущие входы Legacy также получают отказ. Temporal-задача восстанавливается в Temporal.
 4. Отдельно квалифицировать рабочие CLI/навык и принятое решение по новым запускам
-   harness2/comparison, сверить установленные версии и оставшиеся runtime imports. Выполнить
+   Harness², сверить установленные версии и оставшиеся runtime imports. Выполнить
    применимые T3–T5 и обязательные проверки плана. Лишь после отдельного разрешения T6
    менять default для новых задач; допуск архитектуры или эта карта его не заменяют.
 5. Откат включения запрещает дальнейшие новые starts и сохраняет назначения созданных задач.
@@ -221,7 +216,7 @@ child workflows и стенды перечислены отдельно, пос�
 старый маршрут. Для сохранения этого требования после полного удаления метаданных и перезапуска
 доверенная регистрация использует `taskBackend:required`. Эти файлы здесь не создавались.
 
-Подключены Legacy task-chat/JSON/connection, comparison и harness2, семь публичных SDK starts,
+В том срезе подключили Legacy task-chat/JSON/connection, comparison и harness2, семь публичных SDK starts,
 четыре control-входа (включая отдельный `controlTaskHuman`) и Worker Activities перед эффектами. SDK требует явный
 `bindTaskBackendClient(client, registration)` из `./task-backend`, даже без policy; fallback
 по cwd отсутствует. Для input12 регистрация включает `artifactRoot`, а третий аргумент
@@ -311,7 +306,7 @@ Desktop 0.166. Прогон остановлен после допуска, мо
   под новым ID получает отказ. Неизвестный consumer/backend/формат, неполный пакет и
   недоступное назначение блокируют запись и Temporal start/update.
 - Прямые JSON runtime-команды, семь SDK starts, control updates, connection/maintenance,
-  storage-worker и native harness/comparison проходят тот же допуск либо явно запрещены
+  storage-worker и native Harness² проходят тот же допуск либо явно запрещены
   в штатной поставке. Child workflow наследует задачу и не создаёт новое назначение.
 - Сбой между резервированием и start восстанавливается по той же identity; timeout/unknown
   после start не запускает другой backend или новый operation ID. Сохраняются исходные FAIL,
@@ -330,7 +325,7 @@ Desktop 0.166. Прогон остановлен после допуска, мо
 | Семь SDK starts и control | `tests/temporal/preparation.test.ts`, `localAdmission.test.ts`, `localTask.test.ts`, `readerControl.test.ts`, `review.test.ts`, `audit.test.ts`, `finalization.test.ts`, `taskContinuation.test.ts`, `taskExecutionClient.test.ts` в том же каталоге |
 | Наследование child workflow | `tests/temporal/localTaskWorkflow.test.ts`, `taskContinuationWorkflow.test.ts`, `taskExecutionWorkflow.test.ts`, `reviewWorkflow.test.ts`, `auditWorkflow.test.ts` в том же каталоге |
 | Worker и восстановление | `tests/temporal/readerHost.test.ts`, `readerRecovery.test.ts`, `taskRecovery.test.ts`, `finalizationWorkflow.test.ts` в том же каталоге; отсутствующий сценарий finalization host добавить у его реального внешнего порта |
-| Сохраняемые comparison/harness2 входы | `tests/comparisonSeries.test.ts`, `tests/comparisonReport.test.ts`, `cli/harness2.test.ts`, `adapters/codex/harness2Bridge.test.ts`, `harness2/test_pilot.py` |
+| Сохраняемые входы Harness² | `cli/harness2.test.ts`, `adapters/codex/harness2Bridge.test.ts`, `harness2/test_pilot.py` |
 | Прямой storage-worker и установленный пакет | `tests/storageProcess.test.ts`, `tests/storageRecovery.integration.test.ts`; при подключении рабочего потребителя — сценарий его записи. `tests/temporal/packageClosure.test.mjs`, `pinned-consumers.test.mjs`, `installed-full-consumers.test.mjs` в том же каталоге; затем квалификация установленного потребителя |
 
 До реализации и проверки этих границ состояние остаётся **T6 не включён, к включению не готов**.
@@ -351,7 +346,7 @@ Desktop 0.166. Прогон остановлен после допуска, мо
 `finalizationWorkflow`, их журналы и `workflowUpgrade`. Их исходники остаются доступны
 разработчику и историческим проверкам. Перечень модулей, оставшиеся пути импорта
 и результат проверки установленной игровой обёртки приведены в
-[плане миграции](exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md#стендовая-проверка-маршрута-t6-от-22-ноября).
+[плане миграции](exec-plans/completed/2026-10-27-agent-workflow-temporal-migration.md#стендовая-проверка-маршрута-t6-от-22-ноября).
 Остальные используемые компоненты прежнего исполнителя входят в поставку до рабочего
 переключения. T7 оформляет квалифицированную самостоятельную поставку.
 
@@ -366,13 +361,14 @@ locators доступны в [первичных материалах](evidence/
 
 1. T5 подтвердил восстановление активного Writer, T7 — подключение второго репозитория
    и обновление зависимости. Исходные условия и хеши поставок приведены в
-   [плане миграции](exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md#порядок-оставшихся-работ).
-2. Цель T6 — основная рабочая копия Mathematical Detective и сервер TNAS. Для неё
-   [подготовлен патч обновления и проверены 13 отказов игровой обёртки](exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md#основная-игра-и-tnas--подготовка-рабочего-переключения).
-   Перед включением сверить установленный архив и сборку Worker, зарегистрировать основную
-   копию и проверить права прежних исполнителей во всех связанных checkout. В копии с
-   runtime 0.1.0 остаются прямые входы CLI и Harness² из исходников.
-3. До запуска новых задач получить решение о включении и закрепить backend до первого эффекта. При неизвестном
+   [плане миграции](exec-plans/completed/2026-10-27-agent-workflow-temporal-migration.md#порядок-оставшихся-работ).
+2. Цель T6 — основная рабочая копия проекта и сервер TNAS. Для неё
+   [подготовлен патч обновления и проверены 13 отказов игровой обёртки](exec-plans/completed/2026-10-27-agent-workflow-temporal-migration.md#основная-игра-и-tnas--подготовка-рабочего-переключения).
+   Основной клиент и Worker обновлены до `0.1.3-rc.2`, основная копия зарегистрирована
+   как поколение 2. В пяти связанных копиях сохранились прямые входы из исходников.
+   В проверенных местах действующих допусков прежнего исполнителя не обнаружено.
+3. Владелец выбрал постоянный приём новых задач основной игры. Предстоит применить policy v2
+   и обеспечить бюджет исполнения. Штатный вход закрепляет backend до первого эффекта. При неизвестном
    результате приостановить зависимые действия до сверки. Порядок восстановления ведётся
    в [эксплуатационном плане](exec-plans/active/2026-11-21-temporal-operational-restore.md).
 4. После проверки рабочего переключения исключить поддержку Legacy из штатной поставки.

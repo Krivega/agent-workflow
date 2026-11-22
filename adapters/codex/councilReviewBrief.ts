@@ -12,7 +12,12 @@ export function councilReviewBrief(request: CouncilReviewRequest, file?: InputRe
       request_file: file,
       request_reader: [
         ...(request.reader === 'runtime-cli'
-          ? [process.execPath, fileURLToPath(new URL('../../cli/entry.mjs', import.meta.url))]
+          ? [
+              process.execPath,
+              '--import',
+              import.meta.resolve('tsx'),
+              fileURLToPath(new URL('../../cli/main.ts', import.meta.url)),
+            ]
           : ['yarn', '--silent', 'agent-workflow']),
         'read-artifact',
         file.locator + '.role.ref.json',

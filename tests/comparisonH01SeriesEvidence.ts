@@ -2,7 +2,7 @@ import { basename, dirname, join } from 'node:path';
 import { isDeepStrictEqual as same } from 'node:util';
 import { defaultPayloadConverter } from '@temporalio/common';
 import proto from '@temporalio/proto';
-import suiteSource from '../comparison/suite.json' with { type: 'json' };
+import suiteSource from './fixtures/qualification/suite.json' with { type: 'json' };
 import { configuredRoles } from '../core/council.js';
 import { confirmSession, type AgentSession } from '../core/dataRoute.js';
 import type { CouncilConfiguration } from '../core/connection.js';

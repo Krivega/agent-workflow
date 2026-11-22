@@ -287,8 +287,8 @@ function referenceFixture(base: 'pre4' | 'helper' | 'complete' = 'pre4') {
     ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
     additions = [
       './comparisonH06TemporalReferenceApproval.ts',
-      '../comparison/revisions/proposal-reference-v4/README.md',
-      '../comparison/revisions/proposal-reference-v4/primary-approval.json',
+      './fixtures/qualification/proposal-reference-v4/README.md',
+      './fixtures/qualification/proposal-reference-v4/primary-approval.json',
     ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
     pin = (path: string) => ({ path, sha256: digest(readFileSync(path)) }),
     oldBytes = new Map(
@@ -1106,7 +1106,7 @@ it('retains the observed primary consent text and its single actual LF', () => {
     readFileSync(
       fileURLToPath(
         new URL(
-          '../comparison/revisions/proposal-reference-v4/primary-approval.json',
+          './fixtures/qualification/proposal-reference-v4/primary-approval.json',
           import.meta.url,
         ),
       ),

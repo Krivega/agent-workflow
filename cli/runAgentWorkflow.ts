@@ -4,13 +4,9 @@ import type { ProjectConnectionReader } from '../ports/projectConnection.js';
 import { inspectConnection } from '../application/inspectConnection.js';
 import { chatUsage } from './chatCommand.js';
 import { connectionUsage } from './taskConnectionCommand.js';
-import { readComparisonReport } from './comparisonReport.js';
-import { prepareComparisonSeries, runComparisonSeries } from './comparisonSeries.js';
-import { readPrivateFile } from '../adapters/storage/storeFiles.js';
-import { object } from '../core/connection.js';
 
 const usage =
-  'Использование: agent-workflow init | doctor | inspect-project [каталог] | inspect-connection <дескриптор> [каталог] | comparison-report <record.json> | comparison-prepare <request.json> | comparison-run <request.json> | ' +
+  'Использование: agent-workflow init | doctor | inspect-project [каталог] | inspect-connection <дескриптор> [каталог] | ' +
   connectionUsage +
   ' | ' +
   chatUsage;
@@ -32,37 +28,22 @@ export async function runAgentWorkflow(
     return 0;
   }
   const connection = args[0] === 'inspect-connection';
-  const comparison = args[0] === 'comparison-report';
-  const series = args[0] === 'comparison-prepare' || args[0] === 'comparison-run';
   if (
-    comparison || series
-      ? args.length !== 2 || !args[1]
-      : connection
-        ? !args[1] || args.length > 3 || args[2] === ''
-        : args[0] !== 'inspect-project' || args.length > 2 || args[1] === ''
+    connection
+      ? !args[1] || args.length > 3 || args[2] === ''
+      : args[0] !== 'inspect-project' || args.length > 2 || args[1] === ''
   ) {
     dependencies.writeError(usage);
     return 2;
   }
   try {
-    if (series) {
-      const request = object(JSON.parse(readPrivateFile(args[1]!).toString('utf8')));
-      const result =
-        args[0] === 'comparison-prepare'
-          ? await prepareComparisonSeries(request)
-          : await runComparisonSeries(request);
-      dependencies.write(JSON.stringify(result, null, 2));
-      return 0;
-    }
-    const result = comparison
-      ? readComparisonReport(args[1]!)
-      : connection
-        ? await inspectConnection(
-            args[2] ?? dependencies.cwd,
-            args[1]!,
-            dependencies.connectionReader,
-          )
-        : await inspectProject(args[1] ?? dependencies.cwd, dependencies.projectReader);
+    const result = connection
+      ? await inspectConnection(
+          args[2] ?? dependencies.cwd,
+          args[1]!,
+          dependencies.connectionReader,
+        )
+      : await inspectProject(args[1] ?? dependencies.cwd, dependencies.projectReader);
     dependencies.write(JSON.stringify(result, null, 2));
     return 0;
   } catch (error) {

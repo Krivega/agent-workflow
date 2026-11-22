@@ -1,7 +1,7 @@
 # Данные и подключение проектов Temporal
 
 Договор данных, версий, поставки и карта потребителей. Это целевые обязанности инструмента;
-их реализация и приёмка учитываются в [плане миграции](../exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md).
+их реализация и приёмка учитываются в [плане миграции](../exec-plans/active/2026-11-23-temporal-production-rollout.md).
 [Сценарий и внешние действия](temporal-workflow.md) читаются при изменении соответствующей границы.
 
 ## Данные, история и версии
@@ -171,7 +171,7 @@ Node и `yarn validate`; `Connection` фиксирует набор процед
 | Архив, финализация, backup | `application/finalizationWorkflow.ts`, `adapters/storage/finalization*`, `storeBackup.ts`, `retentionMaintenance.ts`, `sharedArtifacts.ts`, `retainedBlobs.ts` | FinalizationWorkflow; независимые retention/backup по владельцам | `finalization*`, `restoredDependencies`, неполный экспорт и stale backup |
 | Карточки и подключение | `core/connection.ts`, `projectInspection.ts`, `taskConnection.ts`, `application/projectLocalCard.ts`, `adapters/project/*Connection.ts`, `fileProjectCards.ts` | Версионированный descriptor/ProjectAdapter; проекция с конфликтами | Нейтральный проект, чужая правка карточки, schema mismatch |
 | CLI, навык и зависимости | `cli/main.ts`, `runAgentWorkflow.ts`, `chatCommand.ts`, `.agents/skills/agent-workflow/`, `package.json`, архитектурные тесты | CLI-клиент Temporal для новых задач; самостоятельный пакет | Штатный запуск, краткий статус, отказ пишущим входам Legacy после переключения |
-| Стоимость и вспомогательные клиенты | `comparison/`, `cli/comparisonSeries.ts`, `comparisonReport.ts`, `adapters/codex/comparisonUsage.ts`, `harness2/` | Один стенд двух реализаций для T5; новые модельные запуски Harness² исключить из штатной поставки, читатели отчётов сохранить | Отказ исключённому запуску до model RPC; не двойной модельный запуск; совместимость отчётов; полный учёт |
+| Стоимость и вспомогательные клиенты | `adapters/codex/comparisonUsage.ts`, `harness2/` | Проверять первичный учёт по сохранённым данным | Отказ исключённому запуску до model RPC и полнота учёта |
 | Документация и gates | `tools/agent-workflow/*.md`, `procedures/`, `docs/quality/agent-workflow-contracts.md`, профиль/traceability, ADR и `.agents/README.md` | Описать фактический новый путь на этапе включения | Ссылки, обнаружимость, обычный/граничный/неприменимый случай |
 
 Неизвестные потребители: внешние копии CLI/descriptor, локальные подключённые Store на других

@@ -3,7 +3,7 @@
 Самостоятельный инструмент процесса агентов: общий CLI, движок процесса,
 Temporal Workflows/Activities/Workers, проектные адаптеры и проверяемые артефакты.
 
-[Активный план Temporal-миграции](docs/exec-plans/active/2026-10-27-agent-workflow-temporal-migration.md)
+[Активный план Temporal-миграции](docs/exec-plans/active/2026-11-23-temporal-production-rollout.md)
 продолжается в этом репозитории. Полная native-квалификация и рабочий T6 остаются открытыми;
 сам перенос исходников не переключает backend задач.
 
@@ -43,7 +43,8 @@ yarn validate
 
 ## Вход и договоры
 
-- `yarn agent-workflow` — общий CLI; [текущий чат](CURRENT-CHAT.md) описывает действия и их входы.
+- `yarn agent-workflow` вызывает тот же CLI, что и установленный пакет. Формат входа описан в [руководстве Temporal](CURRENT-CHAT.md#запуск-через-temporal).
+- Сравнительные проверки прежнего движка используют `node --import tsx cli/main.ts` из исходников.
 - [Дескриптор саморазработки](project/workflow.json) задаёт правила, проверочные команды,
   профили и процедуры для проекта `agent-workflow`. У подключённого проекта свой дескриптор.
 - [Самостоятельный Temporal SDK](docs/temporal-sdk.md), [карта потребителей](docs/temporal-consumers.md).

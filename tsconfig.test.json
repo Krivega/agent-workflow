@@ -22,7 +22,6 @@
     "application/**/*.ts",
     "adapters/**/*.ts",
     "cli/**/*.ts",
-    "comparison/**/*.ts",
     "src/**/*.ts",
     "tests/**/*.ts",
     "scripts/**/*.ts",

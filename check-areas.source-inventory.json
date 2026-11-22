@@ -463,18 +463,6 @@
       "owner": "workflow"
     },
     {
-      "path": "tests/comparisonReadiness.test.ts",
-      "owner": "workflow"
-    },
-    {
-      "path": "tests/comparisonReport.test.ts",
-      "owner": "workflow"
-    },
-    {
-      "path": "tests/comparisonSeries.test.ts",
-      "owner": "workflow"
-    },
-    {
       "path": "tests/comparisonSession.test.ts",
       "owner": "workflow"
     },

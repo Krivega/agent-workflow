@@ -2,9 +2,14 @@ import { existsSync, lstatSync, readdirSync, realpathSync } from 'node:fs';
 import { isAbsolute, join, resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { gunzipSync } from 'node:zlib';
-import { exactFields, object, requireContract } from '../../contracts/project.js';
-import { createBackup } from './backup.js';
-import { digest, publishFile, readPrivateFile, syncDirectory } from './files.js';
+import { exactFields, object, requireContract } from '../../src/contracts/project.js';
+import { createBackup } from '../../src/adapters/artifacts/backup.js';
+import {
+  digest,
+  publishFile,
+  readPrivateFile,
+  syncDirectory,
+} from '../../src/adapters/artifacts/files.js';
 
 const shared = 'AWJSON1\n',
   archived = 'AWARCHIVE1\n',

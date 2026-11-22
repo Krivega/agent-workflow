@@ -34,8 +34,8 @@ const existing = [
   ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
   additions = [
     './comparisonH06TemporalReferenceApproval.ts',
-    '../comparison/revisions/proposal-reference-v4/README.md',
-    '../comparison/revisions/proposal-reference-v4/primary-approval.json',
+    './fixtures/qualification/proposal-reference-v4/README.md',
+    './fixtures/qualification/proposal-reference-v4/primary-approval.json',
   ].map((path) => fileURLToPath(new URL(path, import.meta.url)));
 const read = (pin: H04Pin) => object(JSON.parse(readH04Pin(pin).toString()));
 type Request = ReturnType<typeof readH06NativeRequestSchema>;

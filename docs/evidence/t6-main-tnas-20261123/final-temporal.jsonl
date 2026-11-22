@@ -1,0 +1,5 @@
+{"health":"SERVING","serverVersion":"1.29.1","namespace":"agent-workflow","running":[]}
+{"queue":"t7-neutral","type":"Workflow","pollers":["42969@Mac-mini.local"]}
+{"queue":"t7-neutral","type":"Activity","pollers":["42969@Mac-mini.local"]}
+{"queue":"t7-neutral.control","type":"Activity","pollers":["42969@Mac-mini.local"]}
+{"workflowId":"aw/task/neutral-example/t7-tnas-persistence","runId":"01a202e5-8be5-7af2-a223-4857e9d71dad","temporalStatus":"COMPLETED","result":"done","artifactSHA256":"60f4cd43b28526e6f5a366c31b72ee6c2da038d17f503eb9b9ac41e24f605da1","responseSHA256":"3f366e4478725fcc97c0847ea36b00c5b5ac706967efbd0f66c98c7edf6a372f","bytes":2542}
