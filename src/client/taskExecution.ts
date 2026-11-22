@@ -24,6 +24,7 @@ import {
 } from '../policy/taskHuman.js';
 import { controlRef } from '../policy/readerControl.js';
 import type { nativeTaskHumanAuthority } from '../adapters/codex/taskHumanAuthority.js';
+export { extendTaskBudget } from '../worker/taskBudget.js';
 export { artifactStore } from '../adapters/artifacts/files.js';
 export { nativeTaskHumanAuthority } from '../adapters/codex/taskHumanAuthority.js';
 export { nativeTaskSource } from '../adapters/codex/nativeTaskSource.js';

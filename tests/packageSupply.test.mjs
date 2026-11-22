@@ -53,6 +53,61 @@ function checkPackagedWorker(root, temporary, run) {
     queues: ['tasks', 'tasks.control'],
     projects: 1,
   });
+  const writerAccount = join(temporary, 'writer-account.json');
+  const inventory = join(temporary, 'writer-inventory.json');
+  writeFileSync(
+    config.codexBinary,
+    `#!${process.execPath}
+if (process.argv[2] === '--version') {
+  console.log('codex-cli 0.169.1');
+} else {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const assert = require('node:assert/strict');
+  assert.equal(path.dirname(process.cwd()), ${JSON.stringify(join(temporary, 'artifacts', 'copies'))});
+  assert.equal(process.env.CODEX_HOME, ${JSON.stringify(config.codexHome)});
+  assert.deepEqual(process.argv.slice(-2), ['app-server', '--stdio']);
+  const lines = require('node:readline').createInterface({ input: process.stdin });
+  lines.on('line', line => {
+    const { id, method, params } = JSON.parse(line);
+    if (method === 'initialized') return;
+    let result;
+    if (method === 'initialize') result = {};
+    else if (method === 'account/read') {
+      assert.deepEqual(params, { refreshToken: false });
+      result = JSON.parse(fs.readFileSync(${JSON.stringify(writerAccount)}));
+    } else if (method === 'mcpServerStatus/list') {
+      assert.deepEqual(params, { limit: 100, detail: 'toolsAndAuthOnly' });
+      result = JSON.parse(fs.readFileSync(${JSON.stringify(inventory)}));
+    } else throw Error('unexpected RPC ' + method);
+    console.log(JSON.stringify({ id, result }));
+  });
+}
+`,
+    { mode: 0o700 },
+  );
+  save(writerAccount, { requiresOpenaiAuth: true, account: null });
+  for (const action of ['--check-writer', '--run']) {
+    const denied = spawnSync(process.execPath, [worker, action, temporary], {
+      encoding: 'utf8',
+      timeout: 10000,
+    });
+    assert.equal(denied.status, 1);
+    assert.match(denied.stderr, /Writer login unavailable/u);
+  }
+  save(writerAccount, { requiresOpenaiAuth: true, account: { type: 'chatgpt' } });
+  save(inventory, { data: [], nextCursor: 'more' });
+  const partial = spawnSync(process.execPath, [worker, '--check-writer', temporary], {
+    encoding: 'utf8',
+  });
+  assert.equal(partial.status, 1);
+  assert.match(partial.stderr, /task-tools-inventory-unknown/u);
+  save(inventory, { data: [], nextCursor: null });
+  assert.deepEqual(JSON.parse(run(process.execPath, [worker, '--check-writer', temporary])), {
+    writerPreflight: 'passed',
+    projects: 1,
+  });
+  assert.deepEqual(readdirSync(join(temporary, 'artifacts', 'copies')), []);
   if (process.platform === 'darwin') {
     const plist = run(process.execPath, [worker, '--plist', temporary]);
     const parsed = JSON.parse(

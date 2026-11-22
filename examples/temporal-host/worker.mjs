@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { lstatSync, readFileSync, realpathSync } from 'node:fs';
+import { lstatSync, mkdtempSync, readFileSync, realpathSync, rmdirSync } from 'node:fs';
 import { dirname, isAbsolute, join } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -15,6 +15,7 @@ import { nativeReaderAuthority } from '../../dist/adapters/codex/readerAuthority
 import { nativeTaskSource } from '../../dist/adapters/codex/nativeTaskSource.js';
 import { nativeTaskHumanAuthority } from '../../dist/adapters/codex/taskHumanAuthority.js';
 import { checkTaskStartAdmission } from '../../dist/adapters/project/taskStartAdmission.js';
+import { checkWriterInventory } from '../../dist/adapters/codex/taskWriter.js';
 import { readerExecution, supportedTaskClient } from '../../dist/policy/readerExecution.js';
 
 function privatePath(path, directory) {
@@ -30,8 +31,8 @@ function json(path) {
 
 const [action, root, ...extra] = process.argv.slice(2);
 assert(
-  ['--check', '--plist', '--run'].includes(action) && !extra.length,
-  'Use --check|--plist|--run HOST_DIRECTORY',
+  ['--check', '--check-writer', '--plist', '--run'].includes(action) && !extra.length,
+  'Use --check|--check-writer|--plist|--run HOST_DIRECTORY',
 );
 privatePath(root, true);
 const config = json(join(root, 'worker.json'));
@@ -110,78 +111,119 @@ if (action === '--plist') {
     execFileSync(codexBinary, ['--version'], { encoding: 'utf8' }).trim(),
     'codex-cli ' + profile.clientVersion,
   );
-  Runtime.install({ shutdownSignals: [] });
-  const { promise: stopped, resolve: stop } = Promise.withResolvers();
-  process.on('SIGINT', stop);
-  process.on('SIGTERM', stop);
-  const connection = await NativeConnection.connect({ address: route.address });
-  const readers = [];
-  try {
-    const projects = [];
-    const logs = privateDirectory(join(root, 'rpc'));
-    const args = [
-      '-c',
-      'features.apps=false',
-      '-c',
-      'features.plugins=false',
-      '-c',
-      'features.multi_agent=false',
-      ...disabledServers.flatMap((name) => ['-c', 'mcp_servers.' + name + '.enabled=false']),
-      'app-server',
-      '--stdio',
-    ];
-    function transport(workspace) {
-      return new StdioAppServer(codexBinary, args, workspace, join(logs, randomUUID() + '.jsonl'));
-    }
-    for (const { registration, threadId } of entries) {
-      const { workspaceRoot, artifactRoot, owner } = registration;
-      const store = artifactStore(artifactRoot);
-      const issuer = { sessionsRoot, workspaceRoot, threadId, owner };
-      const authority = nativeReaderAuthority(store, issuer);
-      const observer = nativeTaskSource(store, { ...issuer, chatWorkspace: workspaceRoot });
-      const humanAuthority = nativeTaskHumanAuthority(store, observer, (input) =>
-        checkTaskStartAdmission(
-          registration,
-          observer,
-          input.startAdmission,
-          input.admission.preparation,
-          undefined,
-          { card: 'retained' },
-        ),
+  const logs = privateDirectory(join(root, 'rpc'));
+  const args = [
+    '-c',
+    'features.apps=false',
+    '-c',
+    'features.plugins=false',
+    '-c',
+    'features.multi_agent=false',
+    ...disabledServers.flatMap((name) => ['-c', 'mcp_servers.' + name + '.enabled=false']),
+    'app-server',
+    '--stdio',
+  ];
+  function transport(workspace) {
+    return new StdioAppServer(codexBinary, args, workspace, join(logs, randomUUID() + '.jsonl'));
+  }
+  class WriterTransport extends StdioAppServer {
+    async initialize() {
+      await super.initialize();
+      const status = await this.request('account/read', { refreshToken: false });
+      assert(
+        status?.requiresOpenaiAuth === false ||
+          (status?.requiresOpenaiAuth === true &&
+            typeof status.account?.type === 'string' &&
+            status.account.type.length > 0),
+        'Writer login unavailable: check Codex login in the CODEX_HOME selected by the Writer launcher',
       );
-      const rpc = transport(workspaceRoot);
-      readers.push(rpc);
-      await rpc.initialize();
-      projects.push({
-        registration,
-        authority,
-        rpc,
-        localTasks: {
-          profile,
-          disabledServers,
-          createRuntime: transport,
-          startAdmissionAuthority: observer,
-          humanAuthority,
-        },
-      });
     }
-    const workflowsPath = fileURLToPath(
-      new URL('../../dist/workflows/localTask.js', import.meta.url),
-    );
-    const host = await createReaderHost(
-      connection,
-      route.taskQueue,
-      workflowsPath,
-      projects,
-      profile,
-      join(root, 'state'),
-      maxTurnStarts,
-      undefined,
-      route.namespace,
-    );
-    await host.runUntil(() => stopped);
-  } finally {
-    for (const rpc of readers) rpc.close();
-    await connection.close();
+  }
+  function writerTransport(workspace) {
+    return new WriterTransport(codexBinary, args, workspace, join(logs, randomUUID() + '.jsonl'));
+  }
+  for (const { registration } of entries) {
+    const copies = privateDirectory(join(registration.artifactRoot, 'copies'));
+    const workspace = mkdtempSync(join(copies, 'preflight-'));
+    try {
+      const writer = writerTransport(workspace);
+      try {
+        await writer.initialize();
+        checkWriterInventory(
+          await writer.request('mcpServerStatus/list', {
+            limit: 100,
+            detail: 'toolsAndAuthOnly',
+          }),
+          disabledServers,
+        );
+      } finally {
+        writer.close();
+      }
+    } finally {
+      rmdirSync(workspace);
+    }
+  }
+  if (action === '--check-writer') {
+    console.log(JSON.stringify({ writerPreflight: 'passed', projects: entries.length }));
+  } else {
+    Runtime.install({ shutdownSignals: [] });
+    const { promise: stopped, resolve: stop } = Promise.withResolvers();
+    process.on('SIGINT', stop);
+    process.on('SIGTERM', stop);
+    const connection = await NativeConnection.connect({ address: route.address });
+    const readers = [];
+    try {
+      const projects = [];
+      for (const { registration, threadId } of entries) {
+        const { workspaceRoot, artifactRoot, owner } = registration;
+        const store = artifactStore(artifactRoot);
+        const issuer = { sessionsRoot, workspaceRoot, threadId, owner };
+        const authority = nativeReaderAuthority(store, issuer);
+        const observer = nativeTaskSource(store, { ...issuer, chatWorkspace: workspaceRoot });
+        const humanAuthority = nativeTaskHumanAuthority(store, observer, (input) =>
+          checkTaskStartAdmission(
+            registration,
+            observer,
+            input.startAdmission,
+            input.admission.preparation,
+            undefined,
+            { card: 'retained' },
+          ),
+        );
+        const rpc = transport(workspaceRoot);
+        readers.push(rpc);
+        await rpc.initialize();
+        projects.push({
+          registration,
+          authority,
+          rpc,
+          localTasks: {
+            profile,
+            disabledServers,
+            createRuntime: writerTransport,
+            startAdmissionAuthority: observer,
+            humanAuthority,
+          },
+        });
+      }
+      const workflowsPath = fileURLToPath(
+        new URL('../../dist/workflows/localTask.js', import.meta.url),
+      );
+      const host = await createReaderHost(
+        connection,
+        route.taskQueue,
+        workflowsPath,
+        projects,
+        profile,
+        join(root, 'state'),
+        maxTurnStarts,
+        undefined,
+        route.namespace,
+      );
+      await host.runUntil(() => stopped);
+    } finally {
+      for (const rpc of readers) rpc.close();
+      await connection.close();
+    }
   }
 }

@@ -499,10 +499,16 @@ export async function ManagedTaskWorkflow(
         'task-budget-receipt-invalid',
       );
       requireContract(
-        budget === null || (value.limit === budget.limit && value.used >= budget.used),
+        (value.extendedFrom === undefined || value.extendedFrom.runId === workflowInfo().runId) &&
+          (budget === null ||
+            ((value.limit === budget.limit ||
+              (value.limit > budget.limit &&
+                value.extendedFrom?.sha256 === budget.manifest.sha256 &&
+                value.extendedFrom.bytes === budget.manifest.bytes)) &&
+              value.used >= budget.used)),
         'task-budget-rewound',
       );
-      budget = value;
+      budget = { limit: value.limit, used: value.used, manifest: value.manifest };
       budgetFailure = '';
     } catch (failure) {
       budgetFailure = String(failure);

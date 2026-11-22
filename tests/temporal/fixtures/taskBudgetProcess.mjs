@@ -11,16 +11,17 @@ const sources = {
   files: new URL('../../../src/adapters/artifacts/files.ts', import.meta.url).href,
   project: new URL('../../../src/contracts/project.ts', import.meta.url).href,
 };
-const imports = new Map([
-  [sources.reader + '\0../artifacts/files.js', sources.files],
-  [sources.reader + '\0../../contracts/project.js', sources.project],
-  [sources.budget + '\0../contracts/project.js', sources.project],
-  [sources.budget + '\0../adapters/artifacts/files.js', sources.files],
-  [sources.files + '\0../../contracts/project.js', sources.project],
-]);
+const sourceRoot = new URL('../../../src/', import.meta.url).href;
 registerHooks({
   resolve(specifier, context, nextResolve) {
-    return nextResolve(imports.get(context.parentURL + '\0' + specifier) ?? specifier, context);
+    if (
+      context.parentURL?.startsWith(sourceRoot) &&
+      specifier.startsWith('.') &&
+      specifier.endsWith('.js')
+    ) {
+      return nextResolve(specifier.slice(0, -3) + '.ts', context);
+    }
+    return nextResolve(specifier, context);
   },
 });
 const { readerBudget } = await import(sources.reader);

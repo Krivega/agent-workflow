@@ -22,6 +22,36 @@ import { localTaskKey } from '../../policy/localTask.js';
 import type { taskFiles } from '../project/taskFiles.js';
 import type { taskGate } from '../project/taskGate.js';
 
+export function checkWriterInventory(
+  inventory: Record<string, unknown>,
+  disabledServers: readonly string[],
+) {
+  requireContract(
+    Array.isArray(inventory.data) && inventory.nextCursor == null,
+    'task-tools-inventory-unknown',
+  );
+  requireContract(
+    inventory.data
+      .map(object)
+      .every(
+        (s) =>
+          disabledServers.includes(String(s.name)) &&
+          s.pluginId === null &&
+          s.serverInfo === null &&
+          s.httpOrigin == null &&
+          s.serverCapabilities == null &&
+          s.toolsError == null &&
+          Object.keys(object(s.tools)).length === 0 &&
+          Array.isArray(s.resources) &&
+          s.resources.length === 0 &&
+          Array.isArray(s.resourceTemplates) &&
+          s.resourceTemplates.length === 0 &&
+          (s.runtimeStatus == null || s.runtimeStatus === 'disabled'),
+      ),
+    'task-external-tools-enabled',
+  );
+}
+
 function retained(path: string): Record<string, unknown> | null {
   try {
     return object(JSON.parse(readPrivateFile(path).toString()));
@@ -414,30 +444,7 @@ export function taskWriter(
         ...(identity?.session ? { threadId: identity.session } : {}),
       }),
     );
-    requireContract(
-      Array.isArray(inventory.data) && inventory.nextCursor == null,
-      'task-tools-inventory-unknown',
-    );
-    requireContract(
-      inventory.data
-        .map(object)
-        .every(
-          (s) =>
-            snapshot.disabledServers.includes(String(s.name)) &&
-            s.pluginId === null &&
-            s.serverInfo === null &&
-            s.httpOrigin == null &&
-            s.serverCapabilities == null &&
-            s.toolsError == null &&
-            Object.keys(object(s.tools)).length === 0 &&
-            Array.isArray(s.resources) &&
-            s.resources.length === 0 &&
-            Array.isArray(s.resourceTemplates) &&
-            s.resourceTemplates.length === 0 &&
-            (s.runtimeStatus == null || s.runtimeStatus === 'disabled'),
-        ),
-      'task-external-tools-enabled',
-    );
+    checkWriterInventory(inventory, snapshot.disabledServers);
     save({ kind: 'task-capabilities', inventory });
   }
   function session(raw: unknown) {

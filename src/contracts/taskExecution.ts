@@ -22,6 +22,7 @@ export interface TaskExecutionOutcome {
   projection: ArtifactRef;
 }
 export interface TaskExecutionBudget {
+  extendedFrom?: ArtifactRef & { runId: string };
   limit: number;
   used: number;
   manifest: ArtifactRef;

@@ -1060,6 +1060,37 @@ describe('active task Workflow interruption and draining', () => {
     expect(await run).toMatchObject({ status: 'cancelled' });
     expect(sdk.interruptTaskExecution).toHaveBeenCalledTimes(2);
   });
+  it.each(['bound', 'wrong-run', 'wrong-manifest', 'wrong-size', 'no-grant', 'rewound'])(
+    'accepts a budget increase only for the retained receipt and Run ID: %s',
+    async (mode) => {
+      const f = fixture(),
+        old = { limit: 7, used: 2, manifest: f.proof },
+        next = {
+          limit: 9,
+          used: mode === 'rewound' ? 1 : 2,
+          manifest: f.proof,
+          ...(mode === 'no-grant'
+            ? {}
+            : {
+                extendedFrom: {
+                  ...f.proof,
+                  runId: mode === 'wrong-run' ? 'other' : 'run',
+                  sha256: mode === 'wrong-manifest' ? 'e'.repeat(64) : f.proof.sha256,
+                  bytes: mode === 'wrong-size' ? 0 : f.proof.bytes,
+                },
+              }),
+        };
+      sdk.captureTaskExecutionBudget.mockResolvedValueOnce(old).mockResolvedValue(next);
+      const outcome = await ManagedTaskWorkflow(f.input);
+      if (mode === 'bound')
+        expect(outcome).toMatchObject({ budget: { limit: 9, used: 2 }, budgetFailure: '' });
+      else
+        expect(outcome).toMatchObject({
+          budget: null,
+          budgetFailure: 'Error: task-budget-rewound',
+        });
+    },
+  );
   it('keeps unknown spent budget and its original diagnostic while forbidding RESUME and rollover', async () => {
     const f = fixture();
     sdk.captureTaskExecutionBudget.mockRejectedValue(new Error('task-budget-rewound'));

@@ -77,12 +77,20 @@ CODEX_HOME="$AW_CODEX_HOME" "$AW_CODEX" debug models |
 Выполняйте команды из каталога установки пакета под пользователем, которому принадлежат
 рабочие копии и журналы Codex. Для реального запуска у проектов должна быть настроена
 политика Temporal, а сервер должен отвечать. Команды `--check` и `--plist` работают офлайн.
+Команда `--check-writer` запускает Codex через настроенный `codexBinary` во временном
+каталоге внутри `artifactRoot/copies` каждого проекта. Она проверяет состояние входа
+через `account/read` и полный реестр MCP по правилам Writer. Модельные ходы при этом
+не расходуются. При ошибке входа выполните `codex login` для фактического `CODEX_HOME`
+исполнителя. Состояние входа подтверждает наличие учётных данных. Доступ к модели
+проверяется при обращении к провайдеру. Режим `--run` выполняет ту же проверку
+до подключения к Temporal.
 
 ```sh
 AW_HOST=/absolute/private/host
 AW_WORKER="$PWD/node_modules/@krivega/agent-workflow/examples/temporal-host/worker.mjs"
 AW_PLIST="$HOME/Library/LaunchAgents/com.krivega.agent-workflow.worker.plist"
 node "$AW_WORKER" --check "$AW_HOST"
+node "$AW_WORKER" --check-writer "$AW_HOST"
 mkdir -p "$HOME/Library/LaunchAgents"
 node "$AW_WORKER" --plist "$AW_HOST" > "$AW_HOST/worker.plist" &&
   plutil -lint "$AW_HOST/worker.plist" && install -m 600 "$AW_HOST/worker.plist" "$AW_PLIST"
@@ -597,6 +605,15 @@ Immutable permit версии 2 закрепляет schema/policy version и т
 и лимит. Для RESUME сохранённой попытки хост под блокировкой повторно проверяет
 остановку и неизменность прежней копии, затем принимает точную команду человека.
 Следующая попытка получает собственную запись, а исходные допуск и остановка сохраняются.
+
+На остановленном выделенном хосте после разрешения владельца вызовите
+`extendTaskBudget(directory, store, expected, limit, runId)` из `./task-execution`.
+Передайте исходный каталог `state/turn-credits`, хранилище задачи и последнюю квитанцию
+бюджета из состояния ожидания. Первое увеличение сохраняется в `extension.json`,
+последующие — в `extension-<предыдущий лимит>.json`. Каждая запись привязана к
+предыдущей квитанции и тому же Run ID. Операция сверяет списания под блокировкой.
+Повтор принятого запроса сохраняет действующий лимит. Перед запуском выделенного
+хоста укажите последний подтверждённый лимит в `maxTurnStarts`.
 
 ### Замена Worker после подтверждённой записи B1
 

@@ -1,5 +1,6 @@
 import {
   mkdirSync,
+  rmdirSync,
   readFileSync,
   unlinkSync,
   writeFileSync,
@@ -14,6 +15,7 @@ import { readerBudget } from '../../src/adapters/codex/readerBudget.js';
 import {
   captureTaskBudget,
   inspectTaskBudget,
+  extendTaskBudget,
   verifyTaskBudget,
 } from '../../src/worker/taskBudget.js';
 import * as files from '../../src/adapters/artifacts/files.js';
@@ -266,5 +268,109 @@ describe('primary model budget prefix across Workflow rollover', () => {
     });
     expect(f.capture).toThrow('task-budget-inventory-changed');
     expect(publish).not.toHaveBeenCalled();
+  });
+});
+
+describe('explicit dedicated host budget extension', () => {
+  it('keeps the first two credits and their immutable receipt across a 7 to 9 extension and restart', () => {
+    const f = controlFixture(),
+      directory = join(f.root, 'credits'),
+      old = readerBudget(directory, 7);
+    const spend = (consumer: typeof old, n: number) =>
+      consumer(files.digest('key' + n), files.digest('request' + n));
+    spend(old, 0);
+    spend(old, 1);
+    const held = captureTaskBudget(directory, f.store, null),
+      original = snapshot(directory);
+    expect(() => readerBudget(directory, 9)).toThrow('reader-model-budget-conflict');
+    extendTaskBudget(directory, f.store, held, 9, 'run');
+    expect(
+      snapshot(directory).filter((x) => (x as { name: string }).name !== 'extension.json'),
+    ).toEqual(original);
+    const first = captureTaskBudget(directory, f.store, held.manifest);
+    expect(first).toMatchObject({ limit: 9, used: 2, extendedFrom: held.manifest });
+    expect(() => readerBudget(directory, 7)).toThrow('reader-model-budget-conflict');
+    const resumed = readerBudget(directory, 9);
+    for (let n = 0; n < 9; n++) spend(resumed, n);
+    expect(() => spend(resumed, 9)).toThrow('reader-model-budget-exhausted');
+    const final = captureTaskBudget(directory, f.store, first.manifest);
+    expect(final).toMatchObject({ limit: 9, used: 9 });
+    expect(final.extendedFrom).toEqual({ ...held.manifest, runId: 'run' });
+    extendTaskBudget(directory, f.store, held, 9, 'run');
+    expect(() => extendTaskBudget(directory, f.store, held, 10, 'run')).toThrow(
+      'task-budget-extension-conflict',
+    );
+    const grant = join(directory, 'extension.json'),
+      savedGrant = readFileSync(grant);
+    unlinkSync(grant);
+    expect(() => spend(resumed, 2)).toThrow('task-budget-extension-changed');
+    writeFileSync(grant, savedGrant);
+    const credit = join(directory, '0.credit');
+    writeFileSync(credit, readFileSync(join(directory, '1.credit')));
+    expect(() => readerBudget(directory, 9)).toThrow('task-budget-extension-prefix');
+  });
+  it('retains both grants and all five credits across restart and duplicate requests', () => {
+    const f = controlFixture();
+    const directory = join(f.root, 'credits');
+    const initial = readerBudget(directory, 7);
+    const spend = (consumer: typeof initial, n: number) =>
+      consumer(files.digest('key' + n), files.digest('request' + n));
+    spend(initial, 0);
+    spend(initial, 1);
+    const first = captureTaskBudget(directory, f.store, null);
+    extendTaskBudget(directory, f.store, first, 9, 'run');
+    const nine = readerBudget(directory, 9);
+    for (let n = 2; n < 5; n++) spend(nine, n);
+    const second = captureTaskBudget(directory, f.store, first.manifest);
+    expect(second).toMatchObject({ limit: 9, used: 5 });
+    const before = snapshot(directory);
+    expect(() => extendTaskBudget(directory, f.store, second, 12, 'other')).toThrow(
+      'task-budget-extension-conflict',
+    );
+    extendTaskBudget(directory, f.store, second, 12, 'run');
+    expect(
+      snapshot(directory).filter((x) => (x as { name: string }).name !== 'extension-9.json'),
+    ).toEqual(before);
+    const expected = snapshot(directory);
+    extendTaskBudget(directory, f.store, second, 12, 'run');
+    extendTaskBudget(directory, f.store, first, 9, 'run');
+    expect(snapshot(directory)).toEqual(expected);
+    expect(() => spend(nine, 5)).toThrow('task-budget-extension-changed');
+    const reopened = readerBudget(directory, 12);
+    expect(captureTaskBudget(directory, f.store, second.manifest)).toMatchObject({
+      limit: 12,
+      used: 5,
+      extendedFrom: { ...second.manifest, runId: 'run' },
+    });
+    for (let n = 0; n < 12; n++) spend(reopened, n);
+    expect(() => spend(reopened, 12)).toThrow('reader-model-budget-exhausted');
+    const parent = join(directory, 'extension.json');
+    const bytes = readFileSync(parent);
+    writeFileSync(parent, Buffer.concat([bytes, Buffer.from(' ')]));
+    expect(() => readerBudget(directory, 12)).toThrow('task-budget-extension-mismatch');
+    unlinkSync(parent);
+    expect(() => readerBudget(directory, 12)).toThrow('task-budget-extension-chain');
+  });
+  it('rejects invalid grants, stale usage, wrong directories and pending operations', () => {
+    const f = fixture();
+    expect(() => extendTaskBudget(f.directory, f.store, f.before, 3, 'run')).toThrow(
+      'task-budget-extension-invalid',
+    );
+    expect(() =>
+      extendTaskBudget(f.directory, f.store, { ...f.before, used: 0 }, 4, 'run'),
+    ).toThrow('task-budget-current-mismatch');
+    f.charge(files.digest('other'), files.digest('other-request'));
+    expect(() => extendTaskBudget(f.directory, f.store, f.before, 4, 'run')).toThrow(
+      'task-budget-current-mismatch',
+    );
+    const current = f.capture();
+    mkdirSync(join(f.directory, 'lock'));
+    expect(() => extendTaskBudget(f.directory, f.store, current, 4, 'run')).toThrow();
+    rmdirSync(join(f.directory, 'lock'));
+    extendTaskBudget(f.directory, f.store, current, 4, 'run');
+    const other = join(f.root, 'other');
+    readerBudget(other, 3);
+    writeFileSync(join(other, 'extension.json'), readFileSync(join(f.directory, 'extension.json')));
+    expect(() => readerBudget(other, 4)).toThrow('task-budget-extension-mismatch');
   });
 });
