@@ -1,0 +1,61 @@
+{
+  "at": "2026-11-22T16:29:24.469Z",
+  "workflowId": "aw/task/neutral-example/t7-tnas-persistence",
+  "runId": "01a202e5-8be5-7af2-a223-4857e9d71dad",
+  "temporalStatus": "COMPLETED",
+  "result": {
+    "status": "done",
+    "result": {
+      "sha256": "60f4cd43b28526e6f5a366c31b72ee6c2da038d17f503eb9b9ac41e24f605da1",
+      "bytes": 2542
+    },
+    "projection": {
+      "sha256": "ff6d74aedf302bed7bac316fb3b1df3feea049af9ad06e93da4617c73d4d2251",
+      "bytes": 1545
+    },
+    "history": [
+      {
+        "sha256": "0b29fc660e0b586598a8d89a62c7bac89f5745bc1268f73182ed684a78a2552a",
+        "bytes": 2448
+      },
+      {
+        "sha256": "89b434ff3c338108fc852c14a89e4e2160cf00d0f0fc26286ff829ec14dd9c1a",
+        "bytes": 2534
+      }
+    ],
+    "commands": [
+      {
+        "sha256": "c459b8ee12c06f4a9a30ad4850cca2cc0b0ec9ee6eedcdab06470018a84d8ea2",
+        "bytes": 2968
+      },
+      {
+        "sha256": "eca9c3359b8de31275edd68f901cb5bf9e75911f41e4d57bb64dc0b1998e5727",
+        "bytes": 3054
+      }
+    ],
+    "checkpoint": null,
+    "budget": {
+      "limit": 12,
+      "used": 12,
+      "manifest": {
+        "sha256": "155fc5c16b85c73d5ca08a320bea4870858a1eb4936ebde2de1bae84c808b83b",
+        "bytes": 3396
+      }
+    },
+    "budgetFailure": "",
+    "elapsedMs": 18603577,
+    "diagnostics": [
+      {
+        "phase": "writing",
+        "error": "ActivityFailure: Activity task failed"
+      },
+      {
+        "phase": "writing",
+        "error": "ActivityFailure: Activity task failed"
+      }
+    ]
+  },
+  "artifactSHA256": "60f4cd43b28526e6f5a366c31b72ee6c2da038d17f503eb9b9ac41e24f605da1",
+  "responseSHA256": "3f366e4478725fcc97c0847ea36b00c5b5ac706967efbd0f66c98c7edf6a372f",
+  "active": []
+}

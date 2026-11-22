@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-11-22T16:35:06.887207+00:00",
+  "before": {
+    "containers": {
+      "temporal": {
+        "containerId": "0d444cd2616f624812af83e15b645da56b34e0cdf87442365ec564760288b126",
+        "imageId": "sha256:80fce65668df9a40704d4aaec8ade3ab3e70f6a0327bf217b243443dfe6a52f6",
+        "status": "running"
+      },
+      "postgres": {
+        "containerId": "0e2be25bad201497daef6333905295c8ffd2177789b795592f395bb65abec5be",
+        "imageId": "sha256:f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+        "status": "running",
+        "dataVolume": "agent-workflow-host_postgres-data"
+      }
+    },
+    "volumeCreatedAt": "2026-11-22T12:24:26+03:00"
+  },
+  "after": {
+    "containers": {
+      "temporal": {
+        "containerId": "0d444cd2616f624812af83e15b645da56b34e0cdf87442365ec564760288b126",
+        "imageId": "sha256:80fce65668df9a40704d4aaec8ade3ab3e70f6a0327bf217b243443dfe6a52f6",
+        "status": "running"
+      },
+      "postgres": {
+        "containerId": "0e2be25bad201497daef6333905295c8ffd2177789b795592f395bb65abec5be",
+        "imageId": "sha256:f7ebf09eb01b02bb9904972705248217baeaed03e2a0a7ed24a77740b0aee98c",
+        "status": "running",
+        "dataVolume": "agent-workflow-host_postgres-data"
+      }
+    },
+    "volumeCreatedAt": "2026-11-22T12:24:26+03:00"
+  },
+  "consumerFilesSHA256": {
+    "AGENTS.md": "4ad39130324346bb8314fa458748ca79ca867eb5edff2ba2fbe8c610f99ffc9e",
+    "tools/agent-workflow/project/temporal.json": "d0cf371455a6e975d48e734498778823f48bd8c319cd6f1a3e9e683eecb7a3cd",
+    "tools/agent-workflow/roles/architect.md": "452eab4860a3596136c4027300dac52bbed033fc2b2f0a5484bb3266a4e057c2",
+    ".agents/skills/agent-workflow/SKILL.md": "8b487d55b49b0688d9a90f049e4063ac7014569b0dc9264d80d5041b5a109bbb",
+    "package.json": "f3addc6969d7c0a489edb9239d7ca985ef0c0aa9a0aa88bbb0592eccd83bfb9c",
+    "yarn.lock": "8093ae093e960983450074693801e874c44cd3f15806f794d8278601c00144e9"
+  },
+  "consumerHashesUnchanged": true,
+  "consumerGitStatusUnchanged": true
+}
