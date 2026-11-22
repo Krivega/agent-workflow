@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "project": "t7-readme-check",
+  "cardSource": "neutral/tasks/t7-tnas-persistence.md",
+  "archiveSHA256": "e75c9e0db2b6254175aa0fe1f30e005f2744d5f8e6be1cf96c640b4b43acb113",
+  "before": {
+    "pin": "0.1.3-rc.2",
+    "version": "0.1.3-rc.2",
+    "integrity": "sha512-7WAuBLF4mbm7+MNUEEt5dRUF5exYtHWPgsy54YxGSkJ2su/lHmHVdz7jhVCWKRe2oWEmS2yBGlrHUNJf28N+fg==",
+    "scripts": {
+      "test": "node --test"
+    },
+    "checks": [
+      "test"
+    ]
+  },
+  "after": {
+    "pin": "file:vendor/krivega-agent-workflow-0.1.3-rc.5.tgz",
+    "version": "0.1.3-rc.5",
+    "integrity": "sha512-Aat9+iZtoUx9TdTullzWqJ6cZTMGG90xrzhZdV8IF6KxYrUy+Ai9HKk0LCRLdfRmKdpiKitOkG09fJxe3yJPpQ==",
+    "scripts": {
+      "test": "node --test"
+    },
+    "checks": [
+      "test"
+    ]
+  },
+  "files": {
+    "tasks/t7-tnas-persistence.md": {
+      "bytes": 1110,
+      "beforeSHA256": "cdf1aceec4345a4782ad7df721517f06ef02b68b62bd9c642852e36ccc0d3939",
+      "afterSHA256": "cdf1aceec4345a4782ad7df721517f06ef02b68b62bd9c642852e36ccc0d3939",
+      "byteEqual": true
+    },
+    "AGENTS.md": {
+      "bytes": 129,
+      "beforeSHA256": "b791563df976a684acf53a46bbf6e035ded31b67ce1e55e5510a2ab4c883941b",
+      "afterSHA256": "b791563df976a684acf53a46bbf6e035ded31b67ce1e55e5510a2ab4c883941b",
+      "byteEqual": true
+    },
+    "tools/agent-workflow/roles/architect.md": {
+      "bytes": 5463,
+      "beforeSHA256": "79b0812c9fe631367196780c9fa5700ade934548368538fb71f9705b50c44f4a",
+      "afterSHA256": "79b0812c9fe631367196780c9fa5700ade934548368538fb71f9705b50c44f4a",
+      "byteEqual": true
+    },
+    "tools/agent-workflow/project/temporal.json": {
+      "bytes": 288,
+      "beforeSHA256": "24e26035d2aa4ff1fdf745654773aaa5677fdea2f0af79a11bf162728efc5014",
+      "afterSHA256": "24e26035d2aa4ff1fdf745654773aaa5677fdea2f0af79a11bf162728efc5014",
+      "byteEqual": true
+    },
+    ".agents/skills/agent-workflow/SKILL.md": {
+      "bytes": 792,
+      "beforeSHA256": "750b77244aebffdc52b88b2153ffd3ebfd83a74089f29143c65e66db000ff61e",
+      "afterSHA256": "750b77244aebffdc52b88b2153ffd3ebfd83a74089f29143c65e66db000ff61e",
+      "byteEqual": true
+    },
+    "addition.test.cjs": {
+      "bytes": 84,
+      "beforeSHA256": "02289e86f880d612e97d136b768fabf31849d286c1ca601083867b40f310f3bf",
+      "afterSHA256": "02289e86f880d612e97d136b768fabf31849d286c1ca601083867b40f310f3bf",
+      "byteEqual": true
+    }
+  },
+  "baselineChecks": [
+    {
+      "command": [
+        "node_modules/.bin/agent-workflow",
+        "doctor"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"version\":\"0.1.3-rc.2\",\"descriptor\":\"tools/agent-workflow/project/temporal.json\",\"skill\":\".agents/skills/agent-workflow/SKILL.md\",\"projectId\":\"t7-readme-check\"}"
+    },
+    {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exitCode": 0,
+      "stdout": "> test\n> node --test\n\n\u2714 addition (0.664958ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 49.093417"
+    }
+  ],
+  "updatedChecks": [
+    {
+      "command": [
+        "node_modules/.bin/agent-workflow",
+        "doctor"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"version\":\"0.1.3-rc.5\",\"descriptor\":\"tools/agent-workflow/project/temporal.json\",\"skill\":\".agents/skills/agent-workflow/SKILL.md\",\"projectId\":\"t7-readme-check\"}"
+    },
+    {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exitCode": 0,
+      "stdout": "> test\n> node --test\n\n\u2714 addition (0.395542ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 50.014167"
+    }
+  ]
+}

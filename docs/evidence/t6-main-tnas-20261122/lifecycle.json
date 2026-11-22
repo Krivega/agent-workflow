@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-11-22T17:12:44.886801+00:00",
+  "sourceCommit": "6a8526d87a40d5d6505f43135f04294d41dbdec9",
+  "cruisedModules": 345,
+  "cruisedDependencies": 2541,
+  "violations": 0,
+  "closures": {
+    "src/workflows/": {
+      "projectModules": 33,
+      "forbidden": []
+    },
+    "src/activities/": {
+      "projectModules": 70,
+      "forbidden": []
+    },
+    "src/worker/": {
+      "projectModules": 82,
+      "forbidden": []
+    }
+  },
+  "nativeCrash": {
+    "runId": "01a20003-1884-71b1-9244-8cd15f3a4e31",
+    "historySHA256": "3b82fd40212267605307a95b81c59533a6d98d699d5fdb0da18062ea4d301d14",
+    "replay": "PASS",
+    "writerStarts": 1,
+    "sourceTransfers": 1
+  },
+  "tnas": {
+    "runId": "01a202e5-8be5-7af2-a223-4857e9d71dad",
+    "events": 285,
+    "historySHA256": "a0ef5c9e2bf8a78baca9eaec6aa98a9069b2b5042102f0ea113045f6bb2d54d1",
+    "result": {
+      "sha256": "60f4cd43b28526e6f5a366c31b72ee6c2da038d17f503eb9b9ac41e24f605da1",
+      "bytes": 2542
+    },
+    "completedValueMatchesAfterRecreation": true
+  }
+}
