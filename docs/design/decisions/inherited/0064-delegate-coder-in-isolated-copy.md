@@ -84,7 +84,6 @@ symlink, unknown create/send, not-started, поздний BIND, normal stop и c
 
 ## Связанные решения
 
-- **Partially supersedes:** [ADR-0047](0047-isolate-agent-workflow-in-tools.md) — запрет ролевой записи только для ограниченного coder в изолированной копии.
 - **Related:** [ADR-0049](0049-run-council-in-independent-read-only-sessions.md) — советники сохраняют read-only.
 - **Related:** [ADR-0063](0063-admit-local-implementation-with-executor-plan.md) — отдельное основание допуска родительской реализации.
 

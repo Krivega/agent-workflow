@@ -57,7 +57,6 @@ agent-workflow хранит проверки и принимает резуль�
 
 ## Связанные решения
 
-- **Related:** [ADR-0047](0047-isolate-agent-workflow-in-tools.md) — граница отделяемого инструмента разработки.
 - **Related:** [ADR-0049](0049-run-council-in-independent-read-only-sessions.md) — независимость приёмки и техническая изоляция сеансов.
 - **Related:** [ADR-0051](0051-migrate-player-application-to-godot.md) — продуктовая цель, для которой готовится карта потребителей.
 

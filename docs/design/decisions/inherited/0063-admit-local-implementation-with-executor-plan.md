@@ -66,7 +66,6 @@ backup/restore и сохранение FAIL. Профильные проверк
 
 ## Связанные решения
 
-- **Partially supersedes:** [ADR-0047](0047-isolate-agent-workflow-in-tools.md) — обязательный planning-совет для однозначной локальной реализации принятого договора.
 - **Partially supersedes:** [ADR-0048](0048-drive-agent-workflow-from-codex-chat.md) — обязательный planning-совет для однозначной локальной реализации принятого договора.
 - **Related:** [ADR-0049](0049-run-council-in-independent-read-only-sessions.md) — независимая приёмка сохраняется.
 

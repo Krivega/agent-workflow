@@ -287,8 +287,8 @@ function referenceFixture(base: 'pre4' | 'helper' | 'complete' = 'pre4') {
     ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
     additions = [
       './comparisonH06TemporalReferenceApproval.ts',
-      './fixtures/qualification/proposal-reference-v4/README.md',
-      './fixtures/qualification/proposal-reference-v4/primary-approval.json',
+      '../docs/evidence/qualification/proposal-reference-v4/README.md',
+      '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
     ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
     pin = (path: string) => ({ path, sha256: digest(readFileSync(path)) }),
     oldBytes = new Map(
@@ -454,29 +454,20 @@ function proposalNoticeFixture() {
 function cacheReferenceFixture() {
   const f = referenceFixture(),
     s = f.referenceSource(),
-    question =
-      'Разрешаете удалить только кеш загрузок npm `/Users/krivega/.npm/_cacache` (около 1,3 ГиБ), чтобы освободить место для полной проверки? Код, установленные зависимости, журналы и доказательства сохранятся. Кеш восстановится при будущих загрузках; может потребоваться сеть. Отдельное разрешение требуется по правилу AGENTS.md об изменении рабочего окружения; прежнее разрешение охватывало только Yarn.',
-    callId = 'call_c6e9621816a141bc8f63a955e9e0faea',
-    questionRecord = {
-      timestamp: '2026-11-05T22:41:01.480Z',
-      ordinal: 23484,
-      type: 'response_item',
-      payload: {
-        type: 'function_call',
-        status: 'completed',
-        id: 'fc_03a4708290b680b0016aed05fb1a5887d2ac46e6d96f958b30',
-        name: 'request_user_input_async',
-        arguments: JSON.stringify({
-          questions: [{ title: question, options: ['Очистить только кеш npm', 'Не очищать'] }],
-        }),
-        call_id: callId,
-        internal_chat_message_metadata_passthrough: {
-          turn_id: '01a1adb6-7863-78b3-9479-7bdae636eaa2',
-          create_time: 1793918459.1056643,
-        },
-      },
-      metadata: { client_authored: false, user_input_order: 1933 },
+    questionRecord = JSON.parse(
+      readFileSync(
+        new URL(
+          '../docs/evidence/qualification/proposal-reference-v4/npm-cache-question.jsonl',
+          import.meta.url,
+        ),
+        'utf8',
+      ),
+    ) as { payload: { arguments: unknown; call_id: string; name: string; status: string } },
+    { call_id: callId } = questionRecord.payload,
+    { questions } = JSON.parse(questionRecord.payload.arguments as string) as {
+      questions: [{ title: string }];
     },
+    question = questions[0].title,
     records = s.rows.map(({ record }) => record);
   records.splice(1, 0, questionRecord);
   const rows = records.map((record) => ({ record, ref: { locator: '', hash: '' } }));
@@ -724,6 +715,7 @@ it.each([
   'question-tool',
   'question-status',
   'question-arguments',
+  'question-arguments-type',
   'question-call',
   'question-nested',
   'question-late',
@@ -784,6 +776,7 @@ it.each([
   if (kind === 'question-tool') f.questionRecord.payload.name = 'send_message_to_thread';
   if (kind === 'question-status') f.questionRecord.payload.status = 'in_progress';
   if (kind === 'question-arguments') f.questionRecord.payload.arguments = '{}';
+  if (kind === 'question-arguments-type') f.questionRecord.payload.arguments = null;
   if (kind === 'question-call') f.questionRecord.payload.call_id = 'different-call';
   if (kind === 'question-nested')
     f.rows[1]!.record = {
@@ -1106,7 +1099,7 @@ it('retains the observed primary consent text and its single actual LF', () => {
     readFileSync(
       fileURLToPath(
         new URL(
-          './fixtures/qualification/proposal-reference-v4/primary-approval.json',
+          '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
           import.meta.url,
         ),
       ),

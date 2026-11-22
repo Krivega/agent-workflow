@@ -122,7 +122,6 @@ Git. При отсутствии целевой ссылки локальный 
 
 | Область | ADR | Статус |
 | --- | --- | --- |
-| Самостоятельный репозиторий полного agent-workflow до T6 | [0072](0072-extract-agent-workflow-repository.md) | `accepted` |
 | Перенос документов без обязательства поддерживать старый runtime | [0073](0073-complete-document-extraction-without-runtime-compatibility.md) | `accepted` |
 | Harness² через Temporal с независимой проверкой пользы | [0074](0074-integrate-harness2-through-temporal.md) | `proposed` |
 | Целевая поставка Temporal без поддержки Legacy | [0075](0075-exclude-legacy-from-temporal-delivery.md) | `accepted` |
@@ -135,7 +134,6 @@ Git. При отсутствии целевой ссылки локальный 
 в основном журнале. Относительные ссылки внутри этих исходных снимков относятся к прежнему
 расположению; текущие рабочие инструкции ссылаются на перенесённые файлы напрямую.
 
-- [ADR-0047: разместить полный процесс агентов в tools/agent-workflow с отделяемыми границами](inherited/0047-isolate-agent-workflow-in-tools.md).
 - [ADR-0048: вести agent-workflow из текущего чата Codex через проектный навык](inherited/0048-drive-agent-workflow-from-codex-chat.md).
 - [ADR-0049: запускать совет в отдельных read-only сеансах](inherited/0049-run-council-in-independent-read-only-sessions.md).
 - [ADR-0050: восстанавливать прежнего владельца и проверять доставленные команды пользователя](inherited/0050-recover-workflow-owner-and-user-commands.md).
@@ -154,7 +152,3 @@ Git. При отсутствии целевой ссылки локальный 
 - [ADR-0067: перенести исполнение отделяемого agent-workflow на Temporal](inherited/0067-run-reusable-agent-workflow-on-temporal.md).
   Требования к поддержке исполнения и архива Legacy заменены [ADR-0075](0075-exclude-legacy-from-temporal-delivery.md).
 - [ADR-0068: подтверждать полное чтение роли по ограниченным частям](inherited/0068-confirm-native-role-reads-from-bounded-parts.md).
-
-## Основания и происхождение
-
-- [Исходная межжурнальная запись ADR-0072](sources/source-adr-0072.md).

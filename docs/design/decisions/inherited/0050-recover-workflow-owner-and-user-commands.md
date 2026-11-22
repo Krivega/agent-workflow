@@ -66,7 +66,6 @@ boundaries и незавершённые операции. Специальна�
 
 - **Partially superseded by:** [ADR-0067](0067-run-reusable-agent-workflow-on-temporal.md) — эксклюзивная блокировка контроллера, CAS-восстановление и программное продление технического lease новых задач после перехода.
 
-- **Extends:** [ADR-0047](0047-isolate-agent-workflow-in-tools.md) — проверяемое восстановление срока прежнего владельца.
 - **Extends:** [ADR-0048](0048-drive-agent-workflow-from-codex-chat.md) — доставка подтверждённого пользовательского RESUME и единый путь продолжения.
 
 ## Условие пересмотра

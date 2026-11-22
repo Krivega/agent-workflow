@@ -1,4 +1,4 @@
-import { mkdtempSync, realpathSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -445,51 +445,13 @@ it.each(['old-publication', 'publication-after-user', 'forwarded-user', 'new-use
   },
 );
 
+const archivedEvidence = new URL('../docs/evidence/td054-deadline-reference/', import.meta.url);
+
 function environmentRecords(): Record<string, unknown>[] {
-  return [
-    {
-      timestamp: '2026-11-08T21:00:16.206Z',
-      ordinal: 49363,
-      type: 'response_item',
-      payload: {
-        type: 'message',
-        id: 'msg_01a1bcf6-3bce-7830-a6c7-5c7ff6d7954c',
-        role: 'user',
-        content: [
-          {
-            type: 'input_text',
-            text: `<environment_context>
-  <current_date>2026-11-09</current_date>
-  <timezone>Europe/Moscow</timezone>
-  <filesystem><workspace_roots><root>/Users/krivega/.codex/visualizations/2026/11/04/01a1a79b-848a-7c82-aa80-b11ae62783e9</root><root>/Users/krivega/workspace/mathematical-detective</root></workspace_roots><permission_profile type="disabled"><file_system type="unrestricted" /></permission_profile></filesystem>
-  <subagents>
-    <agent name="/root/t4_current_ready" />
-    <agent name="/root/t6_input11_current" />
-    <agent name="/root/td054_current_ready" />
-    <agent name="/root/actor_readiness" />
-    <agent name="/root/actual_t4_scope" />
-    <agent name="/root/advance_t6_integration" />
-    <agent name="/root/authority_options" />
-    <agent name="/root/authority_route" />
-  </subagents>
-</environment_context>`,
-          },
-        ],
-        internal_chat_message_metadata_passthrough: {
-          turn_id: '01a1bcc4-724d-70d0-92ff-b4acf9a0cc6f',
-          create_time: 1794171616.206867,
-          content_item_kinds: ['environments.environment_context'],
-          content_item_metadata: [{ provenance: { type: 'harness', hook: false } }],
-        },
-      },
-    },
-    {
-      timestamp: '2026-11-08T21:00:16.207Z',
-      ordinal: 49364,
-      type: 'world_state',
-      payload: { full: false, state: { environments: { current_date: '2026-11-09' } } },
-    },
-  ];
+  return readFileSync(new URL('midnight-update.jsonl', archivedEvidence), 'utf8')
+    .trimEnd()
+    .split('\n')
+    .map((line) => JSON.parse(line) as Record<string, unknown>);
 }
 
 function appendRecords(records: Record<string, unknown>[]) {
@@ -517,8 +479,10 @@ function genuineFollowup() {
 
 function relatedT4Rows(f: ReturnType<typeof fixture>) {
   const callId = 'call_c17c4889bd5e4e00a73b41822e9893d1';
-  const title =
-    'Synthetic related T4 b5e4c83b2f64d6d2192f260c70742d4cff2ffa5f67eb44c99e29760d085de0f4 [точный текст допуска](/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-fresh-service-ready/authorization-draft.txt)';
+  const { request, draft } = JSON.parse(
+    readFileSync(new URL('related-t4-pins.json', archivedEvidence), 'utf8'),
+  ) as { request: Pin; draft: Pin };
+  const title = `Synthetic related T4 ${request.sha256} [точный текст допуска](${draft.path})`;
   const questions = [{ title, options: ['Разрешаю описанный T4', 'Оставить T4 подготовленным'] }];
   const body =
     '<send_user_message_question_reply>\n' +
@@ -594,7 +558,7 @@ function relatedT4Rows(f: ReturnType<typeof fixture>) {
     },
   });
   const rows = [...f.rows.slice(0, 5), call, publication, ...f.rows.slice(5), reply, delivery];
-  return { rows, call, publication, reply, delivery };
+  return { rows, call, publication, reply, delivery, request, draft };
 }
 
 it('retains an authenticated related T4 reply separately from the original TD consent', () => {
@@ -613,6 +577,8 @@ it('retains an authenticated related T4 reply separately from the original TD co
         originalTDSource: f.binding.primary.source,
         replySource: related.reply.ref,
         deliverySource: related.delivery.ref,
+        request: related.request,
+        draft: related.draft,
       },
     ],
   });

@@ -1,0 +1,10 @@
+{
+  "request": {
+    "path": "/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-fresh-service-ready/approval-request.json",
+    "sha256": "b5e4c83b2f64d6d2192f260c70742d4cff2ffa5f67eb44c99e29760d085de0f4"
+  },
+  "draft": {
+    "path": "/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-fresh-service-ready/authorization-draft.txt",
+    "sha256": "ac41e2acce4586144aa227524f24bf18286b7e8831077fb0b1f1ce0c7ff935e6"
+  }
+}

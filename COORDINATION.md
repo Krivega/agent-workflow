@@ -1,7 +1,6 @@
 # Координация AW7
 
-Договор принадлежит [ADR-0047](https://github.com/Krivega/agent-workflow/blob/main/docs/design/decisions/inherited/0047-isolate-agent-workflow-in-tools.md)
-и [спецификации](docs/quality/agent-workflow-contracts.md#координация-и-relay).
+Договор принадлежит [спецификации](docs/quality/agent-workflow-contracts.md#координация-и-relay).
 [Процедура coordination](procedures/coordination.md) загружается до первого поручения
 в версии дескриптора подключённого проекта. Условия подключения — в [каталоге процедур](procedures/README.md);
 границы квалификации — в [разделе качества](https://github.com/Krivega/agent-workflow/blob/main/docs/quality/README.md).

@@ -34,29 +34,19 @@ const existing = [
   ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
   additions = [
     './comparisonH06TemporalReferenceApproval.ts',
-    './fixtures/qualification/proposal-reference-v4/README.md',
-    './fixtures/qualification/proposal-reference-v4/primary-approval.json',
+    '../docs/evidence/qualification/proposal-reference-v4/README.md',
+    '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
   ].map((path) => fileURLToPath(new URL(path, import.meta.url)));
 const read = (pin: H04Pin) => object(JSON.parse(readH04Pin(pin).toString()));
 type Request = ReturnType<typeof readH06NativeRequestSchema>;
 type JournalRow = { record: Record<string, unknown>; ref: InputRef };
 const npmCall = 'call_c6e9621816a141bc8f63a955e9e0faea',
-  npmQuestion =
-    'Разрешаете удалить только кеш загрузок npm `/Users/krivega/.npm/_cacache` (около 1,3 ГиБ), чтобы освободить место для полной проверки? Код, установленные зависимости, журналы и доказательства сохранятся. Кеш восстановится при будущих загрузках; может потребоваться сеть. Отдельное разрешение требуется по правилу AGENTS.md об изменении рабочего окружения; прежнее разрешение охватывало только Yarn.',
   npmAnswer = 'Очистить только кеш npm',
   npmQuestionHash = '2f2bb40cb52a247d07b76cf256ca0c1a2a3ac76e4c907ef8d02672776616c846',
+  npmArgumentsHash = '4c48aca941f9947b5ac2a20d6c0871fe1199182d4faa80445b4639a155540e7f',
+  npmReplyHash = 'eeefdd6b600f47096acb9fab99bc2e377f9c52d340c383f2fc7f0fd465eae86e',
   emptyWritingEdits =
-    '<external_codex_apps_writing_block_edits>The user manually edited these writing blocks. Treat the following snapshots as the current versions of those blocks, superseding the earlier assistant output.\n[]</external_codex_apps_writing_block_edits>',
-  npmReply =
-    '<send_user_message_question_reply>\n' +
-    JSON.stringify([
-      {
-        questionItemId: JSON.stringify(['request_user_input_async', npmCall, 0]),
-        question: npmQuestion,
-        answer: npmAnswer,
-      },
-    ]) +
-    '\n</send_user_message_question_reply>\n';
+    '<external_codex_apps_writing_block_edits>The user manually edited these writing blocks. Treat the following snapshots as the current versions of those blocks, superseding the earlier assistant output.\n[]</external_codex_apps_writing_block_edits>';
 
 function userText(row: JournalRow) {
   const payload = object(row.record.payload),
@@ -132,7 +122,7 @@ export function resolveH06TemporalReferenceSource(
       transcript = grant.ref.locator.split('#L')[0];
     requireContract(
       emptyWritingNotice(harness, sourceTurnId) &&
-        userText(reply) === npmReply &&
+        digest(userText(reply)) === npmReplyHash &&
         origin(reply, sourceTurnId, false) &&
         [harness, reply].every(({ ref }) => ref.locator.split('#L')[0] === transcript),
       'h06-reference-followup-body',
@@ -153,10 +143,8 @@ export function resolveH06TemporalReferenceSource(
         question.ref.locator.split('#L')[0] === transcript &&
         payload.status === 'completed' &&
         payload.name === 'request_user_input_async' &&
-        payload.arguments ===
-          JSON.stringify({
-            questions: [{ title: npmQuestion, options: [npmAnswer, 'Не очищать'] }],
-          }),
+        typeof payload.arguments === 'string' &&
+        digest(payload.arguments) === npmArgumentsHash,
       'h06-reference-followup-question-binding',
     );
     allowedFollowups.push({

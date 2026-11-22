@@ -47,9 +47,7 @@ neutral сохранил blocked. Физический export SQLite и game com
 ## Свежая синтетическая сервисная проба, 2026-11-08
 
 На текущем проверенном срезе один отдельно согласованный прогон завершился
-`PASS_SCOPED_FRESH_SYNTHETIC_RESTORE`, exit0 за11110мс. Первичный результат:
-[/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-service-execution-c54e20c1-df07-4e39-a975-6fc09d07755c/result.json](/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-service-execution-c54e20c1-df07-4e39-a975-6fc09d07755c/result.json),
-SHA-256 `c7a65dd53783bca486e977dbe37ad787a2541dd9393392fd480425bf5b3b3ccb`.
+`PASS_SCOPED_FRESH_SYNTHETIC_RESTORE`, exit0 за11110мс.
 
 Реально запускались два PostgreSQL, два Temporal, два SDK Worker и три синтетических
 Workflow; моделей и signals0. После восстановления совпали две закрытые истории/results,
@@ -723,14 +721,6 @@ RPO/RTO остаются отдельными непроверенными гр�
 manifest `b2409ca8…`, snapshot `8237a1c6…`, два native dump, три Workflow и одна workcopy.
 Исходный `kc4W5U` найден также в копии `temporal-team-integration`; отсутствие старого locator
 не означает потери архива. Это тестовые SDK-данные, не эксплуатационная база рабочих задач.
-
-Проверяемый пакет сохранён в
-`/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-20261107-9d961e8c-e2a6-4b44-8b4f-de29ff23a50f/t4`:
-`selected-config.json`, исходный план, canonical `cli-plan.json`, текущие executable pins/inventory,
-наблюдение версий и отчёт поиска retention/readback. Canonical CLI совпал с сохранённым планом,
-SHA-256 вывода `2f0956606b0c06f80c7b5cb5e96697f0db8374d1970fa810d04b6b70714b4429`.
-Уже установленные PG12.22/Temporal1.32 совпали с версиями снимка через bounded `--version`;
-хеши до/после сохранились. Target не создан, PG/Server/Workers и модели не запускались.
 
 В каждом комплекте проверены 11 объявленных небольших файлов, включая первичные proof,
 конфигурацию, истории и журналы. Первичного retention response/deleteAtMs или готового

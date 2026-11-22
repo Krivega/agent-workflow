@@ -1,6 +1,5 @@
 # Явное подключение и локальный цикл AW4
 
-Реализация следует [принятому ADR-0047](https://github.com/Krivega/agent-workflow/blob/main/docs/design/decisions/inherited/0047-isolate-agent-workflow-in-tools.md).
 Локальный контур подключается к одной явно выбранной задаче через [preview/apply](MIGRATION.md#подключение-и-отключение).
 Состояние общего маршрута — в [каталоге процедур](procedures/README.md); подключение само
 по себе не запускает модельные сеансы и не подтверждает Temporal/T6.

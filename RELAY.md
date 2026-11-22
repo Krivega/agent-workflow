@@ -1,7 +1,6 @@
 # Передача после сжатия контекста AW8
 
-Владелец договора — [ADR-0047](https://github.com/Krivega/agent-workflow/blob/main/docs/design/decisions/inherited/0047-isolate-agent-workflow-in-tools.md)
-и [условия R1–R5/O6](docs/quality/agent-workflow-contracts.md). Процедура
+Владелец договора — [условия R1–R5/O6](docs/quality/agent-workflow-contracts.md). Процедура
 [relay](procedures/relay.md) загружается в обоих сеансах до действий в точной версии
 дескриптора подключённого проекта.
 

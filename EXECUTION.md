@@ -1,7 +1,6 @@
 # Выполнение и приёмка AW5
 
-Владелец договоров — [ADR-0047](https://github.com/Krivega/agent-workflow/blob/main/docs/design/decisions/inherited/0047-isolate-agent-workflow-in-tools.md)
-и [принятая спецификация](docs/quality/agent-workflow-contracts.md).
+Владелец договоров — [принятая спецификация](docs/quality/agent-workflow-contracts.md).
 Область проверки — [профиль инструмента](https://github.com/Krivega/agent-workflow/blob/main/docs/testing/profiles/agent-workflow.md).
 Явное подключение и текущая граница допуска описаны в [каталоге процедур](procedures/README.md)
 и [разделе качества](https://github.com/Krivega/agent-workflow/blob/main/docs/quality/README.md).

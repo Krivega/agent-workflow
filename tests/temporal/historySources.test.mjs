@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { readHistorySource } from './historySources.mjs';
+import { readHistorySource, readReplayArtifact } from './historySources.mjs';
 
 test('reads original or shared bytes and refuses corrupted or missing evidence without fallback', () => {
   const root = mkdtempSync(join(tmpdir(), 'aw-history-sources-'));
@@ -62,4 +62,19 @@ test('all original source-inventory references still resolve to their pinned byt
     }
   }
   assert.ok(checked > 0);
+});
+
+test('resolves replay manifests against pinned local and archived artifacts', () => {
+  const root = fileURLToPath(new URL('./histories/', import.meta.url));
+  let archived = 0;
+  for (const item of readdirSync(root, { withFileTypes: true })) {
+    const directory = join(root, item.name);
+    if (!item.isDirectory() || !existsSync(join(directory, 'manifest.json'))) continue;
+    const manifest = JSON.parse(readFileSync(join(directory, 'manifest.json'), 'utf8'));
+    for (const entry of [...manifest.cases, ...(manifest.fixtures ?? [])]) {
+      readReplayArtifact(directory, entry);
+      if (!existsSync(join(directory, entry.file))) archived++;
+    }
+  }
+  assert.ok(archived > 0);
 });

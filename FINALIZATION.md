@@ -1,7 +1,6 @@
 # Отдельная финализация AW9
 
-Договор — [ADR-0047](https://github.com/Krivega/agent-workflow/blob/main/docs/design/decisions/inherited/0047-isolate-agent-workflow-in-tools.md)
-и [финализация](docs/quality/agent-workflow-contracts.md#финализация-и-архив).
+Договор — [финализация](docs/quality/agent-workflow-contracts.md#финализация-и-архив).
 До первого действия загружаются [evidence](procedures/evidence.md) и
 [finalization](procedures/finalization.md) в точных версиях дескриптора подключённого проекта.
 Старые receipts, включая evidence 1, сохраняют исторические версии; они не подтверждают

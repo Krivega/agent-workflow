@@ -69,7 +69,6 @@ SQLite/CAS/owner, backup/restore и отказ прежнего writer на но
 
 ## Связанные решения
 
-- **Extends:** [ADR-0047](0047-isolate-agent-workflow-in-tools.md) — no-progress аудит задачи без зарегистрированного этапа с явной совместимостью сохраняемого состояния.
 - **Related:** [ADR-0057](0057-normalize-workflow-facts-and-events.md) — текущее состояние и необходимые подтверждения вместо второго журнала.
 - **Related:** [ADR-0048](0048-drive-agent-workflow-from-codex-chat.md) — прежние нативные полномочия и наблюдаемый LOAD текущего чата.
 

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { Runtime, Worker, bundleWorkflowCode } from '@temporalio/worker';
 import { historyToJSON } from '@temporalio/common/proto-utils';
 import { finalizationBundleOptions } from './finalizationSdk.mjs';
-import { readHistorySource } from './historySources.mjs';
+import { readHistorySource, readReplayArtifact } from './historySources.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const corpora = [
@@ -48,10 +48,8 @@ for (const corpus of corpora)
 for (const corpus of corpora)
   for (const fixture of corpus.manifest.fixtures ?? []) {
     assert.match(fixture.file, /^[a-z0-9-]+-fixture\.json$/u);
-    const bytes = readFileSync(join(corpus.path, fixture.file)),
+    const bytes = readReplayArtifact(corpus.path, fixture),
       saved = JSON.parse(bytes);
-    assert.equal(bytes.length, fixture.bytes);
-    assert.equal(createHash('sha256').update(bytes).digest('hex'), fixture.sha256);
     assert.equal(saved.mode, fixture.mode);
     if (saved.controlledTimeout !== null) {
       assert.equal(saved.mode, '--finalization-timeout-cancel');
@@ -66,10 +64,7 @@ for (const corpus of corpora)
   }
 for (const corpus of corpora)
   for (const entry of corpus.manifest.cases) {
-    assert.match(entry.file, /^[a-z0-9-]+\.json$/u);
-    const bytes = readFileSync(join(corpus.path, entry.file));
-    assert.equal(bytes.length, entry.bytes);
-    assert.equal(createHash('sha256').update(bytes).digest('hex'), entry.sha256);
+    const bytes = readReplayArtifact(corpus.path, entry);
     assert.equal(entry.expected, 'compatible');
     const saved = JSON.parse(bytes),
       history = corpus.native ? JSON.parse(historyToJSON(saved)) : saved;
@@ -97,7 +92,7 @@ const original = corpora[0],
 await assert.rejects(
   Worker.runReplayHistory(
     { workflowsPath: join(root, 'tests/temporal/replay-incompatible.mjs') },
-    JSON.parse(readFileSync(join(original.path, negative.file), 'utf8')),
+    JSON.parse(readReplayArtifact(original.path, negative)),
     negative.workflowId,
   ),
   /determinism|mismatch|nondetermin/i,

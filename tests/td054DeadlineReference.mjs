@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { realpathSync } from 'node:fs';
-import { sep } from 'node:path';
+import { dirname, join, sep } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath, URL } from 'node:url';
 import { canonical, digest } from '../adapters/storage/storeCodec.ts';
@@ -284,14 +284,9 @@ const relatedT4 = {
   publicationHash: '7781f743d7311a99986ccf0a1c7e081c0b002c020e75873ce576e7243b3a4a8c',
   replyHash: 'bd8a82a56ec0acf7d1fdffdcf06201e1e480c551d2136da84fda39d14af2bbfb',
   deliveryHash: '549e8152e25428c0b5c78dfce6ecec2f59eb6a4c4cb7fb01ff59aeedc0642b80',
-  request: {
-    path: '/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-fresh-service-ready/approval-request.json',
-    sha256: 'b5e4c83b2f64d6d2192f260c70742d4cff2ffa5f67eb44c99e29760d085de0f4',
-  },
-  draft: {
-    path: '/Users/krivega/.codex/agent-workflow-evidence/temporal-four-streams-validation3-20261108-4680a370-78c0-4be3-8bc6-5640d839fde2/t4-fresh-service-ready/authorization-draft.txt',
-    sha256: 'ac41e2acce4586144aa227524f24bf18286b7e8831077fb0b1f1ce0c7ff935e6',
-  },
+  requestHash: 'b5e4c83b2f64d6d2192f260c70742d4cff2ffa5f67eb44c99e29760d085de0f4',
+  draftHash: 'ac41e2acce4586144aa227524f24bf18286b7e8831077fb0b1f1ce0c7ff935e6',
+  draftPathHash: '76f4a9c1c44466fc35e900edc672917c6e6b0aac42ee6039cf8f5003b54ffb42',
 };
 
 function nativeTurnAt(rows, index) {
@@ -346,11 +341,12 @@ function relatedT4Followups(rows, primary, threadId, proposalTurn) {
   const question = object(args.questions[0]);
   exactFields(question, ['title', 'options']);
   assert.equal(typeof question.title, 'string');
-  assert.ok(question.title.includes(relatedT4.request.sha256));
-  assert.equal(
-    question.title.split('[точный текст допуска](' + relatedT4.draft.path + ')').length,
-    2,
-  );
+  assert.ok(question.title.includes(relatedT4.requestHash));
+  const drafts = [...question.title.matchAll(/(?=\[точный текст допуска\]\(([^)]+)\))/gu)]
+    .map((match) => match[1])
+    .filter((path) => digest(path) === relatedT4.draftPathHash);
+  assert.equal(drafts.length, 1);
+  const [draftPath] = drafts;
   assert.deepEqual(question.options, ['Разрешаю описанный T4', 'Оставить T4 подготовленным']);
   assert.equal(call.record.payload.name, 'request_user_input_async');
   assert.equal(call.record.payload.status, 'completed');
@@ -431,8 +427,11 @@ function relatedT4Followups(rows, primary, threadId, proposalTurn) {
       replySource: reply.ref,
       deliverySource: delivery.ref,
       bodyHash: digest(body),
-      request: relatedT4.request,
-      draft: relatedT4.draft,
+      request: {
+        path: join(dirname(draftPath), 'approval-request.json'),
+        sha256: relatedT4.requestHash,
+      },
+      draft: { path: draftPath, sha256: relatedT4.draftHash },
     },
   ];
 }

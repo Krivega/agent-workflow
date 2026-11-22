@@ -60,16 +60,20 @@ export interface H06Request {
   budget: { totalMs: 180000; stopMs: 30000 };
 }
 export function h06Assets() {
-  const pin = (name: keyof typeof h06AssetHashes): H04Pin => ({
-    path: fileURLToPath(
-      new URL('./fixtures/qualification/ownership-continuity-v2/' + name, import.meta.url),
-    ),
+  const pin = (
+    name: keyof typeof h06AssetHashes,
+    directory = './fixtures/qualification/ownership-continuity-v2/',
+  ): H04Pin => ({
+    path: fileURLToPath(new URL(directory + name, import.meta.url)),
     sha256: h06AssetHashes[name],
   });
   return {
     suite: pin('suite.json'),
     materials: pin('materials.json'),
-    acceptance: pin('accepted-criteria-freeze.json'),
+    acceptance: pin(
+      'accepted-criteria-freeze.json',
+      '../docs/evidence/qualification/ownership-continuity-v2/',
+    ),
   };
 }
 export function parseH06Request(value: unknown): H06Request {

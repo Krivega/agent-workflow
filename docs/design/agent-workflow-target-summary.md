@@ -55,4 +55,3 @@ flowchart TD
 
 - [План миграции](../exec-plans/active/2026-11-23-temporal-production-rollout.md).
 - [Договор процесса и внешних действий](temporal-workflow.md), [данные и подключение](temporal-data-and-projects.md).
-- [Выделение репозитория и актуальные границы ADR-0072](decisions/0072-extract-agent-workflow-repository.md).
