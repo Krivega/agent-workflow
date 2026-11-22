@@ -199,6 +199,7 @@
     "comparison:h04:operator": "tsx tests/comparisonH04Operator.ts",
     "comparison:h05:operator": "tsx tests/comparisonH05Operator.ts",
     "comparison:h06:operator": "tsx tests/comparisonH06Operator.ts",
+    "worker:update": "python3 -I scripts/worker-update/update.py",
     "prepare:temporal-cli": "sh scripts/prepareTemporalCli.sh",
     "validate:static": "node scripts/runValidation.mjs --static",
     "typecheck:tests": "tsc -p tsconfig.json --noEmit",
