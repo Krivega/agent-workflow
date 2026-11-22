@@ -449,105 +449,107 @@ describe('native human reader command authority', () => {
       }
     },
   );
-  it.each([
-    'direct',
-    'delegated',
-    'harness',
-    'missing-delivery',
-    'fork',
-    'wrong-root',
-    'wrong-text',
-    'other-action',
-    'other-role',
-    'superseded',
-    'no-notice',
-  ])('qualifies a 0.169.1 task RESUME from its exact direct owner message: %s', async (defect) => {
-    const f = fixture(),
-      turn = f.source.turnId;
-    Object.assign(f.payload(0), {
-      cli_version: '0.169.1',
-      originator: 'codex_work_desktop',
-      source: 'vscode',
-      thread_source: 'user',
-    });
-    Object.assign(f.payload(3), {
-      cwd: f.workspace,
-      root_turn_id: defect === 'wrong-root' ? 'other' : turn,
-    });
-    if (defect === 'fork') f.payload(0).parent_thread_id = 'parent';
-    const base = f.command(),
-      command = makeTaskExecutionCommand({
-        ...base,
-        schemaVersion: 2,
-        action: defect === 'other-action' ? 'cancel' : 'resume',
-        target: { ...base.target, roleId: 'task' },
-        payload: f.proof,
+  describe.each(['0.169.1', '0.171.0-alpha.13'])('Desktop %s', (version) => {
+    it.each([
+      'direct',
+      'delegated',
+      'harness',
+      'missing-delivery',
+      'fork',
+      'wrong-root',
+      'wrong-text',
+      'other-action',
+      'other-role',
+      'superseded',
+      'no-notice',
+    ])('qualifies task RESUME from its exact direct owner message: %s', async (defect) => {
+      const f = fixture(),
+        turn = f.source.turnId;
+      Object.assign(f.payload(0), {
+        cli_version: version,
+        originator: 'codex_work_desktop',
+        source: 'vscode',
+        thread_source: 'user',
       });
-    const fields = {
-      ...command,
-      target: { ...command.target, roleId: defect === 'other-role' ? 'reviewer' : 'task' },
-    };
-    const content = defect === 'wrong-text' ? 'resume' : nativeHumanAuthorizationText(fields);
-    f.replaceHuman({
-      content: [{ type: 'input_text', text: content }],
-      internal_chat_message_metadata_passthrough: {
-        turn_id: turn,
-        create_time: 42,
-        content_item_kinds: ['user.text'],
-        content_item_metadata: [
-          { provenance: { type: defect === 'harness' ? 'harness' : 'user' } },
-        ],
-      },
-    });
-    if (defect !== 'missing-delivery')
-      f.records.push({
-        type: 'event_msg',
-        payload: {
-          type: 'item_completed',
-          thread_id: 'issuer',
+      Object.assign(f.payload(3), {
+        cwd: f.workspace,
+        root_turn_id: defect === 'wrong-root' ? 'other' : turn,
+      });
+      if (defect === 'fork') f.payload(0).parent_thread_id = 'parent';
+      const base = f.command(),
+        command = makeTaskExecutionCommand({
+          ...base,
+          schemaVersion: 2,
+          action: defect === 'other-action' ? 'cancel' : 'resume',
+          target: { ...base.target, roleId: 'task' },
+          payload: f.proof,
+        });
+      const fields = {
+        ...command,
+        target: { ...command.target, roleId: defect === 'other-role' ? 'reviewer' : 'task' },
+      };
+      const content = defect === 'wrong-text' ? 'resume' : nativeHumanAuthorizationText(fields);
+      f.replaceHuman({
+        content: [{ type: 'input_text', text: content }],
+        internal_chat_message_metadata_passthrough: {
           turn_id: turn,
-          item: {
-            type: 'UserMessage',
-            content: [{ type: 'text', text: content, text_elements: [] }],
+          create_time: 42,
+          content_item_kinds: ['user.text'],
+          content_item_metadata: [
+            { provenance: { type: defect === 'harness' ? 'harness' : 'user' } },
+          ],
+        },
+      });
+      if (defect !== 'missing-delivery')
+        f.records.push({
+          type: 'event_msg',
+          payload: {
+            type: 'item_completed',
+            thread_id: 'issuer',
+            turn_id: turn,
+            item: {
+              type: 'UserMessage',
+              content: [{ type: 'text', text: content, text_elements: [] }],
+            },
           },
-        },
-      });
-    if (defect === 'delegated')
-      f.records.push({
-        type: 'response_item',
-        payload: {
-          type: 'function_call_output',
-          namespace: 'codex_app',
-          name: 'send_message_to_thread',
-          internal_chat_message_metadata_passthrough: { turn_id: turn },
-        },
-      });
-    const updated = { ...fields, source: f.store.publish(Buffer.from(JSON.stringify(f.source))) },
-      c = { ...updated, hash: digest(readerCommandText(updated)) };
-    f.save();
-    chmodSync(f.transcript, 0o600);
-    vi.stubEnv('CODEX_THREAD_ID', 'issuer');
-    vi.spyOn(process, 'cwd').mockReturnValue(f.workspace);
-    if (defect === 'superseded') {
-      f.records.push({
-        type: 'response_item',
-        payload: {
-          type: 'message',
-          role: 'user',
-          content: [{ type: 'input_text', text: 'другое поручение' }],
-        },
-      });
+        });
+      if (defect === 'delegated')
+        f.records.push({
+          type: 'response_item',
+          payload: {
+            type: 'function_call_output',
+            namespace: 'codex_app',
+            name: 'send_message_to_thread',
+            internal_chat_message_metadata_passthrough: { turn_id: turn },
+          },
+        });
+      const updated = { ...fields, source: f.store.publish(Buffer.from(JSON.stringify(f.source))) },
+        c = { ...updated, hash: digest(readerCommandText(updated)) };
       f.save();
-    }
-    if (defect === 'direct') {
-      expect(await f.authority.issue(c)).toBe(nativeReaderNotice(c));
-      expect((await f.authority.verify(f.issuedCommand(c))).origin).toBe('human');
-    } else if (defect === 'no-notice')
-      await expect(f.authority.verify(c)).rejects.toThrow('reader-native-issuance-unconfirmed');
-    else {
-      await expect(f.authority.issue(c)).rejects.toThrow();
-      await expect(f.authority.verify(f.issuedCommand(c))).rejects.toThrow();
-    }
+      chmodSync(f.transcript, 0o600);
+      vi.stubEnv('CODEX_THREAD_ID', 'issuer');
+      vi.spyOn(process, 'cwd').mockReturnValue(f.workspace);
+      if (defect === 'superseded') {
+        f.records.push({
+          type: 'response_item',
+          payload: {
+            type: 'message',
+            role: 'user',
+            content: [{ type: 'input_text', text: 'другое поручение' }],
+          },
+        });
+        f.save();
+      }
+      if (defect === 'direct') {
+        expect(await f.authority.issue(c)).toBe(nativeReaderNotice(c));
+        expect((await f.authority.verify(f.issuedCommand(c))).origin).toBe('human');
+      } else if (defect === 'no-notice')
+        await expect(f.authority.verify(c)).rejects.toThrow('reader-native-issuance-unconfirmed');
+      else {
+        await expect(f.authority.issue(c)).rejects.toThrow();
+        await expect(f.authority.verify(f.issuedCommand(c))).rejects.toThrow();
+      }
+    });
   });
   it.each(['wrong-root', 'duplicate-context', 'fork', 'wrong-originator'])(
     'refuses an unqualified .166 same-root authorization %s',

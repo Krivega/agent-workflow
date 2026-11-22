@@ -800,7 +800,7 @@ export function localTaskActivities(
       new URL('../../procedures/arbitration.md', import.meta.url),
     );
     requireContract(
-      /^Procedure: arbitration\nVersion: 2$/m.test(procedureBytes.toString()),
+      /^Procedure: arbitration\nVersion: 3$/m.test(procedureBytes.toString()),
       'task-arbitration-procedure-version',
     );
     const procedure = store.publish(procedureBytes);
