@@ -22,16 +22,26 @@ const reasons = new Map([
   ['task-cancelled', 'Задача отменена'],
 ]);
 
-export function handler({ workflowId, devicePin, readStatus }) {
-  const match = workflowPattern.exec(workflowId);
-  if (!match) throw Error('Некорректный Workflow ID');
-  let pending;
-  function permitted(socket) {
+function listing(title, links, observedAt) {
+  const items = links.map(([url, label]) => `<li><a href="${url}">${label}</a></li>`);
+  return `<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title></head>
+<body><main><h1>${title}</h1>
+${observedAt ? '<p>Каталог с Mac · ' + observedAt + '</p>' : ''}
+${items.length ? '<ul>' + items.join('') + '</ul>' : '<p>Пока нет задач.</p>'}
+</main></body></html>`;
+}
+
+export function handler({ workflowId, devicePin, readStatus, loadProjects, proxyCertificate }) {
+  if (!loadProjects && !workflowPattern.test(workflowId)) throw Error('Некорректный Workflow ID');
+  const pending = new Map();
+  function permitted(req) {
     try {
       const pin = readFileSync(devicePin, 'utf8').trim();
-      const peer = socket.getPeerCertificate();
+      if (!proxyCertificate && !req.socket.authorized) return false;
+      const peer = proxyCertificate ? proxyCertificate(req) : req.socket.getPeerCertificate();
       return (
-        socket.authorized &&
         Date.parse(peer.valid_to) > Date.now() &&
         /^(?:[0-9A-F]{2}:){31}[0-9A-F]{2}$/u.test(pin) &&
         peer.fingerprint256 === pin
@@ -40,12 +50,10 @@ export function handler({ workflowId, devicePin, readStatus }) {
       return false;
     }
   }
-  async function observe() {
-    const data = await readStatus();
-    if (
-      data.workflowId !== workflowId ||
-      !['running', 'done', 'cancelled', 'failed'].includes(data.status)
-    )
+  async function observe(id, project) {
+    const match = workflowPattern.exec(id);
+    const data = await readStatus(id, project);
+    if (data.workflowId !== id || !['running', 'done', 'cancelled', 'failed'].includes(data.status))
       throw Error('Неподтверждённый статус');
     return JSON.stringify({
       project: match[1],
@@ -53,7 +61,8 @@ export function handler({ workflowId, devicePin, readStatus }) {
       status: data.status,
       phase: phases.has(data.phase) ? data.phase : null,
       reason: reasons.get(data.reason) ?? (data.reason ? 'Подробности в локальном клиенте' : null),
-      confirmedAt: new Date().toISOString(),
+      confirmedAt: project?.snapshot ? data.confirmedAt : new Date().toISOString(),
+      ...(project?.snapshot ? { snapshot: true } : {}),
     });
   }
   return async (req, res) => {
@@ -68,21 +77,62 @@ export function handler({ workflowId, devicePin, readStatus }) {
       });
       res.end(body);
     };
-    if (!permitted(req.socket)) return send(403);
+    if (!permitted(req)) return send(403);
     if (req.method !== 'GET') return send(405);
-    if (req.url === '/')
-      return send(200, page.toString().replace('WORKFLOW_ID', workflowId), 'text/html');
     if (req.url === '/status.js') return send(200, script, 'text/javascript');
-    if (req.url !== '/api/' + workflowId) return send(404);
     try {
-      pending ??= observe().finally(() => {
-        pending = undefined;
-      });
-      const result = await pending;
-      if (!permitted(req.socket)) return send(403);
+      let id = workflowId;
+      let project;
+      const projects = loadProjects?.();
+      if (projects) {
+        if (req.url === '/') {
+          const links = [...projects.keys()].sort().map((key) => ['/project/' + key, key]);
+          return send(200, listing('Проекты', links, projects.observedAt), 'text/html');
+        }
+        const parts = /^\/(project|task|api)\/(.+)$/u.exec(req.url);
+        if (!parts) return send(404);
+        const [, view, target] = parts;
+        const match = view === 'project' ? null : workflowPattern.exec(target);
+        const key = view === 'project' ? target : match?.[1];
+        project = projects.get(key);
+        if (!project) return send(404);
+        const tasks = await project.tasks();
+        if (!permitted(req)) return send(403);
+        if (view === 'project') {
+          const links = tasks.map((task) => ['/task/aw/task/' + key + '/' + task, task]);
+          return send(200, listing(key, links, projects.observedAt), 'text/html');
+        }
+        if (!tasks.includes(match[2])) return send(404);
+        id = target;
+        if (view === 'task')
+          return send(200, page.toString().replace('WORKFLOW_ID', id), 'text/html');
+      } else {
+        if (req.url === '/')
+          return send(200, page.toString().replace('WORKFLOW_ID', id), 'text/html');
+        if (req.url !== '/api/' + id) return send(404);
+      }
+      let result;
+      if (project) {
+        result = await observe(id, project);
+        if (loadProjects().get(workflowPattern.exec(id)[1])?.binding !== project.binding)
+          return send(403);
+      } else {
+        if (!pending.has(id))
+          pending.set(
+            id,
+            observe(id).finally(() => pending.delete(id)),
+          );
+        result = await pending.get(id);
+      }
+      if (!permitted(req)) return send(403);
       return send(200, result, 'application/json');
-    } catch {
-      return send(503);
+    } catch (error) {
+      if (!permitted(req)) return send(403);
+      const reason =
+        error.message === 'backend-policy-required'
+          ? 'Для проекта требуется действующая политика Temporal на Mac.'
+          : 'Сведения о задачах временно недоступны.';
+      return send(503, reason);
     }
   };
 }
@@ -100,17 +150,18 @@ if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const config = readJson(process.argv[2]);
   if (!pilotAddress(config.address)) throw Error('Укажите IPv4 частного интерфейса');
   const { runTemporalTaskChat } = await import('../../cli/temporalStart.ts');
-  const readStatus = async () => {
+  let loadProjects;
+  if ('workerConfig' in config) {
+    if ('workflowId' in config) throw Error('Выберите одну конфигурацию каталога');
+    const { workerProjects } = await import('./workerProjects.mjs');
+    loadProjects = () => workerProjects(config.workerConfig);
+    loadProjects();
+  }
+  const readStatus = async (id, project = config) => {
     let result;
     const code = await runTemporalTaskChat(
-      [
-        'status',
-        '--workflow-id',
-        config.workflowId,
-        '--temporal-registration',
-        config.registration,
-      ],
-      config.workspace,
+      ['status', '--workflow-id', id, '--temporal-registration', project.registration],
+      project.workspace,
       (message) => {
         result = message;
       },
@@ -119,7 +170,7 @@ if (import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
     if (code !== 0) throw Error('Статус недоступен');
     return JSON.parse(result);
   };
-  const serve = handler({ ...config, readStatus });
+  const serve = handler({ ...config, loadProjects, readStatus });
   createServer(
     {
       cert: readFileSync(config.cert),

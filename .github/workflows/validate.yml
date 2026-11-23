@@ -1,6 +1,7 @@
 name: Validate agent-workflow
 on:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read

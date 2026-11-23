@@ -18,6 +18,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { declareBackendFixture } from '../backendPolicyFixture.js';
 import * as files from '../../src/adapters/artifacts/files.js';
 import {
+  listTemporalTaskIds,
   requireLegacyCardBackend,
   requireTaskBackend,
   reserveTaskBackend,
@@ -57,6 +58,37 @@ function fixture() {
   return { root, home, row, policy, path: join(home, 'backend-assignments/project/task.json') };
 }
 describe('immutable task backend assignment', () => {
+  it('lists canonical Temporal assignments only for the registered project and route', () => {
+    const f = fixture();
+    f.policy();
+    const route = { address: 'localhost:7233', namespace: 'default', taskQueue: 'tasks' };
+    const list = () => listTemporalTaskIds(f.root, 'project', route);
+    expect(list()).toEqual([]);
+    reserveTaskBackend(f.root, f.row);
+    expect(list()).toEqual([]);
+    const row = {
+      schemaVersion: 2,
+      projectId: 'project',
+      taskId: 'task',
+      backend: 'temporal',
+      cardName: 'one.md',
+      origin: f.row.origin,
+      startAdmission: { sha256: 'b'.repeat(64), bytes: 1 },
+    };
+    writeFileSync(f.path, JSON.stringify(row));
+    expect(list()).toEqual([]);
+    for (const changed of [
+      { address: 'other' },
+      { namespace: 'other' },
+      { taskQueue: 'other' },
+      {},
+    ]) {
+      writeFileSync(f.path, JSON.stringify({ ...row, route: { ...route, ...changed } }));
+      expect(list()).toEqual(Object.keys(changed).length ? [] : ['task']);
+    }
+    renameSync(f.path, join(dirname(f.path), 'wrong.json'));
+    expect(list).toThrow('backend-assignment-location');
+  });
   it('requires an activation declaration and retains either declaration after losing the ledger', () => {
     const f = fixture();
     mkdirSync(f.home);

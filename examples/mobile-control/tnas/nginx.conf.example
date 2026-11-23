@@ -1,0 +1,15 @@
+server {
+    listen 443 ssl;
+    server_name agent.krivega.com;
+    ssl_certificate /srv/agent-mobile/tls/server-chain.pem;
+    ssl_certificate_key /srv/agent-mobile/tls/server-key.pem;
+    ssl_client_certificate /srv/agent-mobile/tls/ca.pem;
+    ssl_verify_client on;
+    ssl_protocols TLSv1.3;
+    location = /health { return 404; }
+    location / {
+        proxy_set_header X-Mobile-Verified $ssl_client_verify;
+        proxy_set_header X-Mobile-Certificate $ssl_client_escaped_cert;
+        proxy_pass http://unix:/srv/agent-mobile/run/site.sock;
+    }
+}

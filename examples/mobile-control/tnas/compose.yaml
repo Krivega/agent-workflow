@@ -1,0 +1,26 @@
+name: agent-mobile
+services:
+  mobile-web:
+    image: ${MOBILE_IMAGE:?Set approved image by digest}
+    platform: linux/amd64
+    user: '${MOBILE_UID:-1000}:${MOBILE_GID:-1000}'
+    restart: unless-stopped
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./config:/config:ro
+      - ./catalog:/catalog:ro
+      - ./run:/run/mobile
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get({socketPath:'/run/mobile/site.sock',path:'/health'},r=>process.exit(r.statusCode===204?0:1)).on('error',()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 3

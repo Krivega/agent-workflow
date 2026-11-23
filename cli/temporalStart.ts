@@ -52,12 +52,10 @@ function options(
   return values;
 }
 
-function registrationBytes(root: string, registration: string) {
+export function privateConfigBytes(registration: string) {
   const stat = lstatSync(registration);
   requireWorkflow(
     realpathSync(registration) === registration &&
-      registration !== root &&
-      !registration.startsWith(root + sep) &&
       stat.isFile() &&
       stat.nlink === 1 &&
       stat.uid === process.getuid?.() &&
@@ -74,6 +72,14 @@ function registrationBytes(root: string, registration: string) {
     'task-chat-temporal-registration-changed',
   );
   return bytes;
+}
+
+function registrationBytes(root: string, registration: string) {
+  requireWorkflow(
+    registration !== root && !registration.startsWith(root + sep),
+    'task-chat-temporal-registration-private',
+  );
+  return privateConfigBytes(registration);
 }
 
 function temporalReason(cause: unknown) {

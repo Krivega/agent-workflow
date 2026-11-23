@@ -355,6 +355,29 @@ function assignedBackend(
   return row;
 }
 
+export function listTemporalTaskIds(workspace: string, projectId: string, route: TaskBackendRoute) {
+  const policy = taskBackendGuard(workspace, true).assert()!;
+  const directory = projectDirectory(policy.home, projectId);
+  safeParent(directory);
+  if (!existsSync(directory)) return [];
+  return readdirSync(directory)
+    .filter((name) => name.endsWith('.json'))
+    .flatMap((name) => {
+      const row = readAssignment(join(directory, name));
+      requireContract(
+        row.projectId === projectId && name === row.taskId + '.json',
+        'backend-assignment-location',
+      );
+      return row.schemaVersion === 2 &&
+        row.route?.address === route.address &&
+        row.route.namespace === route.namespace &&
+        row.route.taskQueue === route.taskQueue
+        ? [row.taskId]
+        : [];
+    })
+    .sort();
+}
+
 export function requireLegacyCardBackend(workspace: string, projectId: string, card: string) {
   const policy = taskBackendPolicy(workspace);
   if (policy === null) return;
