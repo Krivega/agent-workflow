@@ -47,26 +47,11 @@ npm --version
 
 ### 2. Установите пакет и проверьте настройки
 
-Для проекта и Worker используйте один архив пакета с комплектом хоста. На действующем
-хосте архив и его SHA-256 выдаёт владелец. Для первого хоста соберите архив из ревизии
-[репозитория Agent Workflow](https://github.com/Krivega/agent-workflow), содержащей этот README и
-[комплект хоста](examples/temporal-host/compose.yaml). Для сборки нужен Yarn 1.22.22.
-Выполните команды из корня чистой рабочей копии инструмента.
+Установите пакет из npm в корне подключаемого проекта. Для проекта и Worker
+закрепите одну версию.
 
 ```sh
-yarn install --frozen-lockfile && yarn build &&
-  archive=$(npm pack --silent) && shasum -a 256 "$archive"
-```
-
-Сохраните выведенные SHA-256 и имя файла `.tgz` вместе с ревизией исходников.
-В опубликованной версии `0.1.3-rc.2` доступны `init` и `doctor`.
-Для шага 3 нужны файлы из архива с комплектом хоста.
-
-В подключаемом проекте сохраните полученный архив как `vendor/agent-workflow.tgz`.
-Сверьте его SHA-256 с выданным владельцем и выполните из корня проекта:
-
-```sh
-npm install --save-dev ./vendor/agent-workflow.tgz
+npm install --save-dev --save-exact @krivega/agent-workflow
 npm exec -- agent-workflow init
 npm exec -- agent-workflow doctor
 git status --short
@@ -84,7 +69,7 @@ git status --short
 
 Повторный `init` сохраняет проектные изменения. После правок снова выполните `doctor`.
 При успехе он выведет JSON с полями `version`, `descriptor`, `skill` и `projectId`.
-Сохраните в Git проверенные файлы проекта, архив из `vendor/`, `package.json` и lock-файл. Если `init`
+Сохраните в Git проверенные файлы проекта, `package.json` и lock-файл. Если `init`
 просит команду проверки, добавьте в `scripts` реальную команду и повторите запуск.
 На этом подключение репозитория завершено. Доступность сервера и Worker проверяется отдельно.
 
@@ -95,8 +80,7 @@ git status --short
 готовит сервер и пользовательскую службу Worker, затем добавляет регистрации проектов.
 
 1. **Один раз подготовьте каталог хоста.** В отдельном постоянном каталоге установки
-   на Mac сохраните тот же архив как `vendor/agent-workflow.tgz`, сверьте SHA-256
-   и выполните `npm install ./vendor/agent-workflow.tgz`. Скопируйте
+   на Mac выполните `npm install --save-exact @krivega/agent-workflow`. Скопируйте
    [compose.yaml](examples/temporal-host/compose.yaml) из этой установки
    (`node_modules/@krivega/agent-workflow/examples/temporal-host/`) в приватный каталог
    вне рабочих копий. Здесь и далее запускайте Compose из этого каталога. Создайте
@@ -197,8 +181,8 @@ temporal workflow query --address 127.0.0.1:7233 --namespace "$NAMESPACE" \
 с тем же именованным томом. Для обновления только Worker оставьте сервер запущенным.
 
 Установите закреплённую сборку Worker в отдельном каталоге. Передайте ей прежний каталог
-хоста с регистрациями и `state`. Выполните `--check` и, для сборки с этой командой,
-`--check-writer`. Создайте plist из новой установки и загрузите его через `launchctl`.
+хоста с регистрациями и `state`. Выполните `--check` и `--check-writer`.
+Создайте plist из новой установки и загрузите его через `launchctl`.
 Проверьте namespace, обработчики Workflow и Activity на основной очереди и Activity
 на очереди `.control`. По сохранённым Workflow ID и Run ID прочитайте прежний результат
 и сверьте его SHA-256 перед открытием приёма задач.

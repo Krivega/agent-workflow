@@ -1993,9 +1993,8 @@ it('runs real shared case/verifier around mocked native providers and emits boun
 it.each(['owned-report', 'clock'])(
   'includes late %s export in full timing and refuses acceptance',
   async (delayedLabel) => {
-    let now = process.hrtime.bigint();
-    const began = now,
-      wall = Date.now();
+    let now = 0n;
+    const wall = Date.now();
     vi.spyOn(process.hrtime, 'bigint').mockImplementation(() => now);
     let exported = false;
     vi.spyOn(Date, 'now').mockImplementation(() => {
@@ -2003,7 +2002,7 @@ it.each(['owned-report', 'clock'])(
         now += 60001000000n;
         exported = false;
       }
-      return wall + Number((now - began) / 1000000n);
+      return wall + Number(now / 1000000n);
     });
     const record = contract.h01Record;
     vi.spyOn(contract, 'h01Record').mockImplementation((directory, label, value) => {

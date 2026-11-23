@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
-import { afterEach, test } from 'node:test';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import {
@@ -19,18 +18,19 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import {
-  gameSourceDigest as digest,
-  gameSourceRoots,
-  snapshotGameSource,
-  readGameSource,
-  copyGameSource,
-} from './full-game-source.mjs';
+import { afterEach, test } from 'node:test';
 import {
   bindGameRuntime,
-  registryGameRelease,
   readGameSnapshotInput,
+  registryGameRelease,
 } from './full-game-release.mjs';
+import {
+  copyGameSource,
+  gameSourceDigest as digest,
+  gameSourceRoots,
+  readGameSource,
+  snapshotGameSource,
+} from './full-game-source.mjs';
 
 const roots = [];
 afterEach(() => {
