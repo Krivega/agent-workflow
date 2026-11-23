@@ -68,12 +68,12 @@ it('keeps only bounded metadata while legacy transcripts and their artifacts rem
     id: 1,
     result: { thread: { turns: [{ text: 'large native history '.repeat(10000) }] } },
   };
-  for (let i = 0; i < 300; i++) write('recv', large);
+  for (let i = 0; i < diagnosticRecords; i++) write('recv', large);
   write('stderr', 'я'.repeat(10000));
   const stored = readFileSync(journal + '.diagnostics.json');
   const parsed = JSON.parse(stored.toString()) as { records: unknown[] };
   expect(stored.length).toBeLessThanOrEqual(diagnosticBytes);
-  expect(parsed.records.length).toBeLessThanOrEqual(diagnosticRecords);
+  expect(parsed.records).toHaveLength(diagnosticRecords);
   expect(stored.toString()).not.toContain('large native history');
   expect(readFileSync(journal, 'utf8')).toBe(bytes);
   expect(readChatArtifact(legacy)).toEqual({ text: 'original '.repeat(10000) });

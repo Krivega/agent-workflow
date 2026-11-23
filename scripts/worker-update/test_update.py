@@ -1,5 +1,7 @@
 """Offline switch regression. No launchd job, server or model is started."""
+import contextlib
 import hashlib
+import io
 import json
 import plistlib
 import tarfile
@@ -79,6 +81,19 @@ class WorkerUpdateTest(unittest.TestCase):
         self.assertTrue(any('bootstrap' in c for c in commands))
         self.assertEqual(self.worker.read_text(), 'updated')
         self.assertFalse(any('bootout' in c for c in self.switch()))
+
+    def test_apply_requires_target_run_inputs_before_opening_host(self):
+        arguments = ['update.py', 'candidate.tgz', '0' * 64, '--apply']
+        for options in [[], ['--receipt', 'result.json'], ['--artifacts', 'artifacts']]:
+            with self.subTest(options=options), \
+                    patch.object(update.sys, 'argv', arguments + options), \
+                    patch.object(update.os, 'open') as open_host, \
+                    contextlib.redirect_stderr(io.StringIO()) as error, \
+                    self.assertRaises(SystemExit) as exit_result:
+                update.main()
+            self.assertEqual(exit_result.exception.code, 2)
+            self.assertIn('--apply requires --receipt and --artifacts', error.getvalue())
+            open_host.assert_not_called()
 
     def test_preflight_refusals_leave_worker_and_package_intact(self):
         with self.assertRaisesRegex(RuntimeError, 'active workflow'):

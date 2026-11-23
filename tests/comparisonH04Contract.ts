@@ -2,6 +2,7 @@ import { existsSync, readdirSync, realpathSync } from 'node:fs';
 import { isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
+import { gunzipSync } from 'node:zlib';
 import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import { exactFields, object, requireContract } from '../src/contracts/project.js';
 import type { ArtifactRef } from '../src/contracts/preparation.js';
@@ -71,8 +72,19 @@ export function h04Pin(value: unknown): H04Pin {
   requireContract(typeof v.sha256 === 'string' && /^[a-f0-9]{64}$/u.test(v.sha256), 'h04-hash');
   return v as unknown as H04Pin;
 }
+
+// Keep the logical paths and hashes of the two repository-supplied qualification pins.
+const archivedQualificationPins = new Set(
+  [
+    '../docs/evidence/qualification/ownership-continuity-v2/accepted-criteria-freeze.json',
+    '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
+  ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
+);
+
 export function readH04Pin(pin: H04Pin): Buffer {
-  const bytes = h01RawFile(pin.path);
+  const bytes = archivedQualificationPins.has(pin.path)
+    ? gunzipSync(h01RawFile(pin.path + '.gz'), { maxOutputLength: 64 * 1024 })
+    : h01RawFile(pin.path);
   requireContract(digest(bytes) === pin.sha256, 'h04-pin-changed');
   return bytes;
 }

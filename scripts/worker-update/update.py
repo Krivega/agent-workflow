@@ -170,11 +170,12 @@ def main():
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--host', type=Path, default=Path.home() / 'Library/Application Support/agent-workflow/tnas')
     parser.add_argument('--lockfile', type=Path, default=REPO / 'yarn.lock')
-    parser.add_argument('--receipt', type=Path, default=REPO / 'docs/evidence/t7-tnas-persistence-20261122/after-result.json')
-    parser.add_argument('--artifacts', type=Path)
+    parser.add_argument('--receipt', type=Path, help='Receipt for a completed run on the target host')
+    parser.add_argument('--artifacts', type=Path, help='Artifact directory for that run')
     args = parser.parse_args()
+    if args.apply and (args.receipt is None or args.artifacts is None):
+        parser.error('--apply requires --receipt and --artifacts')
     require(sys.platform == 'darwin', 'Requires macOS launchd')
-    args.artifacts = args.artifacts or args.host / 't7-tnas-persistence/artifacts'
     os.umask(0o077)
     # Lock the host directory inode; never create or remove a runtime ownership record.
     lock = os.open(args.host, os.O_RDONLY)

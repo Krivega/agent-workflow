@@ -3,17 +3,12 @@
 Самостоятельный инструмент процесса агентов: общий CLI, движок процесса,
 Temporal Workflows/Activities/Workers, проектные адаптеры и проверяемые артефакты.
 
-[Активный план Temporal-миграции](docs/exec-plans/active/2026-11-23-temporal-production-rollout.md)
-продолжается в этом репозитории. Полная native-квалификация и рабочий T6 остаются открытыми;
-сам перенос исходников не переключает backend задач.
-
 ## Установка и проверки
 
 Для подключения другого проекта предусмотрены точная версия `@krivega/agent-workflow`
 из npm-реестра и команды `agent-workflow init` и `agent-workflow doctor`. Общие навыки,
 процедуры и базовые профили входят в пакет. Проектные настройки хранятся в Git.
-Порядок первого подключения, обновления и приёмки описан в
-[плане поставки](docs/temporal-installation.md#план-поставки-в-t5).
+Порядок подключения и обновления описан в [инструкции установки](README.md#установка-и-проверки).
 
 Из корня рабочей копии установите зависимости и проверьте сборку.
 
@@ -44,20 +39,20 @@ yarn validate
 ## Вход и договоры
 
 - `yarn agent-workflow` вызывает тот же CLI, что и установленный пакет. Формат входа описан в [руководстве Temporal](CURRENT-CHAT.md#запуск-через-temporal).
-- Сравнительные проверки прежнего движка используют `node --import tsx cli/main.ts` из исходников.
-- [Дескриптор саморазработки](project/workflow.json) задаёт правила, проверочные команды,
-  профили и процедуры для проекта `agent-workflow`. У подключённого проекта свой дескриптор.
+- [Сравнительные проверки из исходников](docs/current-chat/loading.md#команды-и-состояние-запуска)
+  используют `node --import tsx cli/main.ts` и [дескриптор локального контура](project/workflow.json).
+- [Дескриптор Temporal этого репозитория](project/temporal.json) задаёт правила, карточки,
+  профили и команды проверки. Подключённые проекты задают собственные пути.
 - [Самостоятельный Temporal SDK](docs/temporal-sdk.md), [карта потребителей](docs/temporal-consumers.md).
 - [Процедуры](procedures/README.md), [роли](roles/README.md), [подключение и откат](MIGRATION.md).
 - [Хранение и восстановление](docs/temporal-storage-recovery.md), [активный долг](docs/exec-plans/tech-debt-tracker.md).
 
 Сервисные game-consumer проверки получают явный `AGENT_WORKFLOW_CONSUMER_ROOT` с корнем
-проверяемой игры. Вычисление проекта как `../..` больше не является договором standalone
-поставки. Neutral-only использует собственный toolkit root для запрета чтения; scope запуска
+проверяемой игры. Neutral-only использует собственный toolkit root для запрета чтения. Scope запуска
 и конкретный пользовательский допуск остаются обязательными.
 
 ## Документы и планы
 
-- [Целевая схема процесса](docs/design/agent-workflow-target-summary.md).
+- [Архитектура процесса](docs/design/architecture.md).
 - [Планы в работе](docs/exec-plans/active/README.md), [на проверке](docs/exec-plans/verifying/README.md).
 - [Качество и границы допуска](docs/quality/README.md), [каталог документации](docs/README.md).

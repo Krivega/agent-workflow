@@ -13,6 +13,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gunzipSync } from 'node:zlib';
 import { afterEach, expect, it, vi } from 'vitest';
 import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import { localPlanningRisks } from '../src/policy/localPlanning.js';
@@ -40,6 +41,16 @@ import {
   verifyH06TemporalReferenceApproval,
 } from './comparisonH06TemporalReferenceApproval.js';
 import { verifyH06OperatorContinuation } from './comparisonH06OperatorContinuation.js';
+
+const primaryApproval = {
+  path: fileURLToPath(
+    new URL(
+      '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
+      import.meta.url,
+    ),
+  ),
+  sha256: '7dfe920538edef6c776a407e3576a98ebfd7df8494f2859685b7be12adc784ce',
+};
 const roots: string[] = [];
 afterEach(() => {
   vi.restoreAllMocks();
@@ -288,9 +299,13 @@ function referenceFixture(base: 'pre4' | 'helper' | 'complete' = 'pre4') {
     additions = [
       './comparisonH06TemporalReferenceApproval.ts',
       '../docs/evidence/qualification/proposal-reference-v4/README.md',
-      '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
-    ].map((path) => fileURLToPath(new URL(path, import.meta.url))),
-    pin = (path: string) => ({ path, sha256: digest(readFileSync(path)) }),
+    ]
+      .map((path) => fileURLToPath(new URL(path, import.meta.url)))
+      .concat(primaryApproval.path),
+    pin = (path: string) => ({
+      path,
+      sha256: path === primaryApproval.path ? primaryApproval.sha256 : digest(readFileSync(path)),
+    }),
     oldBytes = new Map(
       replacements.map((path) => [
         path,
@@ -347,7 +362,7 @@ function referenceFixture(base: 'pre4' | 'helper' | 'complete' = 'pre4') {
       oldRequest.bootstrap,
       ...oldRequest.runtime,
     ].map((p) => {
-      const bytes = oldBytes.get(p.path) ?? readFileSync(p.path),
+      const bytes = oldBytes.get(p.path) ?? readH04Pin(p),
         preserved = join(f.root, 'executed-runtime', p.sha256);
       writeFileSync(preserved, bytes);
       return { ...p, bytes: bytes.length, preserved };
@@ -455,13 +470,15 @@ function cacheReferenceFixture() {
   const f = referenceFixture(),
     s = f.referenceSource(),
     questionRecord = JSON.parse(
-      readFileSync(
-        new URL(
-          '../docs/evidence/qualification/proposal-reference-v4/npm-cache-question.jsonl',
-          import.meta.url,
+      gunzipSync(
+        readFileSync(
+          new URL(
+            '../docs/evidence/qualification/proposal-reference-v4/npm-cache-question.jsonl.gz',
+            import.meta.url,
+          ),
         ),
-        'utf8',
-      ),
+        { maxOutputLength: 64 * 1024 },
+      ).toString('utf8'),
     ) as { payload: { arguments: unknown; call_id: string; name: string; status: string } },
     { call_id: callId } = questionRecord.payload,
     { questions } = JSON.parse(questionRecord.payload.arguments as string) as {
@@ -1095,19 +1112,14 @@ it.each([
 });
 
 it('retains the observed primary consent text and its single actual LF', () => {
-  const decision = JSON.parse(
-    readFileSync(
-      fileURLToPath(
-        new URL(
-          '../docs/evidence/qualification/proposal-reference-v4/primary-approval.json',
-          import.meta.url,
-        ),
-      ),
-      'utf8',
-    ),
-  ) as { primary: { text: string } };
+  const decision = JSON.parse(readH04Pin(primaryApproval).toString('utf8')) as {
+    primary: { text: string };
+  };
   expect(decision.primary.text).toBe(h06TemporalReferenceConsentText + String.fromCharCode(10));
   expect(decision.primary.text.endsWith('\\n')).toBe(false);
+  expect(() => readH04Pin({ ...primaryApproval, sha256: '0'.repeat(64) })).toThrow(
+    'h04-pin-changed',
+  );
 });
 
 it.each([false, true])(

@@ -11,6 +11,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { performance } from 'node:perf_hooks';
 import process from 'node:process';
 import { afterEach, expect, it, vi } from 'vitest';
 import type * as Safety from '../examples/temporal-consumers/full/safety.mjs';
@@ -52,9 +53,17 @@ vi.mock('./comparisonH06NativeTemporalServer.js', () => ({
 
 const roots: string[] = [];
 afterEach(() => {
+  vi.useRealTimers();
+  vi.restoreAllMocks();
   for (const root of roots.splice(0)) rmSync(root, { force: true, recursive: true });
   vi.resetAllMocks();
 });
+
+function useServerClock() {
+  vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] });
+  const start = Date.now();
+  vi.spyOn(performance, 'now').mockImplementation(() => Date.now() - start);
+}
 
 function deferred<T>() {
   let resolve!: (value: T | PromiseLike<T>) => void;
@@ -391,38 +400,53 @@ it('aborts a callback when the owned server unexpectedly exits', async () => {
 });
 
 it('uses the work deadline to abort an unfinished callback and preserve cleanup time', async () => {
+  useServerClock();
   const f = fixture();
   f.setup.deadlineMs = Date.now() + 300;
   f.setup.stopReserveMs = 150;
-  let signal: AbortSignal | undefined;
-  const result = withH06NativeTemporalServer(f.setup, async (_ready, state) => {
-    signal = state;
+  const entered = deferred<AbortSignal>();
+  const result = withH06NativeTemporalServer(f.setup, async (_ready, signal) => {
+    entered.resolve(signal);
     return new Promise(() => {});
   });
-  await expect(result).rejects.toThrow('h06-temporal-setup-deadline');
-  expect(signal?.aborted).toBe(true);
+  const rejected = expect(result).rejects.toThrow('h06-temporal-setup-deadline');
+  const signal = await entered.promise;
+  await vi.advanceTimersByTimeAsync(149);
+  expect(signal.aborted).toBe(false);
+  await vi.advanceTimersByTimeAsync(1);
+  expect(signal.aborted).toBe(true);
+  await vi.runAllTimersAsync();
+  await rejected;
   expect(f.stop).toHaveBeenCalledTimes(1);
   expect(existsSync(join(f.root, 'server-stop.json'))).toBe(true);
 });
 
 it('keeps the server alive for cooperative cleanup beyond one second after the work deadline', async () => {
+  useServerClock();
   const f = fixture();
-  f.setup.deadlineMs = Date.now() + 2300;
+  const workMs = 100;
+  const cleanupMs = 1200;
   f.setup.stopReserveMs = 2200;
+  f.setup.deadlineMs = Date.now() + workMs + f.setup.stopReserveMs;
   const path = join(f.root, 'transport-stop.json');
+  const entered = deferred<void>();
   const result = withH06NativeTemporalServer(f.setup, async (_ready, signal) => {
+    entered.resolve();
     try {
       await new Promise<void>((_resolve, reject) =>
         signal.addEventListener('abort', () => reject(signal.reason), { once: true }),
       );
     } finally {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      await new Promise((resolve) => setTimeout(resolve, cleanupMs));
       expect(f.stop).not.toHaveBeenCalled();
       expect(Date.now()).toBeLessThan(f.setup.deadlineMs);
       publishFile(path, Buffer.from('confirmed transport STOP'));
     }
   });
-  await expect(result).rejects.toThrow('h06-temporal-setup-deadline');
+  const rejected = expect(result).rejects.toThrow('h06-temporal-setup-deadline');
+  await entered.promise;
+  await vi.advanceTimersByTimeAsync(workMs + cleanupMs);
+  await rejected;
   expect(readFileSync(path, 'utf8')).toBe('confirmed transport STOP');
   expect(() => publishFile(path, Buffer.from('late replacement'))).toThrow();
   expect(existsSync(join(f.root, 'server-stop.json'))).toBe(true);

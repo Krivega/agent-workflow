@@ -428,12 +428,13 @@ test('rejects damaged pins, checker drift and nonregular archive payloads before
           join(directory, 'package/dist/contracts/link.js'),
         ),
       );
+    // Use the sticky bit because some environments silently clear setuid.
     if (mode === 'special-mode')
       candidate = f.archive('special-mode', 'runtime', (directory) =>
-        chmodSync(join(directory, 'package/dist/contracts/project.js'), 0o4755),
+        chmodSync(join(directory, 'package/dist/contracts/project.js'), 0o1755),
       );
     const before = snapshotGameSource(f.checker);
-    assert.throws(() => bindGameRuntime(f.checker, candidate, f.metadata));
+    assert.throws(() => bindGameRuntime(f.checker, candidate, f.metadata), mode);
     assert.deepEqual(snapshotGameSource(f.checker), before);
   }
 });

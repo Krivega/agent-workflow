@@ -73,7 +73,10 @@ test('resolves replay manifests against pinned local and archived artifacts', ()
     const manifest = JSON.parse(readFileSync(join(directory, 'manifest.json'), 'utf8'));
     for (const entry of [...manifest.cases, ...(manifest.fixtures ?? [])]) {
       readReplayArtifact(directory, entry);
-      if (!existsSync(join(directory, entry.file))) archived++;
+      if (!existsSync(join(directory, entry.file))) {
+        assert.throws(() => readReplayArtifact(directory, { ...entry, sha256: '0'.repeat(64) }));
+        archived++;
+      }
     }
   }
   assert.ok(archived > 0);

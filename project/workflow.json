@@ -19,7 +19,6 @@
   "mutable_links": [
     "docs/quality/harness-engineering.md",
     "docs/design/architecture.md",
-    "docs/design/decisions/0072-extract-agent-workflow-repository.md",
     "docs/testing/strategy.md"
   ],
   "procedures": [

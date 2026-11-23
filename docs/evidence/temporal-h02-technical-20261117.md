@@ -28,12 +28,15 @@ Temporal используется только в ранее разрешённ�
 
 ## Адресные проверки
 
+Команды ниже относятся к срезу 2026-11-17. Для этого среза их запускают из корня
+репозитория. `comparison:h02` отсутствует в текущем `package.json`.
+
 <!-- documentation-check: historical:start -->
 
 ```sh
 yarn test tests/comparisonMaterials.test.ts tests/council.test.ts tests/temporal/review.test.ts --coverage --coverage.include='tests/comparisonH02*.ts' --coverage.reportsDirectory=tmp/temporal-h02-20261117/profile-coverage
 yarn comparison:h02 --plan
-yarn comparison:h02 --self-test /Users/krivega/workspace/agent-workflow/tmp/temporal-h02-20261117/self-test
+yarn comparison:h02 --self-test "$PWD/tmp/temporal-h02-20261117/self-test"
 ```
 
 <!-- documentation-check: historical:end -->

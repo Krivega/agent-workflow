@@ -2,6 +2,7 @@ import { mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gunzipSync } from 'node:zlib';
 import { afterEach, expect, it, vi } from 'vitest';
 import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import type * as H04Contract from './comparisonH04Contract.js';
@@ -447,8 +448,14 @@ it.each(['old-publication', 'publication-after-user', 'forwarded-user', 'new-use
 
 const archivedEvidence = new URL('../docs/evidence/td054-deadline-reference/', import.meta.url);
 
+function readArchivedEvidence(file: string) {
+  return gunzipSync(readFileSync(new URL(file + '.gz', archivedEvidence)), {
+    maxOutputLength: 64 * 1024,
+  }).toString('utf8');
+}
+
 function environmentRecords(): Record<string, unknown>[] {
-  return readFileSync(new URL('midnight-update.jsonl', archivedEvidence), 'utf8')
+  return readArchivedEvidence('midnight-update.jsonl')
     .trimEnd()
     .split('\n')
     .map((line) => JSON.parse(line) as Record<string, unknown>);
@@ -479,9 +486,10 @@ function genuineFollowup() {
 
 function relatedT4Rows(f: ReturnType<typeof fixture>) {
   const callId = 'call_c17c4889bd5e4e00a73b41822e9893d1';
-  const { request, draft } = JSON.parse(
-    readFileSync(new URL('related-t4-pins.json', archivedEvidence), 'utf8'),
-  ) as { request: Pin; draft: Pin };
+  const { request, draft } = JSON.parse(readArchivedEvidence('related-t4-pins.json')) as {
+    request: Pin;
+    draft: Pin;
+  };
   const title = `Synthetic related T4 ${request.sha256} [точный текст допуска](${draft.path})`;
   const questions = [{ title, options: ['Разрешаю описанный T4', 'Оставить T4 подготовленным'] }];
   const body =
