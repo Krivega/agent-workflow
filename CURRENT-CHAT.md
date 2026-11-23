@@ -4,11 +4,12 @@
 
 ## Запуск через Temporal
 
-В проекте с действующей политикой назначения версии 2 `task-chat start` принимает готовый
-вход SDK версии 12 и регистрацию Worker. Команду запускают из корня рабочей копии.
+В проекте с действующей политикой назначения версии 2 команды принимают готовый
+вход SDK версии 12 и регистрацию Worker. Запускайте их из корня зарегистрированной рабочей
+копии. Синтаксис команд доступен через `agent-workflow task-chat --help`.
 
 ```sh
-yarn --silent agent-workflow task-chat start --temporal-input input12.json --temporal-registration /absolute/private/registration.json
+agent-workflow task-chat preview --temporal-input input12.json --temporal-registration "$AW_REGISTRATION"
 ```
 
 Вход содержит строгий `SubstantialPlan` с хешем, отдельные запросы планирования и приёмки,
@@ -21,13 +22,45 @@ yarn --silent agent-workflow task-chat start --temporal-input input12.json --tem
 Внешний приватный файл регистрации содержит `schemaVersion: 1`, `address`, `namespace`,
 `taskQueue` и `registration`. В `registration` указываются точный дескриптор `project`,
 `hostId`, `owner`, `generation`, канонические `workspaceRoot` и `artifactRoot`, `commands`
-и `taskBackend: "required"`. Проверка допуска читает первичный журнал текущего чата Codex.
+и `taskBackend: "required"`. В `AW_REGISTRATION` задайте абсолютный путь к этому файлу.
+Проверка допуска читает первичный журнал текущего чата Codex.
 
-Перед созданием назначения команда проверяет подготовленные входы и первичный допуск.
-При успешном ответе выводит `status: "accepted"`, `backend: "temporal"` и `workflowId`.
-Назначение закрепляет адрес Temporal, namespace и очередь. Повтор с тем же входом и
-назначением использует тот же Workflow ID. При неизвестном исходе сохраняй запрос,
-регистрацию и идентификатор. Подробности исполнения описаны в [договоре SDK](docs/temporal-sdk.md#исполнение-и-независимое-завершение-b1).
+В `summary` показаны рабочая копия, область записи, план, роли, команды и последствия
+запуска. Например, для критерия `K1` может быть указано, что хост выполнит `validate`
+на кандидате, ожидается журнал и код выхода `0`. Критерии без назначения или ожидаемого
+доказательства перечислены в `summary.gaps`. Модель исполнителя вызывается после
+успешной исходной проверки. Сам просмотр читает файлы и проверяет допуск локально.
+
+После проверки сводки скопируйте `previewDigest` в `AW_PREVIEW_DIGEST` и запустите
+тот же вход. Если значимые данные изменились, повторите предпросмотр.
+
+```sh
+agent-workflow task-chat start --temporal-input input12.json --temporal-registration "$AW_REGISTRATION" \
+  --preview-digest "$AW_PREVIEW_DIGEST"
+```
+
+При успешном ответе команда выводит `status: "accepted"`, `backend: "temporal"`,
+`workflowId` и готовую команду состояния в `next_action`. Назначение закрепляет адрес
+Temporal, namespace и очередь. `refused` указывает на условие, которое остановило
+отправку. При `unknown` сохраните исходный вход и ID из `details.workflowId` и
+сверьте этот запуск командой из `next_action`.
+
+### Состояние и результат задачи
+
+Сохраните `workflowId` в `WORKFLOW_ID` и используйте ту же регистрацию.
+
+```sh
+agent-workflow task-chat status --workflow-id "$WORKFLOW_ID" --temporal-registration "$AW_REGISTRATION"
+agent-workflow task-chat result --workflow-id "$WORKFLOW_ID" --temporal-registration "$AW_REGISTRATION"
+```
+
+Статус показывает актуальный запуск, фазу и причину ожидания или остановки.
+Результат возвращает `pending` во время работы, затем итог и доступные ссылки
+на материалы. Каждая ссылка содержит `sha256` (имя файла в `artifactRoot`) и `bytes`.
+`not-found` означает, что сервер ответил об отсутствии задачи в указанном namespace.
+`unavailable` означает, что ответ от сервера получить не удалось. Для чтения нужны
+исходное назначение, артефакты допуска и сохранённый журнал Codex. Текущий ход
+может быть другим. Закрытый запуск читается по истории Temporal без Worker.
 
 <a id="штатный-вход-без-json"></a>
 

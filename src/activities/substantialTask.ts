@@ -124,6 +124,21 @@ function checkSubstantialReviews(
     if (r.schemaVersion !== 1) for (const ref of r.evidence) store.read(ref);
   }
   if (correctingTask(input)) checkCorrectionRoles(input, acceptance.roles);
+  for (const check of plan.criterion_checks ?? []) {
+    if (check.stage === 'acceptance') {
+      const role = acceptance.roles.find((role) => role.roleId === check.roleId);
+      requireContract(
+        role?.applies === true &&
+          [...acceptance.sharedPaths, ...role.paths].includes(input.admission.plan.path),
+        'substantial-criterion-review-unassigned',
+      );
+    } else {
+      requireContract(
+        (check.stage === 'baseline' ? [input.baseline] : plan.checks).includes(check.command),
+        'substantial-criterion-command-unassigned',
+      );
+    }
+  }
   const acceptancePaths = [
     ...new Set([
       ...acceptance.sharedPaths,
@@ -189,13 +204,16 @@ function reviewPaths(request: ReviewRequest) {
 export function checkSubstantialStartInputs(
   registration: LocalProjectRegistration,
   input: HumanManagedTaskInput,
-): void {
+) {
   const preparation = input.admission.preparation;
   checkRegistration(preparation, registration);
   preparationInputs(registration.workspaceRoot, preparation);
   const files = taskFiles(registration.artifactRoot, { existingOnly: true });
   const inspected = checkSubstantialPlan(registration, input);
-  resolveRegisteredCommands(registration, [input.baseline, ...inspected.plan.checks]);
+  const commands = resolveRegisteredCommands(registration, [
+    input.baseline,
+    ...inspected.plan.checks,
+  ]);
   const { request, acceptance, tree } = checkSubstantialReviews(registration, input, inspected, {
     store: files.store,
     version: files.observeVersion,
@@ -224,6 +242,7 @@ export function checkSubstantialStartInputs(
         declaredOutput(path) || same(present.get(path), { sha256, bytes }),
         'substantial-acceptance-expected-input-changed',
       );
+  return { plan: inspected.plan, commands, request, acceptance, tree };
 }
 
 export async function preflightSubstantialTask(

@@ -28,7 +28,7 @@ yarn prepare:temporal-cli /absolute/path/to/temporal_cli_1.9.1_PLATFORM.tar.gz
 yarn validate
 ```
 
-`validate` проверяет CLI, ядро и Temporal, включая два сценария с локальным сервером
+`validate` проверяет CLI, ядро и Temporal, включая сценарии с локальным сервером
 и четырьмя порогами покрытия 100%. Для проверки контракта без сервера можно выполнить
 `yarn test tests/temporal/contracts.test.ts`. Отдельно запускаемый
 [профиль CI](.github/workflows/validate.yml) готовит закреплённый CLI и исполняет полный прогон.

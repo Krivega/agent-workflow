@@ -28,6 +28,7 @@ export { extendTaskBudget } from '../worker/taskBudget.js';
 export { artifactStore } from '../adapters/artifacts/files.js';
 export { nativeTaskHumanAuthority } from '../adapters/codex/taskHumanAuthority.js';
 export { nativeTaskSource } from '../adapters/codex/nativeTaskSource.js';
+export { readPreparedLocalTask } from './localTaskRead.js';
 export type {
   NativeTaskIssuer,
   NativeTaskPrimarySource,

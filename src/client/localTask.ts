@@ -8,7 +8,15 @@ import { WorkflowIdConflictPolicy, WorkflowIdReusePolicy } from '@temporalio/com
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import type { LocalTaskInput } from '../contracts/localTask.js';
-import type { LocalProjectRegistration } from '../contracts/preparation.js';
+import type {
+  ArtifactRef,
+  LocalProjectRegistration,
+  PreparationInput,
+} from '../contracts/preparation.js';
+import type {
+  TaskStartAssignment,
+  VerifiedStartAdmission,
+} from '../contracts/taskStartAdmission.js';
 import type { LocalTaskWorkflow } from '../workflows/localTask.js';
 import { localTaskKey, parseLocalTask } from '../policy/localTask.js';
 import {
@@ -20,16 +28,18 @@ import {
   text,
 } from '../contracts/project.js';
 import { nativeTaskSource } from '../adapters/codex/nativeTaskSource.js';
-import { artifactStore } from '../adapters/artifacts/files.js';
+import { artifactStore, digest } from '../adapters/artifacts/files.js';
 import { taskBackendPolicy } from '../adapters/project/taskBackend.js';
 import { checkTaskStartAdmission } from '../adapters/project/taskStartAdmission.js';
 import { checkSubstantialStartInputs } from '../activities/substantialTask.js';
+import { buildPreparedTaskPreview } from './taskStartPreview.js';
 
 export async function startLocalTask(
   client: Client,
   value: unknown,
   taskQueue: string,
   checkInputs?: () => void,
+  onSubmit?: (workflowId: string) => void,
 ) {
   const input = parseLocalTask(value);
   requireContract(
@@ -39,10 +49,12 @@ export async function startLocalTask(
   );
   await requireClientTaskStart(client, input, taskQueue);
   checkInputs?.();
+  const workflowId = localTaskKey(input);
+  onSubmit?.(workflowId);
   const handle = await client.workflow.start<typeof LocalTaskWorkflow>('LocalTaskWorkflow', {
     args: [input],
     taskQueue,
-    workflowId: localTaskKey(input),
+    workflowId,
     workflowIdConflictPolicy: WorkflowIdConflictPolicy.USE_EXISTING,
     workflowIdReusePolicy: WorkflowIdReusePolicy.REJECT_DUPLICATE,
   });
@@ -122,30 +134,93 @@ export function parsePreparedTaskRegistration(config: unknown, workspace: string
   return { address, namespace, taskQueue, registration };
 }
 
-/** Submit an initial task with an already issued primary admission. */
-export async function startPreparedLocalTask(workspace: string, value: unknown, config: unknown) {
+function preparedTaskStart(workspace: string, value: unknown, config: unknown) {
   const policy = taskBackendPolicy(workspace);
   requireContract(policy?.startAdmission !== undefined, 'task-start-policy-required');
   requireContract(policy.newTasks === 'temporal', 'backend-new-tasks-blocked');
-  const { address, namespace, taskQueue, registration } = parsePreparedTaskRegistration(
-    config,
-    workspace,
-  );
+  const route = parsePreparedTaskRegistration(config, workspace);
   const input = parseLocalTask(value);
   requireContract(input.schemaVersion === 12, 'task-chat-temporal-input-version');
   requireContract(input.continuation.attempt === 0, 'task-continuation-start-forbidden');
-  const checkInputs = () => checkSubstantialStartInputs(registration, input);
-  checkInputs();
-  const { verify } = nativeTaskSource(
-    artifactStore(registration.artifactRoot, { existingOnly: true }),
-    {
-      sessionsRoot: resolve(process.env.CODEX_HOME ?? resolve(homedir(), '.codex'), 'sessions'),
-      chatWorkspace: workspace,
-      threadId: identifier(process.env.CODEX_THREAD_ID),
-      owner: registration.owner,
-    },
+  return { policy, route, input };
+}
+
+function preparedTaskAuthority(registration: LocalProjectRegistration, threadId: string) {
+  return nativeTaskSource(artifactStore(registration.artifactRoot, { existingOnly: true }), {
+    sessionsRoot: resolve(process.env.CODEX_HOME ?? resolve(homedir(), '.codex'), 'sessions'),
+    chatWorkspace: registration.workspaceRoot,
+    threadId,
+    owner: registration.owner,
+  });
+}
+
+export function verifyPreparedTaskAdmission(
+  registration: LocalProjectRegistration,
+  ref: ArtifactRef,
+  preparation: PreparationInput,
+  threadId: string,
+  assignment: TaskStartAssignment,
+) {
+  return checkTaskStartAdmission(
+    registration,
+    preparedTaskAuthority(registration, threadId),
+    ref,
+    preparation,
+    assignment,
+    { card: 'retained' },
   );
-  const authority = { verify };
+}
+
+function checkedPreview(
+  prepared: ReturnType<typeof preparedTaskStart>,
+  admission: VerifiedStartAdmission,
+) {
+  const { route, input } = prepared;
+  const { summary, fingerprint } = buildPreparedTaskPreview(route.registration, input, admission);
+  const previewDigest = digest(JSON.stringify({ ...prepared, fingerprint }));
+  return { summary, previewDigest };
+}
+
+export async function previewPreparedLocalTask(workspace: string, value: unknown, config: unknown) {
+  const prepared = preparedTaskStart(workspace, value, config);
+  const {
+    input,
+    route: { registration },
+  } = prepared;
+  const authority = preparedTaskAuthority(registration, identifier(process.env.CODEX_THREAD_ID));
+  const admission = await checkTaskStartAdmission(
+    registration,
+    authority,
+    input.startAdmission,
+    input.admission.preparation,
+  );
+  requireContract(admission.admission.previous === null, 'task-start-initial-required');
+  return {
+    status: 'preview',
+    backend: 'temporal',
+    workflowId: localTaskKey(input),
+    ...checkedPreview(prepared, admission),
+  };
+}
+
+/** Submit an initial task with an already issued primary admission. */
+export async function startPreparedLocalTask(
+  workspace: string,
+  value: unknown,
+  config: unknown,
+  options?: {
+    onSubmit?: (workflowId: string) => void;
+    previewDigest?: string;
+    checkFiles?: () => void;
+  },
+) {
+  const prepared = preparedTaskStart(workspace, value, config);
+  const {
+    input,
+    route: { address, namespace, taskQueue, registration },
+  } = prepared;
+  checkSubstantialStartInputs(registration, input);
+  const authority = preparedTaskAuthority(registration, identifier(process.env.CODEX_THREAD_ID));
   const preparation = input.admission.preparation;
   const admission = await checkTaskStartAdmission(
     registration,
@@ -154,6 +229,19 @@ export async function startPreparedLocalTask(workspace: string, value: unknown, 
     preparation,
   );
   requireContract(admission.admission.previous === null, 'task-start-initial-required');
+  const checkInputs = () => {
+    options?.checkFiles?.();
+    if (options?.previewDigest === undefined) {
+      checkSubstantialStartInputs(registration, input);
+      return;
+    }
+    requireContract(
+      JSON.stringify(taskBackendPolicy(workspace)) === JSON.stringify(prepared.policy) &&
+        checkedPreview(prepared, admission).previewDigest === options.previewDigest,
+      'task-chat-temporal-preview-changed',
+    );
+  };
+  if (options?.previewDigest !== undefined) checkInputs();
   const connection = Connection.lazy({ address });
   try {
     const client = bindTaskBackendClient(
@@ -165,7 +253,7 @@ export async function startPreparedLocalTask(workspace: string, value: unknown, 
       taskQueue,
       checkInputs,
     });
-    const handle = await startLocalTask(client, input, taskQueue, checkInputs);
+    const handle = await startLocalTask(client, input, taskQueue, checkInputs, options?.onSubmit);
     return { status: 'accepted', backend: 'temporal', workflowId: handle.workflowId };
   } finally {
     await connection.close();

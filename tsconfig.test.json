@@ -8,7 +8,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@krivega/agent-workflow/local-task": ["./src/client/localTask.ts"]
+      "@krivega/agent-workflow/local-task": ["./src/client/localTask.ts"],
+      "@krivega/agent-workflow/task-execution": ["./src/client/taskExecution.ts"]
     },
     "types": [
       "node",

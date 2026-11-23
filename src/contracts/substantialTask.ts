@@ -7,10 +7,19 @@ export interface SubstantialAdmissionInput {
   planning: ArtifactRef;
   acceptance: ArtifactRef;
 }
+export type SubstantialCriterionCheck = {
+  criterion: string;
+  evidence?: string;
+  success?: string;
+} & (
+  | { stage: 'baseline' | 'candidate' | 'integrated'; command: string }
+  | { stage: 'acceptance'; roleId: string; subject: string }
+);
 export type SubstantialPlan = Omit<LocalImplementationPlan, 'schema_version' | 'risks'> & {
   schema_version: 2;
   plan_id: string;
   risks: Record<keyof LocalImplementationPlan['risks'], boolean>;
+  criterion_checks?: SubstantialCriterionCheck[];
 };
 export interface SubstantialApproval {
   accepted: ArtifactRef;

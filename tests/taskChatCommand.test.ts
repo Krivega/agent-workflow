@@ -51,7 +51,8 @@ import type { EvidenceGrant, TechnicalState } from '../core/evidence.js';
 import * as messages from '../application/chatMessages.js';
 import type { Mock } from 'vitest';
 import type { runTaskChatCouncil } from '../cli/taskChatCouncil.js';
-import type { startPreparedLocalTask } from '../src/client/localTask.js';
+import type { previewPreparedLocalTask, startPreparedLocalTask } from '../src/client/localTask.js';
+import type { readPreparedLocalTask } from '../src/client/localTaskRead.js';
 import { saveCouncilProgress } from '../cli/councilProgress.js';
 import { localPlanningRisks } from '../core/localRun.js';
 import { object, textField } from '../core/connection.js';
@@ -66,7 +67,13 @@ vi.mock('../cli/taskChatCouncil.js', () => ({
   runTaskChatCouncil: backend.council,
 }));
 const temporalStart = vi.hoisted(() => vi.fn<typeof startPreparedLocalTask>());
-vi.mock('@krivega/agent-workflow/local-task', () => ({ startPreparedLocalTask: temporalStart }));
+const temporalPreview = vi.hoisted(() => vi.fn<typeof previewPreparedLocalTask>());
+const temporalRead = vi.hoisted(() => vi.fn<typeof readPreparedLocalTask>());
+vi.mock('@krivega/agent-workflow/local-task', () => ({
+  startPreparedLocalTask: temporalStart,
+  previewPreparedLocalTask: temporalPreview,
+}));
+vi.mock('@krivega/agent-workflow/task-execution', () => ({ readPreparedLocalTask: temporalRead }));
 let f: Awaited<ReturnType<typeof workflowFixture>>, state: string, transcript: string;
 let records: Record<string, unknown>[], turn: string;
 const card = 'docs/exec-plans/active/task.md';
@@ -250,6 +257,20 @@ describe('task-chat Temporal start', () => {
     await writeFile(settingsPath(), JSON.stringify(registration), { mode: 0o600 });
   });
 
+  it.each(['--help', '-h'])(
+    'shows Temporal help with %s before consulting a broken policy',
+    async (flag) => {
+      await f.file(policyPath, 'broken');
+      const result = await invokeTaskChat([flag]);
+      expect(result).toMatchObject({
+        code: 0,
+        errors: [],
+        output: [expect.stringContaining('task-chat status')],
+      });
+      expect(temporalStart).not.toHaveBeenCalled();
+    },
+  );
+
   async function refuse(args: string[], reason: string) {
     const before = await readdir(state);
     expect(await invokeTaskChat(['start', ...args])).toMatchObject({ code: 1, errors: [reason] });
@@ -279,13 +300,177 @@ describe('task-chat Temporal start', () => {
       ).toEqual({
         code: 0,
         errors: [],
-        output: [JSON.stringify(result)],
+        output: [
+          JSON.stringify({
+            ...result,
+            next_action: `agent-workflow task-chat status --workflow-id aw/task/project/task --temporal-registration '${settingsPath()}'`,
+          }),
+        ],
       });
-      expect(temporalStart).toHaveBeenCalledExactlyOnceWith(f.root, input, registration);
+      expect(temporalStart).toHaveBeenCalledOnce();
+      const [root, value, settings, options] = temporalStart.mock.calls[0]!;
+      expect([root, value, settings]).toEqual([f.root, input, registration]);
+      expect(options?.onSubmit).toEqual(expect.any(Function));
       expect(backend.council).not.toHaveBeenCalled();
       expect(await readdir(state)).toEqual(['registration.json']);
     },
   );
+
+  it.each([false, true])(
+    'classifies SDK response loss at submission, dispatched=%s',
+    async (submitted) => {
+      const workflowId = 'aw/task/project/task';
+      temporalStart.mockImplementationOnce(async (_root, _input, _registration, options) => {
+        if (submitted) options!.onSubmit!(workflowId);
+        throw Error('response-lost');
+      });
+      const result = await invokeTaskChat(['start', ...flags()]);
+      expect(result).toMatchObject({ code: 1, errors: ['response-lost'] });
+      const diagnostic = JSON.parse(result.output[0]!) as { next_action: string };
+      expect(diagnostic).toMatchObject({
+        status: submitted ? 'unknown' : 'refused',
+        reason: 'response-lost',
+      });
+      expect(diagnostic.next_action).toContain(
+        submitted ? `task-chat status --workflow-id ${workflowId}` : '--temporal-registration',
+      );
+    },
+  );
+
+  it.each([
+    'waiting-human-gates',
+    'waiting-human',
+    'human-paused',
+    'checkpoint-unknown',
+    'baseline',
+  ])('returns phase guidance for %s', async (phase) => {
+    const workflowId = 'aw/task/project/task';
+    temporalRead.mockResolvedValueOnce({
+      workflowId,
+      runId: 'run',
+      executionStatus: 'RUNNING',
+      status: 'running',
+      phase,
+      reason: null,
+    });
+    const result = await invokeTaskChat([
+      'status',
+      '--workflow-id',
+      workflowId,
+      '--temporal-registration',
+      settingsPath(),
+    ]);
+    expect(result.code).toBe(0);
+    const observation = JSON.parse(result.output[0]!) as { next_action: string };
+    expect(observation).toMatchObject({ phase });
+    expect(observation.next_action.length).toBeGreaterThan(0);
+  });
+
+  it.each(['status', 'result'] as const)('reads a terminal result with %s', async (action) => {
+    const workflowId = 'aw/task/project/task';
+    temporalRead.mockResolvedValueOnce({
+      workflowId,
+      runId: 'run',
+      executionStatus: 'FAILED',
+      status: 'failed',
+      reason: 'observed-failure',
+    });
+    const result = await invokeTaskChat([
+      action,
+      '--workflow-id',
+      workflowId,
+      '--temporal-registration',
+      settingsPath(),
+    ]);
+    expect(result.code).toBe(0);
+    const observation = JSON.parse(result.output[0]!) as { next_action: string | null };
+    expect(observation).toMatchObject({ status: 'failed' });
+    if (action === 'status') expect(observation.next_action).toContain('task-chat result');
+    else expect(observation.next_action).toBeNull();
+  });
+
+  it.each([
+    ['not-found', 'task-chat-temporal-task-not-found'],
+    ['unavailable', 'task-chat-temporal-server-unavailable'],
+    ['refused', 'task-chat-temporal-read-registration'],
+  ] as const)('preserves diagnosis %s for read failure', async (status, reason) => {
+    const workflowId = 'aw/task/project/task';
+    temporalRead.mockRejectedValueOnce(Error(reason));
+    const result = await invokeTaskChat([
+      'result',
+      '--workflow-id',
+      workflowId,
+      '--temporal-registration',
+      settingsPath(),
+    ]);
+    expect(result.code).toBe(1);
+    const diagnostic = JSON.parse(result.output[0]!) as { next_action: string };
+    expect(diagnostic).toMatchObject({ status, reason });
+    expect(diagnostic.next_action).toContain('--workflow-id');
+  });
+
+  it('refuses to leak registration bytes in error diagnostics', async () => {
+    await writeFile(settingsPath(), 'private-conversation');
+    const result = await invokeTaskChat(['preview', ...flags()]);
+    expect(result).toMatchObject({ code: 1, errors: ['task-chat-temporal-json-invalid'] });
+    expect(result.output.join()).not.toContain('private-conversation');
+  });
+
+  it.each([
+    [null, 'task-chat-temporal-failed'],
+    [new Error('private multiword failure'), 'task-chat-temporal-failed'],
+    [
+      Object.assign(new Error('unreadable path'), { code: 'ENOENT' }),
+      'task-chat-temporal-file-missing',
+    ],
+    [
+      Object.assign(new Error('unreadable path'), { code: 'EACCES' }),
+      'task-chat-temporal-file-inaccessible',
+    ],
+    [
+      Object.assign(new Error('unreadable path'), { code: 'EPERM' }),
+      'task-chat-temporal-file-inaccessible',
+    ],
+  ])('reports safe diagnostics for %j', async (failure, reason) => {
+    temporalStart.mockRejectedValueOnce(failure);
+    const result = await invokeTaskChat(['start', ...flags()]);
+    expect(result).toMatchObject({ code: 1, errors: [reason] });
+    expect(JSON.parse(result.output[0]!)).toMatchObject({ status: 'refused', reason });
+  });
+
+  it.each(['same', 'input', 'registration'] as const)(
+    'checks the preview start files again at submission when %s',
+    async (change) => {
+      const workflowId = 'aw/task/project/task',
+        previewDigest = 'a'.repeat(64);
+      temporalStart.mockImplementationOnce(async (_root, _input, _registration, options) => {
+        if (change !== 'same')
+          await writeFile(change === 'input' ? resolve(f.root, inputPath) : settingsPath(), '{}');
+        expect(options?.previewDigest).toBe(previewDigest);
+        options!.checkFiles!();
+        return { status: 'accepted', backend: 'temporal', workflowId };
+      });
+      const result = await invokeTaskChat(['start', ...flags(), '--preview-digest', previewDigest]);
+      expect(result.code).toBe(change === 'same' ? 0 : 1);
+      expect(JSON.parse(result.output[0]!)).toMatchObject(
+        change === 'same'
+          ? { status: 'accepted', workflowId }
+          : { status: 'refused', reason: 'task-chat-temporal-preview-changed' },
+      );
+    },
+  );
+
+  it('passes preview through to the SDK without submitting', async () => {
+    // Exercise CLI serialization and forward only the SDK's preview result.
+    const summary = { status: 'preview', previewDigest: 'a'.repeat(64) };
+    temporalPreview.mockResolvedValueOnce(
+      summary as Awaited<ReturnType<typeof previewPreparedLocalTask>>,
+    );
+    const result = await invokeTaskChat(['preview', ...flags()]);
+    expect(result).toEqual({ code: 0, errors: [], output: [JSON.stringify(summary)] });
+    expect(temporalPreview).toHaveBeenCalledExactlyOnceWith(f.root, input, registration);
+    expect(temporalStart).not.toHaveBeenCalled();
+  });
 
   it.each<[string, ...string[]]>([
     ['part of the argument pair', '--temporal-input', inputPath],

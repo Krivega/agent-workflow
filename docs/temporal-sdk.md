@@ -517,8 +517,26 @@ const input = {
 В `human` передаются точные тексты человеческих критериев карточки. `inapplicable` содержит
 пары `{ criterion, reason }` для неприменимых критериев. `executor` содержит `{ path, sha256 }`,
 `baseline` задаёт ID зарегистрированной исходной проверки. Подготовка пишет адресуемые артефакты.
-Сериализованный `input` передаётся в [`task-chat start`](../CURRENT-CHAT.md#запуск-через-temporal),
-который проверяет пакет, назначает движок и запускает Workflow.
+Сериализованный `input` передаётся в [`task-chat preview` и `task-chat start`](../CURRENT-CHAT.md#запуск-через-temporal).
+Для каждого критерия можно указать явные назначения в необязательном массиве
+`criterion_checks` плана версии 2. Поле `criterion` содержит ID или полный текст критерия.
+Для `baseline`, `candidate` и `integrated` указывают ID команды, а для `acceptance` —
+`roleId` применимой роли и предмет проверки `subject`. Поля `evidence` и
+`success` описывают ожидаемое доказательство и признак успеха.
+
+```json
+{
+  "criterion_checks": [
+    {
+      "criterion": "K1",
+      "stage": "candidate",
+      "command": "validate",
+      "evidence": "Журнал validate",
+      "success": "Код выхода 0"
+    }
+  ]
+}
+```
 
 В `createReaderHost` действующая конфигурация `localTasks` включает `startAdmissionAuthority`
 для проверки начального допуска и `humanAuthority` для человеческого этапа. Экспорт

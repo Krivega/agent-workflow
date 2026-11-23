@@ -146,26 +146,31 @@ Worker достаточно для согласованных модельных
 владельцем абсолютный путь к файлу регистрации.
 
 ```sh
-npm exec -- agent-workflow task-chat start --temporal-input input12.json --temporal-registration "$AW_REGISTRATION"
+npm exec -- agent-workflow task-chat preview --temporal-input input12.json --temporal-registration "$AW_REGISTRATION"
+```
+
+Проверьте показанный план, проверки критериев и последствия старта. Сохраните
+`previewDigest` из ответа в `AW_PREVIEW_DIGEST` и передайте его вместе с тем же входом.
+
+```sh
+npm exec -- agent-workflow task-chat start --temporal-input input12.json --temporal-registration "$AW_REGISTRATION" --preview-digest "$AW_PREVIEW_DIGEST"
 ```
 
 Оба файла должен читать только их владелец. Подготовка допуска и формат регистрации
 описаны в [инструкции запуска](CURRENT-CHAT.md#запуск-через-temporal).
 
 Ответ `accepted` означает, что Temporal принял задачу. Сохраните `workflowId` из ответа
-в переменной `WORKFLOW_ID`, а `namespace` из регистрации — в `NAMESPACE`.
-С Mac, на котором доступен сервер, проверьте состояние задачи:
+в переменной `WORKFLOW_ID`. Из зарегистрированной рабочей копии проверьте состояние
+и прочитайте результат:
 
 ```sh
-temporal workflow query --address 127.0.0.1:7233 --namespace "$NAMESPACE" \
-  --workflow-id "$WORKFLOW_ID" --type localTaskStatus
+npm exec -- agent-workflow task-chat status --workflow-id "$WORKFLOW_ID" --temporal-registration "$AW_REGISTRATION"
+npm exec -- agent-workflow task-chat result --workflow-id "$WORKFLOW_ID" --temporal-registration "$AW_REGISTRATION"
 ```
 
-При `phase: "done"` сверьте запись `Результат: DONE` в карточке и изменения в рабочей
-копии с критериями приёмки. При `phase: "blocked"` причину указывает поле `error`.
-Пока задача выполняется, повторяйте запрос состояния с тем же `workflowId`. При
-неизвестном исходе сохраните идентификатор и квитанцию. Новый идентификатор может
-привести к повторному исполнению.
+При `status: "done"` сверьте карточку и изменения с материалами из `evidence`.
+Пока задача выполняется, состояние показывает фазу и причину ожидания. При
+`status: "unknown"` сохраните исходный идентификатор и сверьте запуск по нему.
 
 ### 5. Обновляйте проект и хост отдельно
 
@@ -209,7 +214,8 @@ temporal workflow query --address 127.0.0.1:7233 --namespace "$NAMESPACE" \
 
 ## Вход и договоры
 
-CLI пакета предоставляет `init`, `doctor` и `task-chat start` с подготовленным входом Temporal.
+CLI пакета предоставляет `init`, `doctor` и команды задачи Temporal. Синтаксис показывает
+`agent-workflow task-chat --help`.
 Порядок запуска описывает [руководство Codex](CURRENT-CHAT.md#запуск-через-temporal). Для настройки Temporal
 используйте [руководство SDK](docs/temporal-sdk.md). Общие [процедуры](procedures/README.md)
 и [профили совета](roles/README.md) соответствуют версии установленного runtime.

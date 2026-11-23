@@ -1,5 +1,12 @@
-import { join } from 'node:path';
-import { chmodSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, join } from 'node:path';
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { substantialTaskFixture } from './substantialTaskFixture.js';
 import { localTaskFixture } from './localTaskFixture.js';
@@ -15,7 +22,14 @@ import { requireScoped, parseReviewSnapshot, reviewChanges } from '../../src/pol
 import { reviewActivities } from '../../src/activities/review.js';
 import * as substantial from '../../src/activities/substantialTask.js';
 import { digest } from '../../src/adapters/artifacts/files.js';
+import { prepareTaskStartAdmission } from '../../src/adapters/project/taskStartAdmission.js';
+import { buildPreparedTaskPreview } from '../../src/client/taskStartPreview.js';
+import { reserveTaskBackend, taskBackendHome } from '../../src/adapters/project/taskBackend.js';
+import { localTaskActivities } from '../../src/activities/localTask.js';
+import { declareBackendFixture } from '../backendPolicyFixture.js';
 import type { HumanManagedTaskInput } from '../../src/contracts/localTask.js';
+import type { ArtifactRef } from '../../src/contracts/preparation.js';
+import type { SubstantialCriterionCheck } from '../../src/contracts/substantialTask.js';
 afterEach(() => vi.restoreAllMocks());
 
 function startFixture() {
@@ -28,6 +42,307 @@ function startFixture() {
   };
   return { ...f, input };
 }
+
+const firstCriterion = 'K1: Сохраняются одинаковые квитанции';
+const humanCriterion = 'K2: Владелец подтверждает результат';
+const writerCriterion = 'K3: Обновить объяснение';
+const excludedCriterion = 'Проверка отсутствующего режима';
+const expectedCommand: SubstantialCriterionCheck = {
+  criterion: 'K1',
+  stage: 'candidate',
+  command: 'validate',
+  evidence: 'Журнал validate',
+  success: 'Квитанции содержат один ID',
+};
+const expectedReview: SubstantialCriterionCheck = {
+  criterion: firstCriterion,
+  stage: 'acceptance',
+  roleId: 'reviewer',
+  subject: 'Сверить идентификаторы в квитанциях',
+  evidence: 'Отчёт приёмки',
+  success: 'Ревьюер подтвердил совпадение',
+};
+
+async function previewFixture() {
+  const f = startFixture();
+  const preparation = f.input.admission.preparation;
+  const card = `# Поручение\n\n## Критерии приёмки\n\n${[
+    firstCriterion,
+    humanCriterion,
+    writerCriterion,
+    excludedCriterion,
+  ]
+    .map((criterion) => `- [ ] ${criterion}`)
+    .join('\n')}\n`;
+  writeFileSync(join(f.workspace, preparation.card), card);
+  f.proposal.requirement.hash = digest(card);
+  f.proposal.criterion = writerCriterion;
+  function setChecks(checks?: SubstantialCriterionCheck[]) {
+    if (checks === undefined) delete f.proposal.criterion_checks;
+    else f.proposal.criterion_checks = checks;
+    const plan = JSON.stringify(f.proposal);
+    writeFileSync(join(f.workspace, f.input.admission.plan.path), plan);
+    f.input.admission.plan.sha256 = digest(plan);
+  }
+  setChecks([expectedCommand, expectedReview]);
+  const principal = {
+    owner: f.registration.owner,
+    threadId: 'preview-thread',
+    turnId: 'preview-turn',
+    source: { locator: 'private-preview-message', hash: f.proof.sha256 },
+    proof: f.proof,
+  };
+  const startAuthority = { issue: async () => principal, verify: async () => {} };
+  const admitted = await prepareTaskStartAdmission(f.registration, startAuthority, {
+    preparation,
+    previous: null,
+    human: [humanCriterion],
+    inapplicable: [{ criterion: excludedCriterion, reason: 'Режим отключён' }],
+  });
+  f.input.startAdmission = admitted.ref;
+  return {
+    ...f,
+    admitted,
+    startAuthority,
+    setChecks,
+    preview: () => buildPreparedTaskPreview(f.registration, f.input, admitted),
+  };
+}
+
+describe('prepared task preview', () => {
+  it('shows the declared checks, human gate and writer scope with only the unassigned criterion called out', async () => {
+    const f = await previewFixture();
+    const other = await previewFixture();
+    const retained = readdirSync(f.registration.artifactRoot).sort();
+    const rpc = vi.spyOn(f.rpc, 'request');
+    const preview = f.preview();
+    const { summary } = preview;
+    expect(f.preview()).toEqual(preview);
+    expect(other.preview().summary).toMatchObject({
+      projectId: summary.projectId,
+      workspaceRoot: other.workspace,
+    });
+    expect(other.workspace).not.toBe(summary.workspaceRoot);
+    expect(summary).toMatchObject({
+      gaps: {
+        withoutReviewerCount: 1,
+        withoutReviewer: [{ id: 'K3', text: writerCriterion }],
+        incompleteChecks: [],
+      },
+      card: f.input.admission.preparation.card,
+      workspaceRoot: f.workspace,
+      stages: {
+        planning: { roles: [{ roleId: 'reviewer' }, { roleId: 'tester' }] },
+        baseline: {
+          commands: [{ id: 'smoke', args: f.registration.commands.smoke.args }],
+          criteria: [],
+        },
+        writing: { paths: f.proposal.paths, profile: f.input.executor.path, criteria: ['K3'] },
+        candidate: {
+          commands: [
+            { id: 'smoke' },
+            { id: 'validate', args: f.registration.commands.validate.args },
+          ],
+          criteria: ['K1'],
+        },
+        integrated: { commands: [{ id: 'smoke' }, { id: 'validate' }], criteria: [] },
+        acceptance: { roles: [{ roleId: 'reviewer' }, { roleId: 'tester' }], criteria: ['K1'] },
+        human: { criteria: ['K2'] },
+      },
+      criteria: [
+        {
+          id: 'K1',
+          checks: [
+            {
+              participant: 'Хост',
+              commandId: 'validate',
+              evidence: expectedCommand.evidence,
+              success: expectedCommand.success,
+            },
+            {
+              participant: 'reviewer',
+              subject: 'Сверить идентификаторы в квитанциях',
+              evidence: expectedReview.evidence,
+              success: expectedReview.success,
+            },
+          ],
+        },
+        { id: 'K2', checks: [{ stage: 'human', participant: 'Владелец задачи' }] },
+        { id: 'K3', checks: [] },
+        { id: excludedCriterion, applicable: false, reason: 'Режим отключён' },
+      ],
+    });
+    expect(JSON.stringify(summary)).not.toContain('private-preview-message');
+    expect(JSON.stringify(summary)).not.toContain(f.registration.artifactRoot);
+    expect(readdirSync(f.registration.artifactRoot).sort()).toEqual(retained);
+    expect(rpc).not.toHaveBeenCalled();
+    f.setChecks([expectedCommand, expectedReview, { ...expectedCommand, criterion: 'K3' }]);
+    expect(f.preview().summary.gaps.withoutReviewerCount).toBe(0);
+    f.setChecks();
+    expect(f.preview().summary.gaps.withoutReviewerCount).toBe(2);
+  });
+
+  it.each([
+    ['evidence', 'Доказательство не указано'],
+    ['success', 'Условие успеха не задано'],
+  ] as const)(
+    'reports missing %s while retaining the other evidence fields',
+    async (field, missing) => {
+      const f = await previewFixture();
+      const check = { ...expectedCommand };
+      delete check[field];
+      f.setChecks([check, expectedReview]);
+      const { summary } = f.preview();
+      expect(summary.gaps.incompleteChecks).toEqual([
+        {
+          id: 'K1',
+          text: firstCriterion,
+          stage: 'candidate',
+          participant: 'Хост',
+          missing: [missing],
+        },
+      ]);
+      expect(summary.criteria[0]!.checks[0]).toMatchObject({
+        evidence: check.evidence ?? null,
+        success: check.success ?? null,
+      });
+    },
+  );
+
+  it.each([
+    {
+      checks: [{ ...expectedCommand, stage: 'writing' }],
+      error: 'substantial-criterion-check-stage',
+    },
+    { checks: {}, error: 'substantial-criterion-checks' },
+    {
+      checks: [{ ...expectedCommand, stage: 'baseline' }],
+      error: 'substantial-criterion-command-unassigned',
+    },
+    {
+      checks: [{ ...expectedReview, roleId: 'foreign' }],
+      error: 'substantial-criterion-review-unassigned',
+    },
+    {
+      checks: [{ ...expectedCommand, criterion: 'missing' }],
+      error: 'substantial-criterion-check-target',
+    },
+  ])('refuses an invalid criterion binding ($error)', async ({ checks, error }) => {
+    const f = await previewFixture();
+    f.setChecks(checks as SubstantialCriterionCheck[]);
+    expect(f.preview).toThrow(error);
+  });
+
+  it('changes the fingerprint for changed inputs and commands, and verifies the retained card and registration', async () => {
+    const f = await previewFixture();
+    const original = f.preview();
+    const role = join(f.workspace, 'reviewer.md');
+    writeFileSync(role, 'New role instructions');
+    const updated = f.preview();
+    expect(updated.fingerprint).not.toBe(original.fingerprint);
+    expect(updated.summary).toEqual(original.summary);
+    f.registration.commands.smoke.args.push('new flag');
+    expect(f.preview().fingerprint).not.toBe(updated.fingerprint);
+    expect(() =>
+      buildPreparedTaskPreview({ ...f.registration, owner: 'foreign' }, f.input, f.admitted),
+    ).toThrow('preparation-grant-mismatch');
+    expect(() =>
+      buildPreparedTaskPreview(f.registration, { ...f.input, startAdmission: f.proof }, f.admitted),
+    ).toThrow('task-start-card-changed');
+    expect(() =>
+      buildPreparedTaskPreview(f.registration, f.input, {
+        ...f.admitted,
+        admission: { ...f.admitted.admission, card: { ...f.admitted.admission.card, ...f.proof } },
+      }),
+    ).toThrow('task-start-card-changed');
+  });
+
+  it.each([false, true])(
+    'matches previewed commands and write conditions to retained Activity evidence (baseline failure %s)',
+    async (baselineFails) => {
+      const f = await previewFixture();
+      if (baselineFails) f.registration.commands.smoke.args[1] = 'missing.cjs';
+      const { stages, effects } = f.preview().summary;
+      const { preparation } = f.input.admission;
+      declareBackendFixture(f.workspace);
+      const home = taskBackendHome(f.workspace);
+      mkdirSync(home, { recursive: true });
+      writeFileSync(
+        join(home, 'backend-policy.json'),
+        JSON.stringify({
+          schemaVersion: 2,
+          newTasks: 'temporal',
+          startAdmission: 'task-start-admission/1',
+        }),
+      );
+      await reserveTaskBackend(
+        f.workspace,
+        {
+          schemaVersion: 2,
+          projectId: preparation.project.projectId,
+          taskId: preparation.taskId,
+          backend: 'temporal',
+          cardName: basename(preparation.card),
+          origin: f.admitted.admission.card.sha256,
+          startAdmission: f.admitted.ref,
+        },
+        { registration: f.registration, authority: f.startAuthority, preparation },
+      );
+      const service = localTaskActivities(
+        f.registration,
+        {
+          ...f.host,
+          authority: f.authority,
+          startAdmissionAuthority: f.startAuthority,
+        },
+        f.rpc,
+        f.profile,
+        () => {},
+      );
+      await service.executionControls.prepareTaskExecution(f.input);
+      const planning = await service.activities.prepareSubstantialPlanning(f.input);
+      const reviewed = await runReview(f, planning);
+      expect(reviewed.complete).toBe(true);
+      const snapshot = await service.activities.prepareLocalTask(f.input, reviewed.manifest);
+      const baseline = await service.activities.checkLocalTask(
+        f.input,
+        snapshot,
+        'baseline',
+        null,
+        null,
+      );
+      const observed = (manifest: ArtifactRef) =>
+        (f.read(manifest).outcomes as { name: string; proof: ArtifactRef }[]).map(
+          ({ name, proof }) => ({
+            id: name,
+            ...(f.read(proof).command as Omit<(typeof stages.baseline.commands)[number], 'id'>),
+          }),
+        );
+      expect(observed(baseline.manifest)).toEqual(stages.baseline.commands);
+      const source = join(f.workspace, 'owner.cjs');
+      expect(effects.worker.join(' ')).toContain('При её успехе запускает модель исполнителя');
+      expect(readFileSync(source, 'utf8')).not.toContain('trim()');
+      if (baselineFails) {
+        expect(baseline.status).toBe('FAIL');
+        expect(f.state.creates).toBe(0);
+      } else {
+        expect(baseline.status).toBe('PASS');
+        const run = await throughIntegration(
+          { ...f, service },
+          f.input,
+          reviewed.manifest,
+          snapshot,
+        );
+        expect(observed(run.candidate.manifest)).toEqual(stages.candidate.commands);
+        expect(observed(run.checked.manifest)).toEqual(stages.integrated.commands);
+        expect(readFileSync(source, 'utf8')).toContain('trim()');
+        expect((await acceptance(f, run)).complete).toBe(true);
+      }
+      await service.controls.stopLocalTask(f.input);
+    },
+    15_000,
+  );
+});
 
 describe('read-only substantial start checks', () => {
   it('accepts a complete start and an explicitly declared future acceptance file without writing', () => {

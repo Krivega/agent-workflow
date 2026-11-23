@@ -1,4 +1,5 @@
-import { fileURLToPath } from 'node:url';
+import { temporalStartSyntax } from './taskChatHelp.js';
+export { chatDiagnostic } from './taskChatHelp.js';
 export function chatFailureGuidance(reason: string, locator: string) {
   const refused =
     /^(?:invalid-task-chat-[a-z-]+|task-chat-action-required|duplicate-task-chat-option|conflicting-task-chat-plan|conflicting-council-selection|chat-state-must-be-external|unsupported-chat-request-version|chat-environment-identity-mismatch|chat-write-profile-unsupported|invalid-local-plan-json|unsupported-local-plan|local-(?:consumers-incomplete|scope-incomplete|needs-council-planning|checks-missing))$/u.test(
@@ -18,10 +19,8 @@ export function chatFailureGuidance(reason: string, locator: string) {
   };
 }
 
-export const taskChatUsage =
-  'task-chat start --temporal-input <input12.json> --temporal-registration <registration.json> | task-chat start --state <external-directory> --card <compact-card.md> (--plan <proposal.md> | --local-plan <plan.json>) --council-selection <roles.json> [--source <file>] [--binary <codex>] | task-chat load --state <directory> [--load-bytes <1000..512000>] [--procedure <id>] | task-chat continue --state <directory> | task-chat wait --state <directory> [--after <cursor>] [--timeout-ms <0..60000>] [--until changed|settled] | task-chat revise --state <directory> (--plan <proposal.md> | --local-plan <plan.json>) --affected <criterion> --council-selection <roles.json> (legacy: --skip-role <role:reason>)';
+export const taskChatUsage = `${temporalStartSyntax} | task-chat start --state <external-directory> --card <compact-card.md> (--plan <proposal.md> | --local-plan <plan.json>) --council-selection <roles.json> [--source <file>] [--binary <codex>] | task-chat load --state <directory> [--load-bytes <1000..512000>] [--procedure <id>] | task-chat continue --state <directory> | task-chat wait --state <directory> [--after <cursor>] [--timeout-ms <0..60000>] [--until changed|settled] | task-chat revise --state <directory> (--plan <proposal.md> | --local-plan <plan.json>) --affected <criterion> --council-selection <roles.json> (legacy: --skip-role <role:reason>)`;
 
-export const chatDiagnostic = fileURLToPath(new URL('../CURRENT-CHAT.md', import.meta.url));
 export function reportTaskChatFailure(
   cause: unknown,
   diagnostic: string,

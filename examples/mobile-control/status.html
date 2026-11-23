@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Состояние задачи</title>
+    <script src="/status.js" defer></script>
+  </head>
+  <body data-url="/api/WORKFLOW_ID">
+    <main>
+      <h1>Состояние задачи</h1>
+      <p id="fresh" role="status">Запрашиваем состояние…</p>
+      <dl>
+        <dt>Проект</dt>
+        <dd id="project">—</dd>
+        <dt>Задача</dt>
+        <dd id="task">—</dd>
+        <dt>Состояние</dt>
+        <dd id="status">—</dd>
+        <dt>Этап</dt>
+        <dd id="phase">—</dd>
+        <dt>Причина ожидания или остановки</dt>
+        <dd id="reason">—</dd>
+        <dt>Последнее подтверждение</dt>
+        <dd id="confirmedAt">—</dd>
+      </dl>
+      <button type="button" id="refresh">Обновить</button>
+    </main>
+  </body>
+</html>

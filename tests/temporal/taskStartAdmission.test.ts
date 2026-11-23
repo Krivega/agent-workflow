@@ -1,5 +1,16 @@
-import type { Client } from '@temporalio/client';
-import { WorkflowIdConflictPolicy, WorkflowIdReusePolicy } from '@temporalio/common';
+import {
+  ServiceError,
+  WorkflowFailedError,
+  WorkflowNotFoundError,
+  type Client,
+} from '@temporalio/client';
+import type * as temporalClient from '@temporalio/client';
+import {
+  defaultPayloadConverter,
+  RetryState,
+  WorkflowIdConflictPolicy,
+  WorkflowIdReusePolicy,
+} from '@temporalio/common';
 import { execFileSync } from 'node:child_process';
 import {
   existsSync,
@@ -33,7 +44,7 @@ import { taskHumanCanonical } from '../../src/policy/taskHuman.js';
 import { parseLocalTask } from '../../src/policy/localTask.js';
 import { digest } from '../../src/adapters/artifacts/files.js';
 import * as artifactFiles from '../../src/adapters/artifacts/files.js';
-import { artifactStore, nativeTaskSource } from '../../src/client/taskExecution.js';
+import { artifactStore } from '../../src/client/taskExecution.js';
 import { reserveTaskBackend, taskBackendHome } from '../../src/adapters/project/taskBackend.js';
 import {
   bindTaskBackendClient,
@@ -42,17 +53,28 @@ import {
   reserveNewTaskBackend,
 } from '../../src/client/taskBackend.js';
 import type { TaskBackendRegistration } from '../../src/client/taskBackend.js';
-import { startLocalTask, startPreparedLocalTask } from '../../src/client/localTask.js';
+import {
+  startLocalTask,
+  startPreparedLocalTask,
+  previewPreparedLocalTask,
+} from '../../src/client/localTask.js';
+import { readPreparedLocalTask } from '../../src/client/localTaskRead.js';
 import { declareBackendFixture } from '../backendPolicyFixture.js';
-import { substantialTaskFixture } from './substantialTaskFixture.js';
+import { preparedTaskCliFixture } from './preparedTaskCliFixture.js';
 
 const transport = vi.hoisted(() => ({
   lazy: vi.fn(),
   client: vi.fn(),
   start: vi.fn(),
   close: vi.fn(async () => {}),
+  handle: vi.fn(),
+  describe: vi.fn(),
+  history: vi.fn(),
+  query: vi.fn(),
+  result: vi.fn(),
 }));
-vi.mock('@temporalio/client', () => ({
+vi.mock('@temporalio/client', async (importOriginal) => ({
+  ...(await importOriginal<typeof temporalClient>()),
   Connection: { lazy: transport.lazy },
   Client: class {
     readonly connection: unknown;
@@ -60,7 +82,7 @@ vi.mock('@temporalio/client', () => ({
       this.connection = options.connection;
       transport.client(options);
     }
-    readonly workflow = { start: transport.start };
+    readonly workflow = { start: transport.start, getHandle: transport.handle };
   },
 }));
 vi.mock('node:os', async (importOriginal) => {
@@ -662,109 +684,7 @@ it('does not publish a declaration after its trusted registration changes during
 });
 
 async function preparedStartFixture() {
-  const f = substantialTaskFixture(),
-    declaration = f.substantialInput.admission,
-    preparation = declaration.preparation,
-    registration = {
-      ...f.registration,
-      taskBackend: 'required' as const,
-      commands: {
-        ...f.registration.commands,
-        smoke: { ...f.registration.commands.smoke, timeoutMs: 30_000 },
-      },
-    };
-  writeFileSync(join(f.workspace, preparation.card), card);
-  f.proposal.requirement.hash = digest(card);
-  const plan = Buffer.from(JSON.stringify(f.proposal));
-  writeFileSync(join(f.workspace, declaration.plan.path), plan);
-
-  const threadId = 'prepared-start-thread',
-    turnId = 'prepared-start-turn',
-    sessionsRoot = join(f.root, 'sessions'),
-    transcript = join(sessionsRoot, 'rollout-' + threadId + '.jsonl'),
-    message = 'Start this prepared task.';
-  mkdirSync(sessionsRoot, { mode: 0o700 });
-  vi.spyOn(process, 'cwd').mockReturnValue(f.workspace);
-  vi.stubEnv('CODEX_HOME', f.root);
-  vi.stubEnv('CODEX_THREAD_ID', threadId);
-  const row = (type: string, payload: unknown) => JSON.stringify({ type, payload }) + '\n';
-  const user = row('response_item', {
-    type: 'message',
-    role: 'user',
-    content: [{ type: 'input_text', text: message }],
-    internal_chat_message_metadata_passthrough: {
-      turn_id: turnId,
-      create_time: 1,
-      content_item_kinds: ['user.text'],
-      content_item_metadata: [{ provenance: { type: 'user' } }],
-    },
-  });
-  writeFileSync(
-    transcript,
-    [
-      row('session_meta', {
-        id: threadId,
-        session_id: threadId,
-        cli_version: '0.166.0-alpha.6',
-        cwd: f.workspace,
-        source: 'vscode',
-        originator: 'codex_work_desktop',
-        thread_source: 'user',
-      }),
-      row('event_msg', { type: 'task_started', turn_id: turnId }),
-      row('turn_context', { turn_id: turnId, cwd: f.workspace }),
-      user,
-      row('event_msg', {
-        type: 'item_completed',
-        thread_id: threadId,
-        turn_id: turnId,
-        item: {
-          type: 'UserMessage',
-          content: [{ type: 'text', text: message, text_elements: [] }],
-        },
-      }),
-    ].join(''),
-    { mode: 0o600 },
-  );
-  const source = nativeTaskSource(f.store, {
-    sessionsRoot,
-    chatWorkspace: f.workspace,
-    threadId,
-    owner: registration.owner,
-  });
-  const start = await prepareTaskStartAdmission(
-    registration,
-    {
-      issue: () => source.issue({ transcript, turnId, user: { line: 4, sha256: digest(user) } }),
-      verify: source.verify,
-    },
-    { preparation, previous: null, human: [human], inapplicable: [] },
-  );
-  const home = taskBackendHome(f.workspace);
-  declareBackendFixture(f.workspace);
-  mkdirSync(home, { recursive: true });
-  writeFileSync(
-    join(home, 'backend-policy.json'),
-    JSON.stringify({
-      schemaVersion: 2,
-      newTasks: 'temporal',
-      startAdmission: 'task-start-admission/1',
-    }),
-  );
-  const input: HumanManagedTaskInput = {
-    ...f.substantialInput,
-    admission: { ...declaration, plan: { ...declaration.plan, sha256: digest(plan) } },
-    schemaVersion: 12,
-    startAdmission: start.ref,
-    continuation: { attempt: 0, previous: null },
-  };
-  const config = {
-    schemaVersion: 1,
-    address: '127.0.0.1:7233',
-    namespace: 'prepared-start',
-    taskQueue: 'prepared-tasks',
-    registration,
-  };
+  const f = await preparedTaskCliFixture(card, human);
   transport.lazy.mockReset().mockImplementation((options: unknown) => ({
     options,
     close: transport.close,
@@ -772,7 +692,7 @@ async function preparedStartFixture() {
   transport.client.mockClear();
   transport.start.mockReset();
   transport.close.mockClear();
-  return { ...f, input, config, home, transcript, verify: source.verify };
+  return f;
 }
 
 it('starts a prepared task through the SDK under one immutable assignment and Workflow identity', async () => {
@@ -834,6 +754,311 @@ it('starts a prepared task through the SDK under one immutable assignment and Wo
   );
   expect(query.mock.calls).toEqual([['localTaskInput'], ['localTaskInput']]);
   expect(transport.close).toHaveBeenCalledTimes(2);
+});
+
+it('binds the start to the checked preview and leaves changed input unassigned', async () => {
+  const f = await preparedStartFixture();
+  const preview = await previewPreparedLocalTask(f.workspace, f.input, f.config);
+  expect(await previewPreparedLocalTask(f.workspace, f.input, f.config)).toEqual(preview);
+  expect(preview).toMatchObject({
+    status: 'preview',
+    workflowId: 'aw/task/neutral/one',
+    summary: { workspaceRoot: f.workspace },
+  });
+  expect(transport.lazy).not.toHaveBeenCalled();
+  const options = { previewDigest: preview.previewDigest };
+  await expect(
+    startPreparedLocalTask(f.workspace, f.input, { ...f.config, taskQueue: 'changed' }, options),
+  ).rejects.toThrow('task-chat-temporal-preview-changed');
+  expect(existsSync(join(f.home, 'backend-assignments'))).toBe(false);
+  transport.start.mockResolvedValue({ workflowId: preview.workflowId, query: async () => f.input });
+  await expect(
+    startPreparedLocalTask(f.workspace, f.input, f.config, options),
+  ).resolves.toMatchObject({ status: 'accepted', workflowId: preview.workflowId });
+});
+
+it('records possible submission only once the client is about to call Temporal', async () => {
+  const f = await preparedStartFixture(),
+    onSubmit = vi.fn(),
+    checkFiles = vi.fn();
+  checkFiles.mockImplementationOnce(() => {
+    throw Error('input-changed');
+  });
+  await expect(
+    startPreparedLocalTask(f.workspace, f.input, f.config, { onSubmit, checkFiles }),
+  ).rejects.toThrow('input-changed');
+  expect(onSubmit).not.toHaveBeenCalled();
+  expect(transport.start).not.toHaveBeenCalled();
+  expect(existsSync(join(f.home, 'backend-assignments'))).toBe(false);
+  transport.start.mockImplementationOnce(async () => {
+    expect(onSubmit).toHaveBeenCalledExactlyOnceWith('aw/task/neutral/one');
+    throw Error('response-lost');
+  });
+  await expect(
+    startPreparedLocalTask(f.workspace, f.input, f.config, { onSubmit }),
+  ).rejects.toThrow('response-lost');
+  expect(transport.start).toHaveBeenCalledOnce();
+  expect(existsSync(join(f.home, 'backend-assignments/neutral/one.json'))).toBe(true);
+});
+
+async function preparedReadFixture() {
+  const f = await preparedStartFixture();
+  const workflowId = 'aw/task/neutral/one',
+    runId = 'current-run';
+  transport.start.mockResolvedValue({ workflowId, query: async () => f.input });
+  await startPreparedLocalTask(f.workspace, f.input, f.config);
+  transport.start.mockClear();
+  vi.stubEnv('CODEX_THREAD_ID', 'unrelated-thread');
+  transport.lazy.mockImplementation((options: { address: string }) => ({
+    options: { address: options.address === '127.0.0.1' ? '127.0.0.1:7233' : options.address },
+    close: transport.close,
+    withDeadline: async (_deadline: number, run: () => Promise<unknown>) => run(),
+    workflowService: { getWorkflowExecutionHistory: transport.history },
+  }));
+  transport.handle.mockReset().mockReturnValue({
+    describe: transport.describe,
+    query: transport.query,
+    result: transport.result,
+  });
+  const description = (name: string) => ({
+    workflowId,
+    runId,
+    type: 'LocalTaskWorkflow',
+    taskQueue: f.config.taskQueue,
+    status: { name },
+  });
+  const history = (input: unknown) => ({
+    history: {
+      events: [
+        {
+          workflowExecutionStartedEventAttributes: {
+            input: { payloads: [defaultPayloadConverter.toPayload(input)] },
+          },
+        },
+      ],
+    },
+  });
+  transport.history.mockReset().mockResolvedValue(history(f.input));
+  transport.describe.mockReset().mockResolvedValue(description('RUNNING'));
+  transport.query.mockReset().mockResolvedValue({ phase: 'baseline', runId });
+  transport.result.mockReset();
+  return {
+    ...f,
+    workflowId,
+    runId,
+    description,
+    history,
+    read: (action: 'status' | 'result' = 'status') =>
+      readPreparedLocalTask(f.workspace, f.config, workflowId, action),
+  };
+}
+
+it('observes running and waiting phases and follows the current run without modifying the task', async () => {
+  const f = await preparedReadFixture();
+  const assignment = join(f.home, 'backend-assignments/neutral/one.json'),
+    original = readFileSync(assignment);
+  transport.describe.mockResolvedValueOnce({
+    ...f.description('CONTINUED_AS_NEW'),
+    runId: 'old-run',
+  });
+  expect(await f.read()).toMatchObject({
+    runId: f.runId,
+    phase: 'baseline',
+    status: 'running',
+    reason: null,
+  });
+  await expect(
+    readPreparedLocalTask(
+      f.workspace,
+      { ...f.config, address: '127.0.0.1' },
+      f.workflowId,
+      'status',
+    ),
+  ).resolves.toMatchObject({ runId: f.runId, phase: 'baseline' });
+  transport.query.mockResolvedValue({ phase: 'waiting-human-gates', runId: f.runId, error: '' });
+  const pending = await f.read('result');
+  expect(pending).toMatchObject({
+    phase: 'waiting-human-gates',
+    status: 'pending',
+    reason: 'task-human-decision-required',
+  });
+  expect(await f.read('result')).toEqual(pending);
+  expect(transport.describe).toHaveBeenCalledTimes(5);
+  expect(transport.query).toHaveBeenCalledWith('localTaskStatus');
+  expect(transport.handle).toHaveBeenCalledWith(f.workflowId, f.runId);
+  expect(transport.history).toHaveBeenCalledWith({
+    namespace: f.config.namespace,
+    execution: { workflowId: f.workflowId, runId: f.runId },
+    maximumPageSize: 1,
+  });
+  expect(readFileSync(assignment)).toEqual(original);
+  expect(transport.start).not.toHaveBeenCalled();
+  expect(transport.result).not.toHaveBeenCalled();
+});
+
+it('reads closed outcomes from history without querying a Worker', async () => {
+  const f = await preparedReadFixture(),
+    ref = f.input.startAdmission;
+  transport.describe.mockResolvedValue(f.description('COMPLETED'));
+  const summary = { history: [ref], commands: [ref], checkpoint: ref };
+  transport.result.mockResolvedValueOnce({
+    ...summary,
+    status: 'done',
+    result: ref,
+    projection: ref,
+  });
+  expect(await f.read('result')).toMatchObject({
+    status: 'done',
+    reason: null,
+    evidence: { ...summary, result: ref, projection: ref },
+  });
+  transport.result.mockResolvedValueOnce({
+    ...summary,
+    checkpoint: null,
+    status: 'cancelled',
+    stop: ref,
+    held: ref,
+    error: 'baseline-failed',
+  });
+  expect(await f.read()).toMatchObject({
+    status: 'cancelled',
+    reason: 'baseline-failed',
+    evidence: { ...summary, checkpoint: null, stop: ref, held: ref },
+  });
+  transport.result.mockResolvedValueOnce({
+    ...summary,
+    status: 'cancelled',
+    stop: ref,
+    held: null,
+  });
+  expect(await f.read()).toMatchObject({
+    status: 'cancelled',
+    reason: 'task-cancelled',
+    evidence: { held: null },
+  });
+  transport.result.mockResolvedValueOnce({
+    ...summary,
+    status: 'cancelled',
+    stop: ref,
+    held: null,
+    error: '',
+    stopFailure: 'stop-failure',
+  });
+  expect(await f.read()).toMatchObject({ status: 'cancelled', reason: 'stop-failure' });
+  transport.describe.mockResolvedValueOnce(f.description('CANCELLED'));
+  transport.result.mockRejectedValueOnce(
+    new WorkflowFailedError('cancelled', undefined, RetryState.CANCEL_REQUESTED),
+  );
+  expect(await f.read()).toMatchObject({ status: 'cancelled', reason: 'cancelled' });
+  transport.describe.mockResolvedValueOnce(f.description('FAILED'));
+  transport.result.mockRejectedValueOnce(
+    new WorkflowFailedError(
+      'workflow failed',
+      Error('failed activity'),
+      RetryState.NON_RETRYABLE_FAILURE,
+    ),
+  );
+  expect(await f.read()).toMatchObject({ status: 'failed', reason: 'failed activity' });
+  transport.result.mockResolvedValueOnce({ ...summary, status: 'invalid' });
+  await expect(f.read()).rejects.toThrow('task-chat-temporal-result-invalid');
+  expect(transport.query).not.toHaveBeenCalled();
+  expect(transport.handle).toHaveBeenCalledWith(f.workflowId, f.runId, { followRuns: false });
+});
+
+it('distinguishes missing, unavailable, foreign and inconsistent Temporal observations', async () => {
+  const f = await preparedReadFixture();
+  const reason = 'task-chat-temporal-read-registration';
+  const missing = 'aw/task/neutral/missing';
+  await expect(readPreparedLocalTask(f.workspace, f.config, 'invalid', 'status')).rejects.toThrow(
+    'task-chat-temporal-workflow-id',
+  );
+  await expect(
+    readPreparedLocalTask(f.workspace, f.config, 'aw/task/foreign/one', 'status'),
+  ).rejects.toThrow(reason);
+  await expect(
+    readPreparedLocalTask(
+      f.workspace,
+      { ...f.config, taskQueue: 'foreign' },
+      f.workflowId,
+      'status',
+    ),
+  ).rejects.toThrow(reason);
+  await expect(
+    readPreparedLocalTask(
+      f.workspace,
+      { ...f.config, registration: { ...f.config.registration, owner: 'foreign' } },
+      f.workflowId,
+      'status',
+    ),
+  ).rejects.toThrow(reason);
+  transport.describe.mockRejectedValueOnce(
+    new WorkflowNotFoundError('missing', missing, undefined),
+  );
+  await expect(readPreparedLocalTask(f.workspace, f.config, missing, 'result')).rejects.toThrow(
+    'task-chat-temporal-task-not-found',
+  );
+  for (const code of [4, 14, 7]) {
+    const grpc = Object.assign(Error('backend-detail'), { code, details: 'private', metadata: {} });
+    transport.describe.mockRejectedValueOnce(new ServiceError('transport', { cause: grpc }));
+    await expect(f.read()).rejects.toThrow(
+      code === 7 ? 'transport' : 'task-chat-temporal-server-unavailable',
+    );
+  }
+  await expect(readPreparedLocalTask(f.workspace, f.config, missing, 'status')).rejects.toThrow(
+    reason,
+  );
+  for (const replacement of [
+    { workflowId: missing },
+    { type: 'foreign' },
+    { taskQueue: 'foreign' },
+  ]) {
+    transport.describe.mockResolvedValueOnce({ ...f.description('RUNNING'), ...replacement });
+    await expect(f.read()).rejects.toThrow(reason);
+  }
+  transport.history.mockResolvedValueOnce({});
+  await expect(f.read()).rejects.toThrow('task-chat-temporal-read-history');
+  transport.history.mockResolvedValueOnce(f.history(f.substantialInput));
+  await expect(f.read()).rejects.toThrow(reason);
+  for (const replacement of [
+    { taskId: 'foreign' },
+    { card: 'tasks/foreign.md' },
+    { generation: 999 },
+  ]) {
+    transport.history.mockResolvedValueOnce(
+      f.history({
+        ...f.input,
+        admission: {
+          ...f.input.admission,
+          preparation: { ...f.input.admission.preparation, ...replacement },
+        },
+      }),
+    );
+    await expect(f.read()).rejects.toThrow(
+      /task-chat-temporal-read-registration|preparation-grant-mismatch/,
+    );
+  }
+  transport.history.mockResolvedValueOnce(f.history({ ...f.input, startAdmission: f.proof }));
+  await expect(f.read()).rejects.toThrow(reason);
+  transport.describe
+    .mockResolvedValueOnce(f.description('CONTINUED_AS_NEW'))
+    .mockResolvedValueOnce(f.description('CONTINUED_AS_NEW'));
+  await expect(f.read()).rejects.toThrow('task-chat-temporal-continuing');
+  transport.describe.mockResolvedValueOnce(f.description('UNKNOWN'));
+  await expect(f.read()).rejects.toThrow('task-chat-temporal-status-unknown');
+  transport.query
+    .mockResolvedValueOnce({ phase: 'baseline', runId: 'old' })
+    .mockResolvedValueOnce({ runId: f.runId });
+  await expect(f.read()).rejects.toThrow('task-chat-temporal-status-binding');
+  await expect(f.read()).rejects.toThrow('task-chat-temporal-status-binding');
+  transport.describe.mockResolvedValueOnce(f.description('PAUSED'));
+  transport.query.mockResolvedValueOnce({
+    phase: 'stop-unknown',
+    runId: f.runId,
+    stopFailure: 'stop-detail',
+  });
+  expect(await f.read()).toMatchObject({ phase: 'stop-unknown', reason: 'stop-detail' });
+  rmSync(join(f.home, 'backend-policy.json'));
+  await expect(f.read()).rejects.toThrow('backend-policy-required');
 });
 
 it('refuses to redirect an existing start to another address, namespace, or queue', async () => {

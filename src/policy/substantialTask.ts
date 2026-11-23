@@ -1,4 +1,8 @@
-import type { SubstantialAdmissionInput, SubstantialPlan } from '../contracts/substantialTask.js';
+import type {
+  SubstantialAdmissionInput,
+  SubstantialCriterionCheck,
+  SubstantialPlan,
+} from '../contracts/substantialTask.js';
 import {
   exactFields,
   identifier,
@@ -9,6 +13,7 @@ import {
 import { controlRef } from './readerControl.js';
 import { parsePreparation } from './preparation.js';
 import { localPlanningRisks, validateLocalPlan } from './localPlanning.js';
+import { textField } from '../contracts/localValues.js';
 
 export function parseSubstantialAdmission(value: unknown): SubstantialAdmissionInput {
   const v = object(value);
@@ -27,6 +32,28 @@ export function parseSubstantialAdmission(value: unknown): SubstantialAdmissionI
     acceptance: controlRef(v.acceptance),
   };
 }
+function criterionChecks(value: unknown): SubstantialCriterionCheck[] {
+  requireContract(Array.isArray(value), 'substantial-criterion-checks');
+  return value.map((item: unknown) => {
+    const raw = object(item);
+    const { stage } = raw;
+    const common = {
+      criterion: textField(raw.criterion),
+      ...(raw.evidence === undefined ? {} : { evidence: textField(raw.evidence) }),
+      ...(raw.success === undefined ? {} : { success: textField(raw.success) }),
+    };
+    if (stage === 'acceptance') {
+      exactFields(raw, [...Object.keys(common), 'stage', 'roleId', 'subject']);
+      return { ...common, stage, roleId: identifier(raw.roleId), subject: textField(raw.subject) };
+    }
+    requireContract(
+      stage === 'baseline' || stage === 'candidate' || stage === 'integrated',
+      'substantial-criterion-check-stage',
+    );
+    exactFields(raw, [...Object.keys(common), 'stage', 'command']);
+    return { ...common, stage, command: identifier(raw.command) };
+  });
+}
 export function parseSubstantialPlan(value: unknown): SubstantialPlan {
   const v = object(value);
   exactFields(v, [
@@ -42,6 +69,7 @@ export function parseSubstantialPlan(value: unknown): SubstantialPlan {
     'reason',
     'checks',
     'criterion',
+    ...(v.criterion_checks === undefined ? [] : ['criterion_checks']),
   ]);
   requireContract(v.schema_version === 2, 'substantial-plan-schema');
   const risks = object(v.risks);
@@ -74,5 +102,8 @@ export function parseSubstantialPlan(value: unknown): SubstantialPlan {
     schema_version: 2,
     plan_id: identifier(v.plan_id),
     risks: risks as SubstantialPlan['risks'],
+    ...(v.criterion_checks === undefined
+      ? {}
+      : { criterion_checks: criterionChecks(v.criterion_checks) }),
   };
 }

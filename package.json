@@ -89,7 +89,8 @@
     "cli/entry.mjs",
     "cli/consumerSetup.mjs",
     "cli/consumerRelease.mjs",
-    "cli/temporalStart.ts"
+    "cli/temporalStart.ts",
+    "cli/taskChatHelp.ts"
   ],
   "exports": {
     "./consumer-release": "./cli/consumerRelease.mjs",
@@ -192,7 +193,7 @@
     "lint:docs:references": "node --import tsx scripts/validateDocumentation.mjs",
     "lint:docs": "markdownlint-cli2 \"**/*.md\" \"**/*.mdc\" \"#node_modules\"",
     "lint:adr": "node --import tsx scripts/validateAdrRecords.mjs && node --import tsx scripts/validateAdrChanges.mjs",
-    "test:node": "node --import tsx --test tests/consumerRelease.test.mjs tests/td054DeadlineProbe.test.mjs tests/temporal/t4-pg-temporal-retention.test.mjs tests/temporal/full-process-guard.test.mjs tests/validationTooling.test.mjs tests/temporal/historySources.test.mjs tests/packageSupply.test.mjs",
+    "test:node": "node --import tsx --test tests/consumerRelease.test.mjs tests/td054DeadlineProbe.test.mjs tests/temporal/t4-pg-temporal-retention.test.mjs tests/temporal/full-process-guard.test.mjs tests/validationTooling.test.mjs tests/mobileControl.test.mjs tests/temporal/historySources.test.mjs tests/packageSupply.test.mjs",
     "harness2": "python3 harness2/pilot.py",
     "harness2:test": "sh harness2/test.sh",
     "recovery-package": "tsx tests/comparisonH06RecoveryPackage.ts",

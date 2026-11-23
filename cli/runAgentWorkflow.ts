@@ -6,7 +6,7 @@ import { chatUsage } from './chatCommand.js';
 import { connectionUsage } from './taskConnectionCommand.js';
 
 const usage =
-  'Использование: agent-workflow init | doctor | inspect-project [каталог] | inspect-connection <дескриптор> [каталог] | ' +
+  'Использование: agent-workflow init | doctor | task-chat --help | inspect-project [каталог] | inspect-connection <дескриптор> [каталог] | ' +
   connectionUsage +
   ' | ' +
   chatUsage;
