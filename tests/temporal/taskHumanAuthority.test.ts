@@ -331,13 +331,19 @@ async function fixture() {
 }
 
 describe('task human actual private source and native choice boundary (synthetic unit files only)', () => {
-  it.each(['0.169.0-alpha.11.1', '0.169.1', '0.171.0-alpha.13'])(
+  it.each([
+    ['0.169.0-alpha.11.1', 'codex_work_desktop'],
+    ['0.169.1', 'codex_work_desktop'],
+    ['0.171.0-alpha.13', 'codex_work_desktop'],
+    ['0.171.0-alpha.13', 'Codex Desktop'],
+  ])(
     'binds Desktop %s direct requests to the current root turn and private workspace',
-    async (version) => {
+    async (version, originator) => {
       const f = await fixture();
       const session = f.records[0]!.payload;
       const context = f.records[2]!.payload;
       session.cli_version = version;
+      session.originator = originator;
       context.root_turn_id = 'initial';
       f.write();
       const principal = await f.observer.issue(f.source);

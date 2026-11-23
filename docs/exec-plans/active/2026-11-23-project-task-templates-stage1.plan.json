@@ -1,0 +1,119 @@
+{
+  "schema_version": 2,
+  "plan_id": "project-templates-stage1",
+  "requirement": {
+    "locator": "docs/exec-plans/active/2026-11-23-project-task-templates-stage1.md",
+    "hash": "73027e72265685414c5f0eba5b078571818eeeb89c7b82afbb897b6ef86af59b"
+  },
+  "basis": [
+    {
+      "locator": "docs/exec-plans/active/2026-11-22-project-task-templates-and-routes.md",
+      "hash": "0a921c126a8544719fe0856b09aeaf6d21478fc9c8efa807fcf9b624f52482bd"
+    },
+    {
+      "locator": "docs/design/decisions/inherited/0049-run-council-in-independent-read-only-sessions.md",
+      "hash": "1facec48c465c7511f925c3e2ca6e7c30f7a137b5c23eace0711e782f6d3657f"
+    },
+    {
+      "locator": "docs/design/decisions/_template.md",
+      "hash": "453025885220effe6cc0b01c9a3bf28e6910e20010157d0d2677716ad6b6f2f4"
+    }
+  ],
+  "owner": {
+    "locator": "docs/exec-plans/active/2026-11-23-project-task-templates-stage1.md",
+    "hash": "73027e72265685414c5f0eba5b078571818eeeb89c7b82afbb897b6ef86af59b"
+  },
+  "consumers": [
+    {
+      "locator": "src/contracts/project.ts",
+      "hash": "c3533fbdd7beb4255c4eaee89e94178cc2191ff8b47a635a00f906ef005ebef6"
+    },
+    {
+      "locator": "src/contracts/preparation.ts",
+      "hash": "24222f2af1d1e4b429c6425dd6fa3cbfc698617404103b7e28e14f9678099a57"
+    },
+    {
+      "locator": "src/workflows/review.ts",
+      "hash": "5f62ea4fee9d85825d73c995b7bbaaafae4bfb13492ce5f26d699f042d54982f"
+    },
+    {
+      "locator": "src/client/taskStartPreview.ts",
+      "hash": "ba19bf2438eba69114fcf11bd72e7abcacfba9f273edd63366daf66797a97a52"
+    }
+  ],
+  "consumers_complete": true,
+  "paths": [
+    "docs/design/decisions/0079-version-project-task-templates-and-routes.md",
+    "docs/design/decisions/README.md"
+  ],
+  "risks": {
+    "new_behavior": false,
+    "new_contract": true,
+    "architecture": true,
+    "storage": false,
+    "authority": false,
+    "security": false,
+    "data_integrity": true,
+    "unknown_consumers": false
+  },
+  "reason": "Согласовать версионирование и передачу результатов до реализации.",
+  "checks": [
+    "validate"
+  ],
+  "criterion": "Предложение ADR по четырём критериям карточки",
+  "criterion_checks": [
+    {
+      "criterion": "VERSION",
+      "stage": "acceptance",
+      "roleId": "architecture",
+      "subject": "VERSION: ADR описывает выбор и закрепление версии шаблона и маршрута, допустимые уточнения карточки и происхождение итоговых значений.",
+      "evidence": "Разделы предложенного ADR и запись в реестре",
+      "success": "ADR описывает выбор и закрепление версии шаблона и маршрута, допустимые уточнения карточки и происхождение итоговых значений."
+    },
+    {
+      "criterion": "ROUTE",
+      "stage": "acceptance",
+      "roleId": "architecture",
+      "subject": "ROUTE: На примере изменения API показаны два независимых шага, обязательные выходы обоих для архитектора и поведение при отсутствии либо ошибке входа.",
+      "evidence": "Разделы предложенного ADR и запись в реестре",
+      "success": "На примере изменения API показаны два независимых шага, обязательные выходы обоих для архитектора и поведение при отсутствии либо ошибке входа."
+    },
+    {
+      "criterion": "COMPAT",
+      "stage": "acceptance",
+      "roleId": "architecture",
+      "subject": "COMPAT: Описаны совместимость прежних дескрипторов и входов SDK, воспроизведение истории Temporal и независимость приёмки по ADR-0049.",
+      "evidence": "Разделы предложенного ADR и запись в реестре",
+      "success": "Описаны совместимость прежних дескрипторов и входов SDK, воспроизведение истории Temporal и независимость приёмки по ADR-0049."
+    },
+    {
+      "criterion": "REVIEW",
+      "stage": "acceptance",
+      "roleId": "architecture",
+      "subject": "REVIEW: Указаны рассмотренные варианты, последствия и способ проверки решения. Предложение включено в реестр и проходит проверки документов и ADR.",
+      "evidence": "Разделы предложенного ADR и запись в реестре",
+      "success": "Указаны рассмотренные варианты, последствия и способ проверки решения. Предложение включено в реестр и проходит проверки документов и ADR."
+    },
+    {
+      "criterion": "REVIEW",
+      "stage": "baseline",
+      "command": "validate",
+      "evidence": "Журнал yarn validate",
+      "success": "Код выхода 0"
+    },
+    {
+      "criterion": "REVIEW",
+      "stage": "candidate",
+      "command": "validate",
+      "evidence": "Журнал yarn validate",
+      "success": "Код выхода 0"
+    },
+    {
+      "criterion": "REVIEW",
+      "stage": "integrated",
+      "command": "validate",
+      "evidence": "Журнал yarn validate",
+      "success": "Код выхода 0"
+    }
+  ]
+}

@@ -28,7 +28,7 @@ import type { Council } from '../core/council.js';
 import { createExecution, applyExecution } from '../core/execution.js';
 import { validateCheckpoint } from '../adapters/storage/workflowValidation.js';
 import { beginExecution, advanceExecution } from '../application/executionWorkflow.js';
-import { fixture, grant } from './storageFixtures.js';
+import { enterStorageWorkspace, fixture, grant } from './storageFixtures.js';
 import { workflowFixture, executionEvent, designReviewFixture } from './workflowFixtures.js';
 import type { Json, TechnicalState, StoreRequest, Change, StoreCommand } from '../core/evidence.js';
 
@@ -316,6 +316,7 @@ it('keeps old archive blobs unread during new commits, replays one event, and ba
       'repeated-full-view',
     );
     expect(complete.execution!.history[0]).toEqual(original.history[0]);
+    enterStorageWorkspace(db.parent);
     const ipc = new ProcessEvidenceStore(db.root, grant);
     const archive = await ipc.execute({
       context: grant.context,

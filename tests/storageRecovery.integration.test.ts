@@ -24,7 +24,7 @@ import {
   StoreFiles,
 } from '../adapters/storage/storeFiles.js';
 import { SqliteEvidenceStore, unwrap } from '../adapters/storage/sqliteEvidenceStore.js';
-import { body, fixture, grant, signed } from './storageFixtures.js';
+import { enterStorageWorkspace, body, fixture, grant, signed } from './storageFixtures.js';
 
 let f: ReturnType<typeof fixture>;
 const children: ChildProcess[] = [];
@@ -38,6 +38,7 @@ afterEach(() => {
 
 it('runs two real writers against one revision and restarts to recover the single committed receipt', async () => {
   f.claim();
+  enterStorageWorkspace(f.parent);
   const first = new ProcessEvidenceStore(f.root, grant);
   const second = new ProcessEvidenceStore(f.root, grant);
   const results = await Promise.all([
@@ -61,6 +62,7 @@ it('runs two real writers against one revision and restarts to recover the singl
 });
 
 it('performs administration in isolated processes and keeps restore frozen', async () => {
+  enterStorageWorkspace(f.parent);
   const created = new ProcessEvidenceStore(join(f.parent, 'process-created'), grant);
   expect(await created.administer(grant.context, { type: 'initialize' })).toEqual({
     ok: true,

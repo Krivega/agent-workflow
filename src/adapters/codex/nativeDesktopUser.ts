@@ -3,10 +3,14 @@ import { object } from '../../contracts/project.js';
 
 export const comparisonDesktopVersion = '0.169.0-alpha.11.1';
 
-function isDesktopUserRoot(session: Record<string, unknown>, threadSource = 'user'): boolean {
+function isDesktopUserRoot(
+  session: Record<string, unknown>,
+  threadSource = 'user',
+  originator = 'codex_work_desktop',
+): boolean {
   return (
     session.source === 'vscode' &&
-    session.originator === 'codex_work_desktop' &&
+    session.originator === originator &&
     session.thread_source === threadSource &&
     !Object.hasOwn(session, 'forked_from_id') &&
     !Object.hasOwn(session, 'parent_thread_id')
@@ -20,6 +24,11 @@ export function isComparisonDesktopUser(
 }
 
 export function isTaskStartDesktopRoot(session: Record<string, unknown>): boolean {
+  if (
+    session.cli_version === '0.171.0-alpha.13' &&
+    isDesktopUserRoot(session, 'user', 'Codex Desktop')
+  )
+    return true;
   return (
     (session.cli_version === comparisonDesktopVersion ||
       session.cli_version === '0.169.1' ||

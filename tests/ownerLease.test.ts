@@ -2,7 +2,7 @@ import type { Change, TechnicalState, StoreRequest } from '../core/evidence.js';
 import { SqliteEvidenceStore, unwrap } from '../adapters/storage/sqliteEvidenceStore.js';
 import { canonical, digest } from '../adapters/storage/storeCodec.js';
 import { ProcessEvidenceStore } from '../adapters/storage/processEvidenceStore.js';
-import { fixture, grant, signed } from './storageFixtures.js';
+import { enterStorageWorkspace, fixture, grant, signed } from './storageFixtures.js';
 import {
   refreshChatLease,
   withActiveChatLease,
@@ -80,6 +80,7 @@ it('recovers a lost acknowledgement after the owner restoration committed withou
 it('allows only one of two real processes to restore the same expired owner revision', async () => {
   vi.restoreAllMocks();
   const change = { ...recovery(), lease_until: Date.now() + 60_000 };
+  enterStorageWorkspace(f.parent);
   const first = new ProcessEvidenceStore(f.root, grant);
   const second = new ProcessEvidenceStore(f.root, grant);
   const replies = await Promise.all([

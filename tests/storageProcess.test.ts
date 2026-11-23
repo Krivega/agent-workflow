@@ -6,7 +6,7 @@ import { declareBackendFixture } from './backendPolicyFixture.js';
 import * as childProcess from 'node:child_process';
 import * as fs from 'node:fs';
 import { ProcessEvidenceStore } from '../adapters/storage/processEvidenceStore.js';
-import { fixture, grant, signed } from './storageFixtures.js';
+import { enterStorageWorkspace, fixture, grant, signed } from './storageFixtures.js';
 
 vi.mock('node:child_process', async (original) => ({
   ...(await original<typeof childProcess>()),
@@ -75,6 +75,7 @@ it.each(['exit', 'malformed', 'error', 'stdin'] as const)(
 
 it('composes the worker using trusted launch context and returns only the serialized reply', async () => {
   const f = fixture();
+  enterStorageWorkspace(f.parent);
   try {
     const input = {
       root: f.root,
@@ -106,6 +107,7 @@ it('runs explicit maintenance in the worker and preserves unknown outcomes on pr
   child.emit('close', 1);
   expect(await pending).toMatchObject({ ok: false, error: { code: 'unknown-outcome' } });
   const f = fixture();
+  enterStorageWorkspace(f.parent);
   try {
     const input = {
       root: join(f.parent, 'created'),

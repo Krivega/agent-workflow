@@ -96,3 +96,10 @@ export function fixture() {
     dispose: () => rmSync(parent, { recursive: true, force: true }),
   };
 }
+
+/** Launch the storage worker in the fixture's own workspace. */
+export function enterStorageWorkspace(directory: string) {
+  const previous = process.cwd();
+  process.chdir(directory);
+  onTestFinished(() => process.chdir(previous));
+}
