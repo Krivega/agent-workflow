@@ -221,6 +221,16 @@ test('the actual execute boundary floors fractional budgets and refuses sub-mill
       });
       syncBuiltinESMExports();
       try {
+        if (process.platform !== 'darwin') {
+          await assert.rejects(runInstalledFullConsumers(request), {
+            code: 'ERR_ASSERTION',
+            actual: process.platform,
+            expected: 'darwin',
+          });
+          assert.equal(calls.length, 0);
+          assert.equal(existsSync(request.evidence), false);
+          continue;
+        }
         await assert.rejects(runInstalledFullConsumers(request));
         const report = JSON.parse(readFileSync(join(request.evidence, 'report.json'), 'utf8'));
         assert.equal(report.actualInstalls, 0);
