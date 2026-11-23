@@ -16,7 +16,12 @@ import {
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { checkPackageFiles } from './pinned-consumers.mjs';
-import { checkPackageClosure, packageClosureCli, packageClosurePlan } from './packageClosure.mjs';
+import {
+  tarPath,
+  checkPackageClosure,
+  packageClosureCli,
+  packageClosurePlan,
+} from './packageClosure.mjs';
 
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const output = resolve('tmp/package-closure-maintained-20261030');
@@ -42,7 +47,7 @@ function fixture(files = {}, metadata = {}, link = false) {
   }
   if (link) symlinkSync('project.js', join(root, 'package/dist/contracts/link.js'));
   const path = join(root, 'fixture.tgz');
-  execFileSync('/usr/bin/tar', ['-czf', path, '-C', root, 'package'], {
+  execFileSync(tarPath, ['-czf', path, '-C', root, 'package'], {
     timeout: 2000,
   });
   const bytes = readFileSync(path);
@@ -87,7 +92,7 @@ afterEach(() => {
 
 test('closes the actual RED: an allowed tar path can still import an absent relative file', () => {
   const f = fixture({ 'dist/contracts/project.js': "import './missing.js';" });
-  const entries = execFileSync('/usr/bin/tar', ['-tzf', f.manifest.archive.path], {
+  const entries = execFileSync(tarPath, ['-tzf', f.manifest.archive.path], {
     encoding: 'utf8',
     timeout: 2000,
   })
@@ -144,7 +149,7 @@ test('accepts real Yarn-created directory members without a trailing slash', () 
   assert.ok(bytes.length < 8 * 1024 * 1024);
   f.manifest.archive.sha256 = digest(bytes);
   f.manifest.archive.bytes = bytes.length;
-  const listing = execFileSync('/usr/bin/tar', ['-tvzf', f.manifest.archive.path], {
+  const listing = execFileSync(tarPath, ['-tvzf', f.manifest.archive.path], {
     encoding: 'utf8',
     timeout: 2000,
   });
@@ -161,7 +166,7 @@ test('keeps tar file/directory types authoritative and permits implicit director
     const f = fixture();
     writeFileSync(join(f.root, 'shadow'), 'regular parent');
     execFileSync(
-      '/usr/bin/tar',
+      tarPath,
       [
         '-czf',
         f.manifest.archive.path,
@@ -184,7 +189,7 @@ test('keeps tar file/directory types authoritative and permits implicit director
   const invalid = fixture();
   writeFileSync(join(invalid.root, 'shadow'), 'regular file with slash');
   execFileSync(
-    '/usr/bin/tar',
+    tarPath,
     [
       '-czf',
       invalid.manifest.archive.path,
@@ -208,7 +213,7 @@ test('keeps tar file/directory types authoritative and permits implicit director
   );
   const implicit = fixture();
   execFileSync(
-    '/usr/bin/tar',
+    tarPath,
     [
       '-czf',
       implicit.manifest.archive.path,

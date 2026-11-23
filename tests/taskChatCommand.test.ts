@@ -178,6 +178,32 @@ it('starts with a root project descriptor and pins its runtime without rebasing 
   await loadAll();
   expect(readManaged<typeof managed>(managedPath)!.runtime_package_version).toBe(metadata.version);
 });
+it('routes a plain start through Temporal admission and reports a missing working copy', async () => {
+  execFileSync('git', ['init', '-q'], { cwd: f.root });
+  declareBackendFixture(f.root);
+  await f.file(
+    '.git/agent-workflow/backend-policy.json',
+    JSON.stringify({
+      schemaVersion: 2,
+      newTasks: 'temporal',
+      startAdmission: 'task-start-admission/1',
+    }),
+  );
+  const result = await invokeTaskChat(['start']);
+  expect(result.code).toBe(1);
+  expect(result.errors).toEqual(['task-chat-temporal-input-required']);
+  const messages: string[] = [];
+  const errors: string[] = [];
+  const code = await runTaskChatCommand(
+    ['start'],
+    resolve(f.root, 'missing-workspace'),
+    (message) => messages.push(message),
+    (message) => errors.push(message),
+  );
+  expect(code).toBe(1);
+  expect(errors[0]).toContain('ENOENT');
+  expect(JSON.parse(messages[0]!)).toMatchObject({ status: 'unknown', reason: errors[0] });
+});
 it.each(['missing', 'temporal'] as const)(
   'rejects a %s backend before creating managed state',
   async (backend) => {

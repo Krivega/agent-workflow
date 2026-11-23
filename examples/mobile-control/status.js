@@ -30,7 +30,9 @@ async function refresh() {
       field(id).textContent = data[id] ?? '—';
     field('status').textContent = labels[data.status];
     field('confirmedAt').textContent = new Date(data.confirmedAt).toLocaleString();
-    field('fresh').textContent = 'Подтверждено с Mac.';
+    field('fresh').textContent = data.snapshot
+      ? 'Последнее сохранённое состояние с Mac.'
+      : 'Подтверждено с Mac.';
   } catch {
     // Keep the timestamp and the last confirmed observation visible.
   } finally {

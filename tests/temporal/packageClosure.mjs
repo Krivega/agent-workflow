@@ -14,7 +14,9 @@ const limit = 8 * 1024 * 1024;
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const variants = ['additionalRoots', 'trustedAssets'];
 const sourcePath = fileURLToPath(import.meta.url);
-const tarPath = realpathSync('/usr/bin/tar');
+// Inventory and negative fixtures require libarchive's member-type semantics.
+const tarAlias = process.platform === 'linux' ? '/usr/bin/bsdtar' : '/usr/bin/tar';
+export const tarPath = realpathSync(tarAlias);
 const parserPath = createRequire(import.meta.url).resolve('typescript');
 const literal = (node) =>
   node && (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) ? node.text : null;
@@ -467,7 +469,7 @@ export function checkPackageClosure(value) {
     }
     visit(source);
   }
-  assert.equal(realpathSync('/usr/bin/tar'), tarPath, 'tar observer alias changed');
+  assert.equal(realpathSync(tarAlias), tarPath, 'tar observer alias changed');
   for (const pin of pins)
     assert.deepEqual(regularPin(pin.path), pin, 'observer/archive/parser/source changed');
   return {
@@ -483,7 +485,7 @@ export function checkPackageClosure(value) {
     archive: pins[0],
     pins,
     hashesStable: true,
-    observerAlias: { path: '/usr/bin/tar', target: tarPath },
+    observerAlias: { path: tarAlias, target: tarPath },
     roots,
     assetBindings,
     reachable: [...visited].sort(),

@@ -126,6 +126,8 @@ Git. При отсутствии целевой ссылки локальный 
 | Harness² через Temporal с независимой проверкой пользы | [0074](0074-integrate-harness2-through-temporal.md) | `proposed` |
 | Целевая поставка Temporal без поддержки Legacy | [0075](0075-exclude-legacy-from-temporal-delivery.md) | `accepted` |
 | Поставка runtime и общей обвязки через npm | [0076](0076-deliver-runtime-through-npm.md) | `accepted` |
+| Подтверждение команд владельца с телефона | [0077](0077-confirm-mobile-owner-commands.md) | `accepted` |
+| Автономный каталог на TNAS | [0078](0078-serve-mobile-catalog-on-tnas.md) | `proposed` |
 
 ## Унаследованные решения
 

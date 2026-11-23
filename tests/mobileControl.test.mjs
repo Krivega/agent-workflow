@@ -142,3 +142,57 @@ test('phone keeps last confirmation offline and reads again on foreground return
   assert.equal(element('task').textContent, '—');
   assert.match(element('fresh').textContent, /отозван/u);
 });
+
+test('catalog reads current assignments across projects and binds same-named tasks to their project', async (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'mobile-catalog-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const pin = Array(32).fill('FA').join(':');
+  const devicePin = join(dir, 'pin');
+  writeFileSync(devicePin, pin);
+  const socket = {
+    authorized: true,
+    getPeerCertificate: () => ({ fingerprint256: pin, valid_to: 'Jan 1 2100 GMT' }),
+  };
+  const ids = ['one'];
+  const projects = new Map([
+    ['a', { tasks: () => ids }],
+    ['b', { tasks: () => ['one'] }],
+  ]);
+  const serve = handler({
+    loadProjects: () => projects,
+    devicePin,
+    readStatus: async (id, project) => {
+      assert.equal(project, projects.get(id.split('/')[2]));
+      return { workflowId: id, status: 'running' };
+    },
+  });
+  async function get(url) {
+    let status, body;
+    await serve(
+      { url, method: 'GET', socket },
+      {
+        writeHead(code) {
+          status = code;
+        },
+        end(value) {
+          body = value;
+        },
+      },
+    );
+    return { status, body };
+  }
+  assert.match((await get('/')).body, /href="\/project\/b"/u);
+  assert.match((await get('/project/a')).body, /href="\/task\/aw\/task\/a\/one"/u);
+  ids.push('new');
+  assert.match((await get('/project/a')).body, /aw\/task\/a\/new/u);
+  assert.equal((await get('/api/aw/task/b/new')).status, 404);
+  assert.equal((await get('/project/c')).status, 404);
+  assert.match((await get('/task/aw/task/a/new')).body, /data-url="\/api\/aw\/task\/a\/new"/u);
+  for (const project of ['a', 'b']) {
+    const result = await get('/api/aw/task/' + project + '/one');
+    assert.equal(result.status, 200);
+    assert.equal(JSON.parse(result.body).project, project);
+  }
+  rmSync(devicePin);
+  assert.equal((await get('/project/a')).status, 403);
+});
