@@ -11,8 +11,15 @@ import { readerBoundary } from '../../src/adapters/codex/readerBoundary.js';
 import { readerActivities } from '../../src/activities/reader.js';
 
 describe('immutable execution configuration', () => {
-  it('accepts only the explicitly supported reader clients, without prefix or stable-version fallback', () => {
-    for (const version of ['0.154.0', '0.165.0-alpha.1.2', '0.169.1'])
+  it('accepts known reader clients and numeric revisions of 0.171.0-alpha.13', () => {
+    for (const version of [
+      '0.154.0',
+      '0.165.0-alpha.1.2',
+      '0.169.1',
+      '0.171.0-alpha.13',
+      '0.171.0-alpha.13.2',
+      '0.171.0-alpha.13.10',
+    ])
       expect(supportedReaderClient(version)).toBe(true);
     for (const version of [
       '',
@@ -21,6 +28,13 @@ describe('immutable execution configuration', () => {
       '0.154.1',
       '0.169.0',
       '0.169.2',
+      '0.171.0',
+      '0.171.0-alpha.14',
+      '0.171.0-alpha.130',
+      '0.171.0-alpha.13.',
+      '0.171.0-alpha.13.02',
+      '0.171.0-alpha.13.dev',
+      '0.171.0-alpha.13.2.1',
       'other',
     ])
       expect(supportedReaderClient(version)).toBe(false);
@@ -45,10 +59,14 @@ describe('immutable execution configuration', () => {
     );
     expect(f.rpc.request).not.toHaveBeenCalled();
   });
-  it.each([{ model: 'other' }, { clientVersion: '0.165.0-alpha.1.2' }])(
-    'rejects a changed Worker profile but preserves fencing and stop under the original profile: %j',
-    async (change) => {
-      const f = controlFixture();
+  it.each([
+    ['0.154.0', { model: 'other' }],
+    ['0.154.0', { clientVersion: '0.165.0-alpha.1.2' }],
+    ['0.171.0-alpha.13', { clientVersion: '0.171.0-alpha.13.2' }],
+  ] as const)(
+    'rejects a changed Worker profile but preserves fencing and stop under the original profile: %s %j',
+    async (version, change) => {
+      const f = controlFixture(version);
       await f.gate.boundary.dispatch(
         f.input,
         f.epoch,

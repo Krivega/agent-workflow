@@ -172,7 +172,8 @@ function params(threadId = 'session') {
   return { threadId, input: [{ type: 'text', text: 'Workflow operation: op\nmessage' }] };
 }
 
-it.each(['0.169.1', '0.171.0-alpha.13'])('enforces one Reader LOAD on %s', async (version) => {
+const loadClientVersions = ['0.169.1', '0.171.0-alpha.13', '0.171.0-alpha.13.2'];
+it.each(loadClientVersions)('enforces one Reader LOAD on %s', async (version) => {
   const { root, options, copy } = fixture();
   options.profile.clientVersion = version;
   writeFileSync(

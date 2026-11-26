@@ -15,6 +15,7 @@ import {
   parseArchiveCommand,
   readerCommandText,
 } from '../../policy/readerControl.js';
+import { isCodexAlpha13 } from '../../policy/readerExecution.js';
 import { digest, readPrivateFile } from '../artifacts/files.js';
 import {
   hasNativeDesktopInboundDelivery,
@@ -152,7 +153,7 @@ export function nativeReaderAuthority(
         .filter((entry) => entry.raw.type === 'turn_context')
         .map((entry) => object(entry.raw.payload));
     const desktopResume =
-      (session.cli_version === '0.169.1' || session.cli_version === '0.171.0-alpha.13') &&
+      (session.cli_version === '0.169.1' || isCodexAlpha13(session.cli_version)) &&
       command.schemaVersion === 2 &&
       command.action === 'resume' &&
       command.target.roleId === 'task';

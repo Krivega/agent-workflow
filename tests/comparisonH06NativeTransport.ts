@@ -12,7 +12,11 @@ import { NativeWriterProcesses } from '../src/adapters/codex/writerProcesses.js'
 import type { TaskWriterRuntime } from '../src/contracts/localTask.js';
 import { exactFields, identifier, object, requireContract } from '../src/contracts/project.js';
 import type { ProcessIdentity, WriterProcesses } from '../src/contracts/writerProcesses.js';
-import { readerExecution, supportedTaskClient } from '../src/policy/readerExecution.js';
+import {
+  isCodexAlpha13,
+  readerExecution,
+  supportedTaskClient,
+} from '../src/policy/readerExecution.js';
 import { h04Pin, readH04Pin, type H04Pin } from './comparisonH04Contract.js';
 import {
   captureH06NativeCapabilities,
@@ -184,15 +188,16 @@ export async function openH06NativeTransport(options: H06NativeTransportOptions)
       '-c',
       'web_search="disabled"',
     ];
-    const overrides = ['0.169.1', '0.171.0-alpha.13'].includes(profile.clientVersion)
-      ? disabledMcpServers(
-          binary.path,
-          root,
-          args,
-          disabled,
-          Math.max(1, Math.ceil(work - performance.now())),
-        ).overrides
-      : disabled.flatMap((name) => ['-c', `mcp_servers.${name}.enabled=false`]);
+    const overrides =
+      profile.clientVersion === '0.169.1' || isCodexAlpha13(profile.clientVersion)
+        ? disabledMcpServers(
+            binary.path,
+            root,
+            args,
+            disabled,
+            Math.max(1, Math.ceil(work - performance.now())),
+          ).overrides
+        : disabled.flatMap((name) => ['-c', `mcp_servers.${name}.enabled=false`]);
     working();
     const rpc = new StdioAppServer(
       binary.path,

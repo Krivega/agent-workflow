@@ -1,5 +1,6 @@
 import { isDeepStrictEqual } from 'node:util';
 import { object } from '../../contracts/project.js';
+import { isCodexAlpha13 } from '../../policy/readerExecution.js';
 
 export const comparisonDesktopVersion = '0.169.0-alpha.11.1';
 
@@ -24,15 +25,10 @@ export function isComparisonDesktopUser(
 }
 
 export function isTaskStartDesktopRoot(session: Record<string, unknown>): boolean {
-  if (
-    session.cli_version === '0.171.0-alpha.13' &&
-    isDesktopUserRoot(session, 'user', 'Codex Desktop')
-  )
-    return true;
+  if (isCodexAlpha13(session.cli_version))
+    return isDesktopUserRoot(session) || isDesktopUserRoot(session, 'user', 'Codex Desktop');
   return (
-    (session.cli_version === comparisonDesktopVersion ||
-      session.cli_version === '0.169.1' ||
-      session.cli_version === '0.171.0-alpha.13') &&
+    (session.cli_version === comparisonDesktopVersion || session.cli_version === '0.169.1') &&
     isDesktopUserRoot(session)
   );
 }

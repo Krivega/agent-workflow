@@ -336,6 +336,7 @@ describe('task human actual private source and native choice boundary (synthetic
     ['0.169.1', 'codex_work_desktop'],
     ['0.171.0-alpha.13', 'codex_work_desktop'],
     ['0.171.0-alpha.13', 'Codex Desktop'],
+    ['0.171.0-alpha.13.2', 'Codex Desktop'],
   ])(
     'binds Desktop %s direct requests to the current root turn and private workspace',
     async (version, originator) => {

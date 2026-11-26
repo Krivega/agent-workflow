@@ -1,8 +1,12 @@
 import type { ReaderExecution } from '../contracts/readerControl.js';
 import { exactFields, object, requireContract, text } from '../contracts/project.js';
 
+export function isCodexAlpha13(version: unknown): boolean {
+  return typeof version === 'string' && /^0\.171\.0-alpha\.13(?:\.(?:0|[1-9]\d*))?$/u.test(version);
+}
+
 export function supportedTaskClient(version: string): boolean {
-  return ['0.154.0', '0.169.1', '0.171.0-alpha.13'].includes(version);
+  return version === '0.154.0' || version === '0.169.1' || isCodexAlpha13(version);
 }
 
 export function supportedReaderClient(version: string): boolean {

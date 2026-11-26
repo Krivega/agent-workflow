@@ -43,7 +43,7 @@ function checkPackagedWorker(root, temporary, run) {
     codexBinary: join(temporary, 'codex'),
     codexHome: temporary,
     disabledServers: [],
-    profile: { model: 'test', effort: 'medium', clientVersion: '0.169.1' },
+    profile: { model: 'test', effort: 'medium', clientVersion: '0.171.0-alpha.13' },
     maxTurnStarts: 0,
     projects: [{ file, threadId: 'issuer' }],
   };
@@ -59,7 +59,7 @@ function checkPackagedWorker(root, temporary, run) {
     config.codexBinary,
     `#!${process.execPath}
 if (process.argv[2] === '--version') {
-  console.log('codex-cli 0.169.1');
+  console.log('codex-cli 0.171.0-alpha.13.2');
 } else {
   const fs = require('node:fs');
   const path = require('node:path');
@@ -108,6 +108,22 @@ if (process.argv[2] === '--version') {
     projects: 1,
   });
   assert.deepEqual(readdirSync(join(temporary, 'artifacts', 'copies')), []);
+  for (const clientVersion of ['0.169.1', '0.171.0-alpha.13.1']) {
+    save(join(temporary, 'worker.json'), {
+      ...config,
+      profile: { ...config.profile, clientVersion },
+    });
+    const incompatible = spawnSync(process.execPath, [worker, '--check-writer', temporary], {
+      encoding: 'utf8',
+    });
+    assert.equal(incompatible.status, 1);
+    assert.ok(
+      incompatible.stderr.includes(
+        `Expected Codex CLI ${clientVersion}, got codex-cli 0.171.0-alpha.13.2`,
+      ),
+    );
+  }
+  save(join(temporary, 'worker.json'), config);
   if (process.platform === 'darwin') {
     const plist = run(process.execPath, [worker, '--plist', temporary]);
     const parsed = JSON.parse(

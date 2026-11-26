@@ -17,6 +17,10 @@
     {
       "locator": "docs/design/decisions/_template.md",
       "hash": "453025885220effe6cc0b01c9a3bf28e6910e20010157d0d2677716ad6b6f2f4"
+    },
+    {
+      "locator": "scripts/runValidation.mjs",
+      "hash": "ceb4bff6fdc0c0b745f4f2d10daad580d647be0d96765001547e71451bd5f6ca"
     }
   ],
   "owner": {
@@ -56,7 +60,7 @@
     "data_integrity": true,
     "unknown_consumers": false
   },
-  "reason": "Согласовать версионирование и передачу результатов до реализации.",
+  "reason": "Согласовать версионирование и передачу результатов до реализации. Хост запускает полный yarn validate в отдельной проверочной копии с закреплённым Git-состоянием и установленными зависимостями. Для каждой стадии он переносит в неё точные байты разрешённых результатов и сверяет входы этапа.",
   "checks": [
     "validate"
   ],
@@ -98,22 +102,22 @@
       "criterion": "REVIEW",
       "stage": "baseline",
       "command": "validate",
-      "evidence": "Журнал yarn validate",
-      "success": "Код выхода 0"
+      "evidence": "Журнал хоста с исходным Git-состоянием, хешами перенесённых файлов и результатом полного yarn validate. В scripts/runValidation.mjs группа staticGroups задаёт порядок lint:adr, lint:docs и lint:docs:references, а runGroup ждёт завершения каждой команды перед следующей.",
+      "success": "Код выхода 0 и успешное завершение lint:adr перед обеими проверками документов"
     },
     {
       "criterion": "REVIEW",
       "stage": "candidate",
       "command": "validate",
-      "evidence": "Журнал yarn validate",
-      "success": "Код выхода 0"
+      "evidence": "Журнал проверочной копии с хешами кандидата и результатами полного yarn validate, включая lint:adr, lint:docs и lint:docs:references",
+      "success": "Код выхода 0 и успешное завершение lint:adr перед обеими проверками документов"
     },
     {
       "criterion": "REVIEW",
       "stage": "integrated",
       "command": "validate",
-      "evidence": "Журнал yarn validate",
-      "success": "Код выхода 0"
+      "evidence": "Журнал проверочной копии с хешами перенесённых изменений и результатами полного yarn validate, включая lint:adr, lint:docs и lint:docs:references",
+      "success": "Код выхода 0 и успешное завершение lint:adr перед обеими проверками документов"
     }
   ]
 }

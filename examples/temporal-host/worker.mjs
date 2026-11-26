@@ -16,7 +16,11 @@ import { nativeTaskSource } from '../../dist/adapters/codex/nativeTaskSource.js'
 import { nativeTaskHumanAuthority } from '../../dist/adapters/codex/taskHumanAuthority.js';
 import { checkTaskStartAdmission } from '../../dist/adapters/project/taskStartAdmission.js';
 import { checkWriterInventory } from '../../dist/adapters/codex/taskWriter.js';
-import { readerExecution, supportedTaskClient } from '../../dist/policy/readerExecution.js';
+import {
+  isCodexAlpha13,
+  readerExecution,
+  supportedTaskClient,
+} from '../../dist/policy/readerExecution.js';
 
 function privatePath(path, directory) {
   assert(isAbsolute(path) && realpathSync(path) === path, 'Expected canonical absolute path');
@@ -36,9 +40,9 @@ assert(
 );
 privatePath(root, true);
 const config = json(join(root, 'worker.json'));
-const { profile, maxTurnStarts, codexBinary, codexHome, disabledServers } = config;
-readerExecution(profile);
-assert(supportedTaskClient(profile.clientVersion));
+const { maxTurnStarts, codexBinary, codexHome, disabledServers } = config;
+const configuredProfile = readerExecution(config.profile).profile;
+assert(supportedTaskClient(configuredProfile.clientVersion));
 assert(Number.isSafeInteger(maxTurnStarts) && maxTurnStarts >= 0);
 assert(isAbsolute(codexBinary) && isAbsolute(codexHome));
 const sessionsRoot = join(codexHome, 'sessions');
@@ -107,10 +111,14 @@ if (action === '--plist') {
   process.env.CODEX_HOME = codexHome;
   register();
   const { StdioAppServer } = await import('../../adapters/codex/appServerTransport.ts');
-  assert.equal(
-    execFileSync(codexBinary, ['--version'], { encoding: 'utf8' }).trim(),
-    'codex-cli ' + profile.clientVersion,
+  const output = execFileSync(codexBinary, ['--version'], { encoding: 'utf8' }).trim();
+  const clientVersion = /^codex-cli (\S+)$/u.exec(output)?.[1];
+  assert(
+    clientVersion === configuredProfile.clientVersion ||
+      (configuredProfile.clientVersion === '0.171.0-alpha.13' && isCodexAlpha13(clientVersion)),
+    `Expected Codex CLI ${configuredProfile.clientVersion}, got ${output}`,
   );
+  const profile = { ...configuredProfile, clientVersion };
   const logs = privateDirectory(join(root, 'rpc'));
   const args = [
     '-c',

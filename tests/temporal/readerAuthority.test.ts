@@ -449,7 +449,7 @@ describe('native human reader command authority', () => {
       }
     },
   );
-  describe.each(['0.169.1', '0.171.0-alpha.13'])('Desktop %s', (version) => {
+  describe.each(['0.169.1', '0.171.0-alpha.13', '0.171.0-alpha.13.2'])('Desktop %s', (version) => {
     it.each([
       'direct',
       'delegated',

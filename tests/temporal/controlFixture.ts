@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 afterEach(() => disposeFrom(firstTestRoot));
 afterAll(() => disposeFrom(0));
-export function controlFixture() {
+export function controlFixture(clientVersion = '0.154.0') {
   const root = realpathSync(mkdtempSync(join(tmpdir(), 'aw-control-')));
   roots.push(root);
   const workspace = join(root, 'workspace');
@@ -58,7 +58,7 @@ export function controlFixture() {
     artifactRoot: join(root, 'artifacts'),
     commands: { syntax: { executable: 'node', args: [] } },
   };
-  const profile = { model: 'gpt-6-astra', effort: 'medium', clientVersion: '0.154.0' };
+  const profile = { model: 'gpt-6-astra', effort: 'medium', clientVersion };
   const store = artifactStore(registration.artifactRoot);
   const save = (v: unknown) => store.publish(Buffer.from(JSON.stringify(v)));
   const proof = save({ kind: 'test-authority' });
